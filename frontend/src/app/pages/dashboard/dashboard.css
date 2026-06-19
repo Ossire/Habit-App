@@ -1,0 +1,254 @@
+/* Base Mobile Wrapper */
+.mobile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #f8f9fa; /* Slight off-white like the design */
+  min-height: 100vh;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding-bottom: 80px; /* Space for the bottom nav */
+  color: #000;
+}
+
+/* Header */
+.header {
+  padding: 30px 20px 20px;
+}
+.header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.header .date {
+  margin: 8px 0 0;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Streak Card */
+.streak-card {
+  margin: 0 20px 24px;
+  border: 2px solid #000;
+  background: #fff;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.streak-text h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+.streak-text p {
+  margin: 4px 0 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 1px;
+}
+.flame-icon {
+  width: 36px;
+  height: 36px;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+/* Progress Section */
+.progress-section {
+  margin: 0 20px 30px;
+}
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  align-items: flex-end;
+}
+.progress-text .label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.progress-text .value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+.progress-bar-bg {
+  width: 100%;
+  height: 16px;
+  border: 2px solid #000;
+  background: #fff;
+}
+.progress-bar-fill {
+  height: 100%;
+  background-color: #000;
+  transition: width 0.4s ease;
+}
+
+/* Habits List */
+.section-title {
+  margin: 0 20px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.habits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.habit-card {
+  border: 2px solid #000;
+  background: #f1f1f1;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.habit-card:active {
+  transform: scale(0.98);
+}
+
+/* Checkbox */
+.checkbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #000;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+  font-weight: bold;
+}
+.checkbox.checked {
+  background: #000;
+  color: #fff;
+}
+
+.habit-details {
+  flex-grow: 1;
+}
+.habit-details h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.habit-details p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+.habit-icon {
+  font-size: 20px;
+  color: #666;
+  font-weight: bold;
+}
+
+/* Focus Image Card & FAB */
+.focus-card {
+  margin: 24px 20px;
+  height: 140px;
+  background: linear-gradient(135deg, #bbb, #777); /* Placeholder for abstract image */
+  border: 2px solid #000;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+.focus-badge {
+  background: #000;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 12px;
+}
+.fab-button {
+  position: absolute;
+  bottom: -20px;
+  right: -10px;
+  width: 50px;
+  height: 50px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Bottom Navigation */
+/* .bottom-nav {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: #fff;
+  border-top: 2px solid #000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+} */
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed; /* Glues it to the viewport, not the container */
+  bottom: 0;
+  left: 50%; /* These two lines keep it perfectly centered */
+  transform: translateX(-50%); /* with your 400px mobile container */
+  width: 100%;
+  max-width: 400px; /* Matches your mobile-container width */
+  height: 70px;
+  background: #fff;
+  border-top: 2px solid #000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999; /* Forces it to hover above the heatmap */
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #888;
+}
+.nav-icon {
+  width: 44px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.nav-item.active {
+  color: #000;
+}
+.nav-item.active .nav-icon {
+  background: #000;
+  color: #fff;
+}
+.empty-state {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+  font-weight: 600;
+}

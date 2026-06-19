@@ -1,0 +1,242 @@
+.mobile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  font-family: sans-serif;
+  padding-bottom: 80px;
+  color: #000;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 2px solid #000;
+  background: #fff;
+}
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.menu-btn,
+.options-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Toggle */
+.toggle-container {
+  display: flex;
+  padding: 20px;
+  gap: 8px;
+}
+.toggle-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #000;
+  background: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.toggle-btn.active {
+  background: #000;
+  color: #fff;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 20px 12px;
+}
+.section-header h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+.section-header span {
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 0.5px;
+}
+
+/* Bar Chart */
+.chart-section {
+  margin-bottom: 24px;
+}
+.bar-chart-card {
+  margin: 0 20px;
+  border: 2px solid #000;
+  background: #fff;
+  padding: 20px 16px 12px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+.bars-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid #000;
+  padding-bottom: 8px;
+}
+.bar-wrapper {
+  width: 12%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.bar {
+  width: 100%;
+  background: #000;
+}
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+.chart-labels span {
+  font-size: 9px;
+  font-weight: 800;
+  width: 12%;
+  text-align: center;
+}
+
+/* Heatmap */
+.heatmap-card {
+  margin: 0 20px;
+  border: 2px solid #000;
+  background: #fff;
+  padding: 16px;
+}
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.heat-square {
+  aspect-ratio: 1;
+  border: 1px solid #000;
+}
+
+/* Heatmap Intensities */
+.heat-square[data-intensity='0'] {
+  background: #fff;
+}
+.heat-square[data-intensity='1'] {
+  background: #ddd;
+}
+.heat-square[data-intensity='2'] {
+  background: #777;
+}
+.heat-square[data-intensity='3'] {
+  background: #000;
+}
+
+.heatmap-legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #666;
+  border-top: 1px solid #ddd;
+  padding-top: 12px;
+}
+.legend-squares {
+  display: flex;
+  gap: 4px;
+}
+.legend-squares .heat-square {
+  width: 12px;
+  height: 12px;
+}
+
+/* Stat Summaries */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 20px;
+}
+.stat-card {
+  border: 2px solid #000;
+  background: #fff;
+  padding: 16px;
+}
+.stat-card .icon {
+  font-size: 10px;
+  font-weight: 800;
+  display: block;
+  margin-bottom: 12px;
+}
+.stat-card h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+}
+.stat-card p {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: #666;
+}
+
+/* Bottom Navigation */
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed; /* Glues it to the viewport, not the container */
+  bottom: 0;
+  left: 50%; /* These two lines keep it perfectly centered */
+  transform: translateX(-50%); /* with your 400px mobile container */
+  width: 100%;
+  max-width: 400px; /* Matches your mobile-container width */
+  height: 70px;
+  background: #fff;
+  border-top: 2px solid #000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999; /* Forces it to hover above the heatmap */
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #888;
+  text-decoration: none;
+  cursor: pointer;
+}
+.nav-icon {
+  width: 44px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.nav-item.active {
+  color: #000;
+}
+.nav-item.active .nav-icon {
+  background: #000;
+  color: #fff;
+}

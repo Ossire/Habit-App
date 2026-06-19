@@ -1,0 +1,75 @@
+<div class="mobile-container">
+
+    <header class="header">
+        <button class="back-btn" routerLink="/">←</button>
+        <h1>Profile</h1>
+        <button class="settings-btn">⚙️</button>
+    </header>
+
+    <section class="user-info">
+        <div class="avatar-box">
+            <div class="avatar-icon">👤</div>
+        </div>
+        <h2>{{ user().name }}</h2>
+        <p>{{ user().school }}</p>
+    </section>
+
+    <section class="section-block">
+        <h3 class="section-title">INTERESTS</h3>
+        <div class="interests-grid">
+            @for (interest of interests(); track interest.name; let i = $index) {
+            <button class="interest-pill" [class.active]="interest.active" (click)="toggleInterest(i)">
+                {{ interest.name }}
+            </button>
+            }
+        </div>
+    </section>
+
+    <section class="section-block">
+        <h3 class="section-title">NOTIFICATIONS</h3>
+
+        <div class="setting-card">
+            <div class="setting-text">
+                <h4>Daily Reminders</h4>
+                <p>Get nudged to complete your habits</p>
+            </div>
+            <div class="toggle-switch" [class.on]="dailyReminders()" (click)="toggleReminder()">
+                <div class="toggle-knob"></div>
+            </div>
+        </div>
+
+        <div class="setting-card">
+            <div class="setting-text">
+                <h4>Streak Alerts</h4>
+                <p>Don't lose your progress</p>
+            </div>
+            <div class="toggle-switch" [class.on]="streakAlerts()" (click)="toggleStreak()">
+                <div class="toggle-knob"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="logout-wrapper">
+        <button class="logout-btn" (click)="logout()">LOGOUT</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <div class="nav-icon">📅</div>
+            <span>Today</span>
+        </div>
+        <div class="nav-item" routerLink="/progress" routerLinkActive="active">
+            <div class="nav-icon">📊</div>
+            <span>Progress</span>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">✓</div>
+            <span>Habits</span>
+        </div>
+        <div class="nav-item" routerLink="/settings" routerLinkActive="active">
+            <div class="nav-icon">👤</div>
+            <span>Profile</span>
+        </div>
+    </nav>
+
+</div>

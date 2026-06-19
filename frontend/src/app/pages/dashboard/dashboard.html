@@ -1,0 +1,81 @@
+<div class="mobile-container">
+
+    <header class="header">
+        <h1>Good morning,<br>Alex</h1>
+        <p class="date">Tuesday, Oct 24</p>
+    </header>
+
+    <div class="streak-card">
+        <div class="streak-text">
+            <h2>12 Day Streak</h2>
+            <p>CONSISTENCY IS KEY</p>
+        </div>
+        <div class="flame-icon">🔥</div>
+    </div>
+
+    <section class="progress-section">
+        <div class="progress-text">
+            <span class="label">TODAY'S PROGRESS</span>
+
+            <span class="value">{{ completedHabits() }} of {{ totalHabits() }} habits completed</span>
+
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" [style.width.%]="dashboardState().progressPercentage"></div>
+        </div>
+    </section>
+
+    <section class="habits-list">
+        <h3 class="section-title">HABIT LIST</h3>
+
+        @for (habit of dashboardState().habits; track habit.id) {
+        <div class="habit-card" (click)="toggleHabit(habit.id)">
+
+            <div class="checkbox" [class.checked]="habit.isCompletedToday">
+                @if (habit.isCompletedToday) {
+                <span>✓</span>
+                }
+            </div>
+
+            <div class="habit-details">
+                <h4>{{ habit.name }}</h4>
+                <p>{{ habit.currentStreak }} Day Streak</p>
+            </div>
+
+            <div class="habit-icon">⚬</div>
+        </div>
+        } @empty {
+        <p class="empty-state">No habits found. Let's add some!</p>
+        }
+    </section>
+
+    <div class="focus-card">
+        <div class="focus-badge">FOCUS ON THE PROCESS</div>
+        <button class="fab-button">+</button>
+    </div>
+
+    <nav class="bottom-nav">
+
+        <div class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <div class="nav-icon">📅</div>
+            <span>Today</span>
+        </div>
+
+        <div class="nav-item" routerLink="/progress" routerLinkActive="active">
+            <div class="nav-icon">📊</div>
+            <span>Progress</span>
+        </div>
+
+        <div class="nav-item">
+            <div class="nav-icon">✓</div>
+            <span>Habits</span>
+        </div>
+
+        <div class="nav-item" routerLink="/settings" routerLinkActive="active">
+            <div class="nav-icon">⚙️</div>
+            <span>Settings</span>
+        </div>
+
+    </nav>
+
+</div>

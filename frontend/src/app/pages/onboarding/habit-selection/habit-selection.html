@@ -1,0 +1,67 @@
+<div class="mobile-container">
+
+    <nav class="top-bar">
+        <button class="back-btn">←</button>
+        <h2 class="logo-text">HabitUp</h2>
+        <div style="width: 24px;"></div>
+    </nav>
+
+    <header class="header">
+        <h1>Choose Your Habits</h1>
+        <p>Select the disciplines you want to build.</p>
+    </header>
+
+    <div class="chips-scroll">
+        @for (cat of categories; track cat) {
+        <button class="chip" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">
+            {{ cat }}
+        </button>
+        }
+    </div>
+
+    <div class="habits-grid">
+        @for (habit of habits(); track habit.id) {
+        <div class="habit-grid-card" [class.selected]="selectedHabits().has(habit.id)" (click)="toggleHabit(habit.id)">
+
+            <div class="card-header">
+                <span class="icon">{{ habit.icon }}</span>
+                @if (selectedHabits().has(habit.id)) {
+                <span class="check-badge">✓</span>
+                }
+            </div>
+
+            <h4>{{ habit.name }}</h4>
+            <p>{{ habit.desc }}</p>
+        </div>
+        }
+    </div>
+
+    <div class="stats-card">
+        <div class="stats-header">
+            <div class="stats-title">
+                <span>SYSTEM STATISTICS</span>
+                <h4>Community Growth</h4>
+            </div>
+            <div class="trend-icon">↗</div>
+        </div>
+
+        <div class="mock-chart">
+            <div class="bar" style="height: 30%;"></div>
+            <div class="bar" style="height: 60%;"></div>
+            <div class="bar" style="height: 45%;"></div>
+            <div class="bar" style="height: 90%;"></div>
+            <div class="bar" style="height: 35%;"></div>
+            <div class="bar" style="height: 75%;"></div>
+            <div class="bar" style="height: 65%;"></div>
+        </div>
+
+        <p class="stats-desc">Users picking Fitness habits increased by 14% this week.</p>
+    </div>
+
+    <div class="bottom-action">
+        <button class="continue-btn" [disabled]="selectedHabits().size === 0" (click)="continueToDashboard()">
+            CONTINUE
+        </button>
+    </div>
+
+</div>
