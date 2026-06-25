@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -10,16 +10,21 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./progress.css'],
 })
 export class ProgressComponent {
-  activeTab = signal<'weekly' | 'monthly'>('weekly');
+  strongHabits = [
+    { id: 1, title: 'Drink Water', streak: 24, consistency: 95 },
+    { id: 2, title: 'Read 10 Pages', streak: 18, consistency: 91 },
+  ];
 
-  // Mock data for the CSS charts to make the MVP look complete
-  weeklyData = [20, 60, 40, 90, 30, 80, 50]; // Percentages for bars
-  days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  weakHabits = [
+    { id: 3, title: 'Go for a Run', streak: 2, consistency: 42 },
+    { id: 4, title: 'Meditate', streak: 0, consistency: 35 },
+  ];
 
-  // Generates 28 blocks for a 4-week mock heatmap (0-3 intensity)
-  heatmapBlocks = Array.from({ length: 28 }, () => Math.floor(Math.random() * 4));
-
-  setTab(tab: 'weekly' | 'monthly') {
-    this.activeTab.set(tab);
-  }
+  // Values map to height percentages for the bar chart
+  monthlyTrend = [
+    { label: 'W1', height: 45, isHigh: false },
+    { label: 'W2', height: 85, isHigh: true },
+    { label: 'W3', height: 100, isHigh: true },
+    { label: 'W4', height: 60, isHigh: false },
+  ];
 }

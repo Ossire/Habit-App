@@ -61,6 +61,35 @@
   font-size: 18px;
 }
 
+/* Add this near your progress section styles */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.link-stats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.link-stats:hover {
+  opacity: 0.7;
+}
+
+.link-stats svg {
+  width: 14px;
+  height: 14px;
+}
+
 /* Progress Section */
 .progress-section {
   margin: 0 20px 30px;

@@ -14,35 +14,55 @@
     </div>
 
     <section class="progress-section">
-        <div class="progress-text">
-            <span class="label">TODAY'S PROGRESS</span>
+        <div class="progress-header">
+            <div class="progress-text">
+                <span class="label">TODAY'S PROGRESS</span>
+                <span class="value">{{ completedHabits() }} of {{ totalHabits() }} habits completed</span>
+            </div>
 
-            <span class="value">{{ completedHabits() }} of {{ totalHabits() }} habits completed</span>
-
+            <a routerLink="/heatmap" class="link-stats">
+                View heatmap
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
         </div>
+
         <div class="progress-bar-bg">
-            <div class="progress-bar-fill" [style.width.%]="dashboardState().progressPercentage"></div>
+            <div class="progress-bar-fill" [style.width.%]="progressPercentage()"></div>
         </div>
     </section>
+
+    <!-- <section class="progress-section">
+        <div class="progress-text">
+            <span class="label">TODAY'S PROGRESS</span>
+            <span class="value">{{ completedHabits() }} of {{ totalHabits() }} habits completed</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" [style.width.%]="progressPercentage()"></div>
+        </div>
+    </section> -->
 
     <section class="habits-list">
         <h3 class="section-title">HABIT LIST</h3>
 
-        @for (habit of dashboardState().habits; track habit.id) {
-        <div class="habit-card" (click)="toggleHabit(habit.id)">
+        @for (habit of habits(); track habit.id) {
+        <div class="habit-card">
 
-            <div class="checkbox" [class.checked]="habit.isCompletedToday">
-                @if (habit.isCompletedToday) {
+            <div class="checkbox" [class.checked]="habit.completed"
+                (click)="toggleHabit(habit.id); $event.stopPropagation()">
+                @if (habit.completed) {
                 <span>✓</span>
                 }
             </div>
 
-            <div class="habit-details">
-                <h4>{{ habit.name }}</h4>
-                <p>{{ habit.currentStreak }} Day Streak</p>
+            <div class="habit-details" [routerLink]="['/habit', habit.id]" style="cursor: pointer; flex-grow: 1;">
+                <h4>{{ habit.title }}</h4>
+                <p>{{ habit.subtitle }}</p>
             </div>
 
-            <div class="habit-icon">⚬</div>
+            <div class="habit-icon" [routerLink]="['/habit', habit.id]" style="cursor: pointer;">⚬</div>
         </div>
         } @empty {
         <p class="empty-state">No habits found. Let's add some!</p>
@@ -66,7 +86,7 @@
             <span>Progress</span>
         </div>
 
-        <div class="nav-item">
+        <div class="nav-item" routerLink="/habits" routerLinkActive="active">
             <div class="nav-icon">✓</div>
             <span>Habits</span>
         </div>

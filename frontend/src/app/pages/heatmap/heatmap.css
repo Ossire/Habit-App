@@ -1,0 +1,271 @@
+/* 1. This dark wrapper centers the app on desktop */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+}
+
+/* 2. This forces the 400px width and traps the nav bar */
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  position: relative; /* CRITICAL: This keeps the bottom nav inside this box */
+  padding: 1.5rem 1.5rem 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #000;
+  padding-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #000;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+}
+
+/* Toggle Buttons */
+.toggle-container {
+  display: flex;
+  border: 1px solid #000;
+  margin-bottom: 2rem;
+  background-color: #fff;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.75rem 0.25rem;
+  border: none;
+  border-right: 1px solid #000;
+  background: transparent;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #000;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.toggle-btn:last-child {
+  border-right: none;
+}
+
+.toggle-btn.active {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Chart Sections */
+.chart-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+}
+
+.section-header span {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.bar-chart-card,
+.heatmap-card {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 1.5rem;
+}
+
+/* Bar Chart */
+.bars-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 120px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #000;
+}
+
+.bar-wrapper {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  background-color: #000;
+  transition: height 0.4s ease-out;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-labels span {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #000;
+  width: 10%;
+  text-align: center;
+}
+
+/* Heatmap */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.heat-square {
+  aspect-ratio: 1;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s;
+}
+
+/* Intense Contrast to match the image */
+.heat-square[data-intensity='1'] {
+  background-color: #e0e0e0;
+  border-color: #999;
+}
+.heat-square[data-intensity='2'] {
+  background-color: #666;
+  border-color: #000;
+}
+.heat-square[data-intensity='3'] {
+  background-color: #000;
+  border-color: #000;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #666;
+}
+
+.legend-squares {
+  display: flex;
+  gap: 4px;
+}
+
+.legend-squares .heat-square {
+  width: 12px;
+  height: 12px;
+}
+
+/* Summary Grid */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.stat-card {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 1.25rem;
+}
+
+.stat-card .icon {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #000;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 0.25rem;
+}
+
+.stat-card p {
+  font-size: 0.65rem;
+  color: #666;
+  font-weight: 700;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: absolute; /* CRITICAL: Changed from fixed to absolute */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top: 1px solid #000;
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.nav-item.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.nav-item.active .nav-icon {
+  filter: grayscale(0%);
+  opacity: 1;
+}

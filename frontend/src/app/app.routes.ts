@@ -1,33 +1,48 @@
 import { Routes } from '@angular/router';
 
-import { Landing } from './pages/landing/landing';
-import { Signup } from './pages/auth/signup/signup';
-import { Login } from './pages/auth/login/login';
-import { DashboardComponent } from './pages/dashboard/dashboard';
-import { HabitSelectionComponent } from './pages/onboarding/habit-selection/habit-selection';
-import { ProgressComponent } from './pages/progress/progress';
-import { ProfileComponent } from './pages/profile/profile';
-
 export const routes: Routes = [
-  { path: '', component: HabitSelectionComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'progress', component: ProgressComponent },
-  { path: 'settings', component: ProfileComponent },
-
-  { path: '**', redirectTo: '' },
-
   {
     path: '',
-    component: Landing,
+    loadComponent: () => import('./pages/landing/landing').then((m) => m.LandingComponent),
   },
-
   {
     path: 'signup',
-    component: Signup,
+    loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.SignupComponent),
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/auth/login/login').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'habit-selection',
+    loadComponent: () =>
+      import('./pages/onboarding/habit-selection/habit-selection').then(
+        (m) => m.HabitSelectionComponent,
+      ),
   },
 
   {
-    path: 'login',
-    component: Login,
+    path: 'habit/:id',
+    loadComponent: () =>
+      import('./pages/habit-detail/habit-detail').then((m) => m.HabitDetailComponent),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.DashboardComponent),
+  },
+  {
+    path: 'progress',
+    loadComponent: () => import('./pages/progress/progress').then((m) => m.ProgressComponent),
+  },
+
+  {
+    path: 'heatmap',
+    loadComponent: () => import('./pages/heatmap/heatmap').then((m) => m.HeatmapComponent),
+  },
+
+  {
+    // Catch-all route for 404s
+    path: '**',
+    redirectTo: '',
   },
 ];

@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './landing.html',
-  styleUrl: './landing.css',
+  styleUrls: ['./landing.css'],
 })
-export class Landing {
-
+export class LandingComponent {
+  // No complex state needed here, purely presentational and routing.
 }

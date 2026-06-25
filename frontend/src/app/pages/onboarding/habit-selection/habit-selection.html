@@ -1,4 +1,4 @@
-<div class="mobile-container">
+<!-- <div class="mobile-container">
 
     <nav class="top-bar">
         <button class="back-btn">←</button>
@@ -64,4 +64,87 @@
         </button>
     </div>
 
+</div> -->
+
+<div class="page-wrapper">
+    <div class="selection-card">
+
+        <div class="top-nav">
+            <button class="icon-btn" routerLink="/">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <h3 class="logo">HabitUp</h3>
+            <div class="spacer"></div>
+        </div>
+
+        <div class="header">
+            <h1>Choose Your Habits</h1>
+            <p class="subtitle">Select the disciplines you want to build.</p>
+        </div>
+
+        <div class="category-scroll">
+            <button *ngFor="let cat of categories" class="chip" [class.active]="activeCategory === cat"
+                (click)="setCategory(cat)">
+                {{ cat }}
+            </button>
+        </div>
+
+        <div class="habits-grid">
+            <div *ngFor="let habit of filteredHabits" class="habit-box" [class.selected]="selectedHabits.has(habit.id)"
+                (click)="toggleHabit(habit.id)">
+
+                <div class="check-circle" *ngIf="selectedHabits.has(habit.id)">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                </div>
+
+                <div class="habit-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 8v4l3 3"></path>
+                    </svg>
+                </div>
+
+                <h4>{{ habit.title }}</h4>
+                <p>{{ habit.subtitle }}</p>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <div class="stats-header">
+                <div>
+                    <span class="stats-label">SYSTEM STATISTICS</span>
+                    <h4>Community Growth</h4>
+                </div>
+                <div class="trend-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bar-chart">
+                <div class="bar" style="height: 30%"></div>
+                <div class="bar" style="height: 60%"></div>
+                <div class="bar" style="height: 45%"></div>
+                <div class="bar" style="height: 85%"></div>
+                <div class="bar" style="height: 35%"></div>
+                <div class="bar" style="height: 70%"></div>
+                <div class="bar" style="height: 55%"></div>
+            </div>
+
+            <p class="stats-desc">Users picking Fitness habits increased by 14% this week.</p>
+        </div>
+
+        <button class="btn-primary" (click)="onContinue()" [disabled]="selectedHabits.size === 0">
+            CONTINUE
+        </button>
+
+    </div>
 </div>
