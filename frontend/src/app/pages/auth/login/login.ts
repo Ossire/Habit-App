@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -51,9 +52,12 @@ export class LoginComponent {
         this.isLoading.set(false);
         this.router.navigate(['/habit-selection']);
       },
-      error: (err: Error) => {
+      error: (err: HttpErrorResponse) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err.message);
+        console.log(err);
+        this.errorMessage.set(
+          err.error?.message || err.message
+        );
       },
     });
   }
