@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -13,22 +14,47 @@ import { Router, RouterLink } from '@angular/router';
 export class SignupComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private authService = inject(AuthService);
+
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
 
   signupForm = this.fb.nonNullable.group({
-    // Pre-filled with demo data
-    fullName: ['Alex Developer', Validators.required],
-    school: ['University of Technology'],
-    email: ['alex@habitup.app', [Validators.required, Validators.email]],
-    password: ['demo1234', [Validators.required, Validators.minLength(6)]],
+    fullName: ['', Validators.required],
+    school: [''],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  onSubmit() {
-    if (this.signupForm.valid) {
-      console.log('Sending to backend:', this.signupForm.getRawValue());
-      this.router.navigate(['/login']);
-    } else {
+  // onSubmit() {
+  //   if (this.signupForm.valid) {
+  //     console.log('Sending to backend:', this.signupForm.getRawValue());
+  //     this.router.navigate(['/login']);
+  //   } else {
+  //     this.signupForm.markAllAsTouched();
+  //   }
+  // }
+
+  onSubmit(): void {
+    if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched();
+      return;
     }
+ 
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+ 
+    this.authService.register(this.signupForm.getRawValue()).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        // Registration also logs the user in — go straight to onboarding
+        this.router.navigate(['/habit-selection']);
+      },
+      error: (err: Error) => {
+        this.isLoading.set(false);
+        this.errorMessage.set(err.message);
+      },
+    });
   }
 
   onGoogleAuth() {
