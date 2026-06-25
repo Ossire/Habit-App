@@ -7,30 +7,80 @@
       <p class="subtitle">Build better habits, one day at a time.</p>
     </div>
 
+    <!-- Error banner -->
+    @if (errorMessage()) {
+      <div class="error-banner" role="alert">
+        {{ errorMessage() }}
+      </div>
+    }
+
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
       <div class="form-control">
         <label for="fullName">FULL NAME</label>
-        <input id="fullName" type="text" formControlName="fullName" placeholder="John Doe">
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          placeholder="John Doe"
+          autocomplete="name"
+          [class.input-error]="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched"
+        >
+        @if (signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched) {
+          <span class="field-error">Full name is required.</span>
+        }
       </div>
 
       <div class="form-control">
         <label for="school">SCHOOL</label>
-        <input id="school" type="text" formControlName="school" placeholder="University of Life">
+        <input
+          id="school"
+          type="text"
+          formControlName="school"
+          placeholder="University of Life"
+          autocomplete="organization"
+        >
       </div>
 
       <div class="form-control">
         <label for="email">EMAIL ADDRESS</label>
-        <input id="email" type="email" formControlName="email" placeholder="name@example.com">
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="name@example.com"
+          autocomplete="email"
+          [class.input-error]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+        >
+        @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+          <span class="field-error">Enter a valid email address.</span>
+        }
       </div>
 
       <div class="form-control">
         <label for="password">PASSWORD</label>
-        <input id="password" type="password" formControlName="password" placeholder="••••••••">
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          [class.input-error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+        >
+        @if (signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched) {
+          <span class="field-error">Password is required.</span>
+        }
+        @if (signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched) {
+          <span class="field-error">Password must be at least 6 characters.</span>
+        }
       </div>
 
-      <button type="submit" class="btn-primary" [disabled]="signupForm.invalid">
-        CONTINUE
+      <button type="submit" class="btn-primary" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <span class="spinner"></span> Creating account...
+        } @else {
+          Continue
+        }
       </button>
 
       <div class="divider">
