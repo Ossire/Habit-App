@@ -1,6 +1,10 @@
-import { Component, signal, computed } from '@angular/core';
+// src/app/pages/heatmap/heatmap.ts
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HabitsService } from '../../services/habits.service';
+
+type Tab = 'weekly' | 'monthly' | 'annual';
 
 @Component({
   selector: 'app-heatmap',
@@ -9,35 +13,37 @@ import { RouterModule } from '@angular/router';
   templateUrl: './heatmap.html',
   styleUrls: ['./heatmap.css'],
 })
-export class HeatmapComponent {
-  // 1. The core state
-  activeTab = signal<'weekly' | 'monthly' | 'annual'>('weekly');
+export class HeatmapComponent implements OnInit {
+  private habitsService = inject(HabitsService);
 
-  // 2. Reactive Bar Chart Data
-  chartData = computed(() => {
+  allGrid = signal<{ date: string; count: number; intensity: number }[]>([]);
+  activeTab = signal<Tab>('weekly');
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
+
+  // Slice the full 84-day grid based on active tab
+  visibleGrid = computed(() => {
+    const grid = this.allGrid();
     const tab = this.activeTab();
-    if (tab === 'weekly') return [20, 60, 40, 90, 30, 80, 50];
-    if (tab === 'monthly') return [40, 75, 60, 90]; // 4 weeks
-    return [30, 40, 50, 60, 80, 90, 70, 60, 50, 40, 30, 60]; // 12 months
+    if (tab === 'weekly') return grid.slice(-7);
+    if (tab === 'monthly') return grid.slice(-28);
+    return grid; // annual = all 84 days
   });
 
-  // 3. Reactive Bar Chart Labels
-  chartLabels = computed(() => {
-    const tab = this.activeTab();
-    if (tab === 'weekly') return ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-    if (tab === 'monthly') return ['W1', 'W2', 'W3', 'W4'];
-    return ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-  });
+  ngOnInit() {
+    this.habitsService.getHeatmap().subscribe({
+      next: (data) => {
+        this.allGrid.set(data.grid);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load heatmap.');
+        this.isLoading.set(false);
+      },
+    });
+  }
 
-  // 4. Reactive Heatmap Grid (Generates random intensity 0-3)
-  heatmapBlocks = computed(() => {
-    const tab = this.activeTab();
-    // Weekly = 7 squares, Monthly = 28 squares, Annual = 84 squares (12 weeks for visual fit)
-    const blockCount = tab === 'weekly' ? 7 : tab === 'monthly' ? 28 : 84;
-    return Array.from({ length: blockCount }, () => Math.floor(Math.random() * 4));
-  });
-
-  setTab(tab: 'weekly' | 'monthly' | 'annual') {
+  setTab(tab: Tab) {
     this.activeTab.set(tab);
   }
 }

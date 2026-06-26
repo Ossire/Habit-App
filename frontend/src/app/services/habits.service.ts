@@ -1,55 +1,76 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
+// src/app/services/habits.service.ts
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class HabitsService {
-//   // Points directly to your local NestJS engine
-//   private apiUrl = 'http://localhost:3000/api/habits';
-
-//   constructor(private http: HttpClient) {}
-
-//   // Calls your GET endpoint
-//   getDashboard(): Observable<any> {
-//     return this.http.get(`${this.apiUrl}/dashboard`);
-//   }
-
-//   // Calls your PATCH endpoint
-//   toggleHabit(id: number): Observable<any> {
-//     return this.http.patch(`${this.apiUrl}/${id}/toggle`, {});
-//   }
-// }
-
-import { Injectable, signal } from '@angular/core';
-
-// Define the shape of our data
 export interface Habit {
   id: string;
-  title: string;
-  subtitle: string;
+  name: string;
+  description: string;
+  category: string;
   icon: string;
-  completed?: boolean;
+  completedToday?: boolean;
+}
+
+export interface DashboardResponse {
+  date: string;
+  progressPercentage: number;
+  completedCount: number;
+  totalCount: number;
+  habits: Habit[];
+}
+
+export interface HabitDetail {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  icon: string;
+  currentStreak: number;
+  weeklyActivity: { date: string; completed: boolean }[];
 }
 
 @Injectable({
-  providedIn: 'root', // This makes the service a singleton available everywhere
+  providedIn: 'root',
 })
-export class HabitStateService {
-  // The Signal holding our active state
-  selectedHabits = signal<Habit[]>([]);
+export class HabitsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/habits';
 
-  // Called by Onboarding to save selections
-  setHabits(habits: Habit[]) {
-    // Add a completed flag defaulted to false
-    this.selectedHabits.set(habits.map((h) => ({ ...h, completed: false })));
+  // add to habits.service.ts
+  hasUserHabits(): Observable<boolean> {
+    return this.getDashboard().pipe(map((data) => data.totalCount > 0));
   }
 
-  // Called by Dashboard to check things off
-  toggleCompletion(habitId: string) {
-    this.selectedHabits.update((habits) =>
-      habits.map((h) => (h.id === habitId ? { ...h, completed: !h.completed } : h)),
-    );
+  getSystemHabits(): Observable<Habit[]> {
+    return this.http.get<Habit[]>(`${this.apiUrl}/system`);
+  }
+
+  selectHabits(habitIds: string[]): Observable<Habit[]> {
+    return this.http.post<Habit[]>(`${this.apiUrl}/select`, { habitIds });
+  }
+
+  getDashboard(): Observable<DashboardResponse> {
+    return this.http.get<DashboardResponse>(`${this.apiUrl}/dashboard`);
+  }
+
+  completeHabit(habitId: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/${habitId}/complete`, {});
+  }
+
+  uncompleteHabit(habitId: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${habitId}/complete`);
+  }
+
+  getHabitDetail(habitId: string): Observable<HabitDetail> {
+    return this.http.get<HabitDetail>(`${this.apiUrl}/${habitId}`);
+  }
+
+  getProgress(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/progress`);
+  }
+
+  getHeatmap(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/heatmap`);
   }
 }

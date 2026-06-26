@@ -1,17 +1,45 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+// src/habits/entities/habit.entity.ts
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+} from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { HabitLog } from './habit-log.entity';
 
-@Entity()
+@Entity('habits')
 export class Habit {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column()
   name!: string;
 
-  @Column({ default: 0 })
-  currentStreak!: number;
+  @Column({ nullable: true })
+  description!: string;
 
-  // Stores completed dates as an array of ISO strings: ['2026-06-17', '2026-06-18']
-  @Column('simple-array', { default: '' })
-  completedDates!: string[];
+  @Column()
+  category!: string;
+
+  @Column()
+  icon!: string;
+
+  @Column({ default: false })
+  isSystem!: boolean;
+
+  // If null, it's a system habit. If set, it belongs to a specific user.
+  @ManyToOne(() => User, { nullable: true, onDelete: 'CASCADE' })
+  user!: User;
+
+  @Column({ nullable: true })
+  userId!: string;
+
+  @OneToMany(() => HabitLog, (log) => log.habit)
+  logs!: HabitLog[];
+
+  @CreateDateColumn()
+  createdAt!: Date;
 }

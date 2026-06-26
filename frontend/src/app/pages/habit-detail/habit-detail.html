@@ -12,13 +12,17 @@
             <button class="icon-btn">⋮</button>
         </header>
 
-        @if (habit()) {
+        @if (isLoading()) {
+        <p style="padding: 2rem; text-align: center;">Loading...</p>
+        } @else if (errorMessage()) {
+        <p style="padding: 2rem; text-align: center;">{{ errorMessage() }}</p>
+        } @else if (habit()) {
         <div class="habit-content">
 
             <div class="title-row">
                 <div>
-                    <h2>{{ habit().title }}</h2>
-                    <span class="category-badge">{{ habit().category }}</span>
+                    <h2>{{ habit()!.name }}</h2>
+                    <span class="category-badge">{{ habit()!.category }}</span>
                 </div>
                 <div class="habit-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -28,35 +32,23 @@
             </div>
 
             <div class="streak-box">
-                <span class="streak-number">{{ habit().streak }}</span>
+                <span class="streak-number">{{ habit()!.currentStreak }}</span>
                 <span class="streak-label">CURRENT STREAK</span>
             </div>
 
             <div class="section-block">
                 <h3 class="section-title">WEEKLY ACTIVITY</h3>
                 <div class="activity-grid">
-                    @for (day of days; track $index) {
+                    @for (day of habit()!.weeklyActivity; track day.date; let i = $index) {
                     <div class="day-col">
-                        <span class="day-label">{{ day }}</span>
-                        <div class="checkbox-square" [class.checked]="habit().weeklyActivity[$index]">
-                            @if (habit().weeklyActivity[$index]) {
+                        <span class="day-label">{{ days[i] }}</span>
+                        <div class="checkbox-square" [class.checked]="day.completed">
+                            @if (day.completed) {
                             <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="square">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
                             }
                         </div>
-                    </div>
-                    }
-                </div>
-            </div>
-
-            <div class="section-block">
-                <h3 class="section-title">WEEKLY INTAKE</h3>
-                <div class="intake-chart">
-                    @for (val of habit().intakeData; track $index) {
-                    <div class="chart-col">
-                        <div class="intake-bar" [style.height.%]="val || 1"></div>
-                        <span class="day-label">{{ days[$index] }}</span>
                     </div>
                     }
                 </div>
@@ -71,13 +63,13 @@
                             <line x1="12" y1="8" x2="12.01" y2="8"></line>
                         </svg>
                     </div>
-                    <p>{{ habit().insight }}</p>
+                    <p>{{ habit()!.description }}</p>
                 </div>
                 <button class="btn-mark-done" (click)="markAsDone()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
-                    Mark as Done Today
+                    {{ markedDone() ? 'Marked as Done ✓' : 'Mark as Done Today' }}
                 </button>
             </div>
 
@@ -85,12 +77,11 @@
         }
 
         <nav class="bottom-nav">
-            <div class="nav-item" routerLink="/dashboard" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
+            <div class="nav-item" routerLink="/dashboard">
                 <div class="nav-icon">📅</div>
                 <span>Today</span>
             </div>
-            <div class="nav-item" routerLink="/progress" routerLinkActive="active">
+            <div class="nav-item" routerLink="/progress">
                 <div class="nav-icon">📊</div>
                 <span>Progress</span>
             </div>
@@ -98,7 +89,7 @@
                 <div class="nav-icon">✓</div>
                 <span>Habits</span>
             </div>
-            <div class="nav-item" routerLink="/settings" routerLinkActive="active">
+            <div class="nav-item" routerLink="/settings">
                 <div class="nav-icon">⚙️</div>
                 <span>Settings</span>
             </div>

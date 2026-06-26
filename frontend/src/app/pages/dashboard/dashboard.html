@@ -1,25 +1,24 @@
 <div class="mobile-container">
 
-    <header class="header">
-        <h1>Good morning,<br>Alex</h1>
-        <p class="date">Tuesday, Oct 24</p>
-    </header>
+    @if (isLoading()) {
+    <p class="empty-state">Loading...</p>
+    } @else if (errorMessage()) {
+    <p class="empty-state">{{ errorMessage() }}</p>
+    } @else if (dashboard()) {
 
-    <div class="streak-card">
-        <div class="streak-text">
-            <h2>12 Day Streak</h2>
-            <p>CONSISTENCY IS KEY</p>
-        </div>
-        <div class="flame-icon">🔥</div>
-    </div>
+    <header class="header">
+        <h1>{{ greeting() }},<br>{{ firstName() }}</h1>
+        <p class="date">{{ today }}</p>
+    </header>
 
     <section class="progress-section">
         <div class="progress-header">
             <div class="progress-text">
                 <span class="label">TODAY'S PROGRESS</span>
-                <span class="value">{{ completedHabits() }} of {{ totalHabits() }} habits completed</span>
+                <span class="value">
+                    {{ dashboard()!.completedCount }} of {{ dashboard()!.totalCount }} habits completed
+                </span>
             </div>
-
             <a routerLink="/heatmap" class="link-stats">
                 View heatmap
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -28,44 +27,30 @@
                 </svg>
             </a>
         </div>
-
         <div class="progress-bar-bg">
-            <div class="progress-bar-fill" [style.width.%]="progressPercentage()"></div>
+            <div class="progress-bar-fill" [style.width.%]="dashboard()!.progressPercentage"></div>
         </div>
     </section>
-
-    <!-- <section class="progress-section">
-        <div class="progress-text">
-            <span class="label">TODAY'S PROGRESS</span>
-            <span class="value">{{ completedHabits() }} of {{ totalHabits() }} habits completed</span>
-        </div>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" [style.width.%]="progressPercentage()"></div>
-        </div>
-    </section> -->
 
     <section class="habits-list">
         <h3 class="section-title">HABIT LIST</h3>
 
-        @for (habit of habits(); track habit.id) {
+        @for (habit of dashboard()!.habits; track habit.id) {
         <div class="habit-card">
-
-            <div class="checkbox" [class.checked]="habit.completed"
-                (click)="toggleHabit(habit.id); $event.stopPropagation()">
-                @if (habit.completed) {
+            <div class="checkbox" [class.checked]="habit.completedToday"
+                (click)="toggleHabit(habit.id, habit.completedToday!); $event.stopPropagation()">
+                @if (habit.completedToday) {
                 <span>✓</span>
                 }
             </div>
-
             <div class="habit-details" [routerLink]="['/habit', habit.id]" style="cursor: pointer; flex-grow: 1;">
-                <h4>{{ habit.title }}</h4>
-                <p>{{ habit.subtitle }}</p>
+                <h4>{{ habit.name }}</h4>
+                <p>{{ habit.description }}</p>
             </div>
-
             <div class="habit-icon" [routerLink]="['/habit', habit.id]" style="cursor: pointer;">⚬</div>
         </div>
         } @empty {
-        <p class="empty-state">No habits found. Let's add some!</p>
+        <p class="empty-state">No habits yet. Let's add some!</p>
         }
     </section>
 
@@ -74,28 +59,25 @@
         <button class="fab-button">+</button>
     </div>
 
-    <nav class="bottom-nav">
+    }
 
-        <div class="nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <nav class="bottom-nav">
+        <div class="nav-item active" routerLink="/dashboard">
             <div class="nav-icon">📅</div>
             <span>Today</span>
         </div>
-
-        <div class="nav-item" routerLink="/progress" routerLinkActive="active">
+        <div class="nav-item" routerLink="/progress">
             <div class="nav-icon">📊</div>
             <span>Progress</span>
         </div>
-
-        <div class="nav-item" routerLink="/habits" routerLinkActive="active">
+        <div class="nav-item" routerLink="/heatmap">
             <div class="nav-icon">✓</div>
             <span>Habits</span>
         </div>
-
-        <div class="nav-item" routerLink="/settings" routerLinkActive="active">
+        <div class="nav-item" routerLink="/settings">
             <div class="nav-icon">⚙️</div>
             <span>Settings</span>
         </div>
-
     </nav>
 
 </div>

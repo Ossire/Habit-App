@@ -1,8 +1,8 @@
-// Path: src/app/pages/profile/profile.ts
-
-import { Component, signal } from '@angular/core';
+// src/app/pages/profile/profile.ts
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -11,41 +11,29 @@ import { RouterModule } from '@angular/router';
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
 })
-export class ProfileComponent {
-  // Mock User State
-  user = signal({
-    name: 'Alex Johnson',
-    school: 'University of Life',
-  });
+export class ProfileComponent implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-  // Interests State
-  interests = signal([
-    { name: 'Health', active: true },
-    { name: 'Productivity', active: false },
-    { name: 'Reading', active: true },
-    { name: 'Coding', active: false },
-    { name: 'Running', active: true },
-  ]);
-
-  // Notifications State
+  user = signal<any>(null);
+  isLoading = signal(true);
   dailyReminders = signal(true);
   streakAlerts = signal(false);
 
-  toggleInterest(index: number) {
-    this.interests.update((items) => {
-      items[index].active = !items[index].active;
-      return [...items]; // Return new array reference to trigger signal update
+  ngOnInit() {
+    this.authService.getProfile().subscribe({
+      next: (data) => {
+        this.user.set(data);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
     });
   }
 
-  toggleReminder() {
-    this.dailyReminders.update((v) => !v);
-  }
-  toggleStreak() {
-    this.streakAlerts.update((v) => !v);
-  }
-
   logout() {
-    alert('Logged out for MVP demo!');
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

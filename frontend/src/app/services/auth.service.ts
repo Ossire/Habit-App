@@ -32,26 +32,26 @@ export class AuthService {
 
   private readonly apiUrl = 'http://localhost:3000/auth';
 
+  getProfile(): Observable<any> {
+    return this.http.get(`http://localhost:3000/users/profile`);
+  }
+
   register(data: RegisterDto): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/register`, data)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.access_token);
-          localStorage.setItem('user', JSON.stringify(response.user));
-        }),
-      );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }),
+    );
   }
 
   login(data: LoginDto): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/login`, data)
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.access_token);
-          localStorage.setItem('user', JSON.stringify(response.user));
-        }),
-      );
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }),
+    );
   }
 
   logout(): void {

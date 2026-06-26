@@ -1,6 +1,8 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+// src/app/pages/habit-detail/habit-detail.ts
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { HabitsService, HabitDetail } from '../../services/habits.service';
 
 @Component({
   selector: 'app-habit-detail',
@@ -11,44 +13,54 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 })
 export class HabitDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private habitsService = inject(HabitsService);
 
-  // The signal holding our dynamic habit data
-  habit = signal<any>(null);
+  habit = signal<HabitDetail | null>(null);
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
+  markedDone = signal(false);
 
   days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
   ngOnInit() {
-    // Listen to the URL. If the ID changes, reload the data!
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      if (id) {
-        this.loadDynamicData(id);
-      }
+      if (id) this.loadHabit(id);
     });
   }
 
-  loadDynamicData(id: string) {
-    // In the future, this will be: this.http.get(`/api/habits/${id}`)
-    // For now, we mock it. If they clicked Drink Water, show water. Otherwise, make it generic.
-    const isWater = id === 'water-1';
-
-    this.habit.set({
-      id: id,
-      title: isWater ? 'Drink Water' : 'Build Habit',
-      category: isWater ? 'HEALTH' : 'LIFESTYLE',
-      streak: isWater ? 12 : 5,
-      // Array representing Mon-Sun completion status
-      weeklyActivity: [true, true, true, true, true, false, false],
-      // Array representing chart heights
-      intakeData: [60, 80, 100, 90, 100, 0, 0],
-      insight: isWater
-        ? 'You are at 85% of your hydration goal this week. Keep up the momentum for a 14-day record.'
-        : 'You are doing great this week. Complete today to extend your streak.',
+  loadHabit(id: string) {
+    this.isLoading.set(true);
+    this.habitsService.getHabitDetail(id).subscribe({
+      next: (data) => {
+        this.habit.set(data);
+        // Check if already completed today
+        const today = new Date().toISOString().split('T')[0];
+        const todayEntry = data.weeklyActivity.find((d) => d.date === today);
+        this.markedDone.set(todayEntry?.completed ?? false);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load habit.');
+        this.isLoading.set(false);
+      },
     });
   }
 
   markAsDone() {
-    console.log('Marking habit complete for today!');
-    // This will eventually trigger the optimistic UI save we discussed earlier
+    const id = this.habit()?.id;
+    if (!id) return;
+
+    const request$ = this.markedDone()
+      ? this.habitsService.uncompleteHabit(id)
+      : this.habitsService.completeHabit(id);
+
+    request$.subscribe({
+      next: () => {
+        this.markedDone.update((v) => !v);
+        this.loadHabit(id);
+      },
+      error: () => this.errorMessage.set('Failed to update habit.'),
+    });
   }
 }

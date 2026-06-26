@@ -1,71 +1,3 @@
-<!-- <div class="mobile-container">
-
-    <nav class="top-bar">
-        <button class="back-btn">←</button>
-        <h2 class="logo-text">HabitUp</h2>
-        <div style="width: 24px;"></div>
-    </nav>
-
-    <header class="header">
-        <h1>Choose Your Habits</h1>
-        <p>Select the disciplines you want to build.</p>
-    </header>
-
-    <div class="chips-scroll">
-        @for (cat of categories; track cat) {
-        <button class="chip" [class.active]="activeCategory() === cat" (click)="setCategory(cat)">
-            {{ cat }}
-        </button>
-        }
-    </div>
-
-    <div class="habits-grid">
-        @for (habit of habits(); track habit.id) {
-        <div class="habit-grid-card" [class.selected]="selectedHabits().has(habit.id)" (click)="toggleHabit(habit.id)">
-
-            <div class="card-header">
-                <span class="icon">{{ habit.icon }}</span>
-                @if (selectedHabits().has(habit.id)) {
-                <span class="check-badge">✓</span>
-                }
-            </div>
-
-            <h4>{{ habit.name }}</h4>
-            <p>{{ habit.desc }}</p>
-        </div>
-        }
-    </div>
-
-    <div class="stats-card">
-        <div class="stats-header">
-            <div class="stats-title">
-                <span>SYSTEM STATISTICS</span>
-                <h4>Community Growth</h4>
-            </div>
-            <div class="trend-icon">↗</div>
-        </div>
-
-        <div class="mock-chart">
-            <div class="bar" style="height: 30%;"></div>
-            <div class="bar" style="height: 60%;"></div>
-            <div class="bar" style="height: 45%;"></div>
-            <div class="bar" style="height: 90%;"></div>
-            <div class="bar" style="height: 35%;"></div>
-            <div class="bar" style="height: 75%;"></div>
-            <div class="bar" style="height: 65%;"></div>
-        </div>
-
-        <p class="stats-desc">Users picking Fitness habits increased by 14% this week.</p>
-    </div>
-
-    <div class="bottom-action">
-        <button class="continue-btn" [disabled]="selectedHabits().size === 0" (click)="continueToDashboard()">
-            CONTINUE
-        </button>
-    </div>
-
-</div> -->
-
 <div class="page-wrapper">
     <div class="selection-card">
 
@@ -85,23 +17,33 @@
             <p class="subtitle">Select the disciplines you want to build.</p>
         </div>
 
+        @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        @if (isLoading()) {
+        <p class="loading-state">Loading habits...</p>
+        } @else {
         <div class="category-scroll">
-            <button *ngFor="let cat of categories" class="chip" [class.active]="activeCategory === cat"
-                (click)="setCategory(cat)">
+            @for (cat of categories; track cat) {
+            <button class="chip" [class.active]="activeCategory === cat" (click)="setCategory(cat)">
                 {{ cat }}
             </button>
+            }
         </div>
 
         <div class="habits-grid">
-            <div *ngFor="let habit of filteredHabits" class="habit-box" [class.selected]="selectedHabits.has(habit.id)"
-                (click)="toggleHabit(habit.id)">
+            @for (habit of filteredHabits; track habit.id) {
+            <div class="habit-box" [class.selected]="selectedHabits.has(habit.id)" (click)="toggleHabit(habit.id)">
 
-                <div class="check-circle" *ngIf="selectedHabits.has(habit.id)">
+                @if (selectedHabits.has(habit.id)) {
+                <div class="check-circle">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
                 </div>
+                }
 
                 <div class="habit-icon-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -110,9 +52,10 @@
                     </svg>
                 </div>
 
-                <h4>{{ habit.title }}</h4>
-                <p>{{ habit.subtitle }}</p>
+                <h4>{{ habit.name }}</h4>
+                <p>{{ habit.description }}</p>
             </div>
+            }
         </div>
 
         <div class="stats-card">
@@ -142,9 +85,14 @@
             <p class="stats-desc">Users picking Fitness habits increased by 14% this week.</p>
         </div>
 
-        <button class="btn-primary" (click)="onContinue()" [disabled]="selectedHabits.size === 0">
+        <button class="btn-primary" (click)="onContinue()" [disabled]="selectedHabits.size === 0 || isSubmitting()">
+            @if (isSubmitting()) {
+            Saving...
+            } @else {
             CONTINUE
+            }
         </button>
+        }
 
     </div>
 </div>

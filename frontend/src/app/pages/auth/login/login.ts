@@ -1,9 +1,9 @@
-export class Login {}
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { HabitsService } from '../../../services/habits.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -16,7 +16,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private authService = inject(AuthService)
+  private authService = inject(AuthService);
+  private habitsService = inject(HabitsService);
 
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
@@ -26,46 +27,37 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
-  // onSubmit() {
-  //   if (this.loginForm.valid) {
-  //     // Mocking the user data payload
-  //     console.log('Mocking login payload:', this.loginForm.getRawValue());
-
-  //     // Simulate successful auth and route to dashboard
-  //     this.router.navigate(['/habit-selection']);
-  //   } else {
-  //     this.loginForm.markAllAsTouched();
-  //   }
-  // }
-
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
     }
- 
+
     this.isLoading.set(true);
     this.errorMessage.set(null);
- 
+
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: () => {
-        this.isLoading.set(false);
-        this.router.navigate(['/habit-selection']);
+        this.habitsService.hasUserHabits().subscribe({
+          next: (hasHabits) => {
+            this.isLoading.set(false);
+            this.router.navigate([hasHabits ? '/dashboard' : '/habit-selection']);
+          },
+          error: () => {
+            // Login succeeded but habit check failed — just go to dashboard
+            this.isLoading.set(false);
+            this.router.navigate(['/dashboard']);
+          },
+        });
       },
       error: (err: HttpErrorResponse) => {
         this.isLoading.set(false);
-        console.log(err);
-        this.errorMessage.set(
-          err.error?.message || err.message
-        );
+        this.errorMessage.set(err.error?.message || err.message);
       },
     });
   }
 
-
-
   onGoogleAuth() {
     console.log('Triggering mocked Google OAuth flow...');
-    this.router.navigate(['/habit-selection']);
   }
 }
