@@ -8,12 +8,17 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/landing/landing').then((m) => m.LandingComponent),
     canActivate: [guestGuard],
   },
-  
+
   // Auth pages (redirect to dashboard if already logged in)
   {
     path: 'signup',
     loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.SignupComponent),
     canActivate: [guestGuard],
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile').then((m) => m.ProfileComponent),
+    canActivate: [authGuard],
   },
   {
     path: 'login',
@@ -52,6 +57,12 @@ export const routes: Routes = [
   {
     path: 'heatmap',
     loadComponent: () => import('./pages/heatmap/heatmap').then((m) => m.HeatmapComponent),
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
     canActivate: [authGuard],
   },
 

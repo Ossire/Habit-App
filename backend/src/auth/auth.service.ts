@@ -7,7 +7,7 @@ import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
 
 export interface AuthResponse {
-  accessToken: string;
+  access_token: string;
   user: Omit<User, 'password'>;
 }
 
@@ -44,13 +44,13 @@ export class AuthService {
 
   private buildAuthResponse(user: User): AuthResponse {
     const payload = { sub: user.id, email: user.email };
-    const accessToken = this.jwtService.sign(payload);
+    const access_token = this.jwtService.sign(payload);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user;
 
     return {
-      accessToken,
+      access_token,
       user: userWithoutPassword,
     };
   }

@@ -38,4 +38,12 @@ export class UsersService {
   async findById(id: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { id } });
   }
+
+  // add to users.service.ts
+  async getProfile(id: string): Promise<Omit<User, 'password'>> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) throw new Error('User not found');
+    const { password, ...result } = user;
+    return result;
+  }
 }

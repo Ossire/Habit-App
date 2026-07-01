@@ -1,8 +1,9 @@
-import { Component, inject, computed } from '@angular/core';
+// src/app/pages/dashboard/dashboard.ts
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HabitStateService } from '../../services/habits.service';
-
+import { HabitsService, DashboardResponse } from '../../services/habits.service';
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -10,26 +11,59 @@ import { HabitStateService } from '../../services/habits.service';
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
 })
-export class DashboardComponent {
-  // Inject our new local state brain
-  private stateService = inject(HabitStateService);
+export class DashboardComponent implements OnInit {
+  private habitsService = inject(HabitsService);
+  private authService = inject(AuthService);
 
-  // 1. Directly read the signal from the service
-  // No ngOnInit or .subscribe() needed! It is instantly available.
-  habits = this.stateService.selectedHabits;
+  dashboard = signal<DashboardResponse | null>(null);
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
 
-  // 2. Automatically calculate derived state
-  totalHabits = computed(() => this.habits().length);
-
-  completedHabits = computed(() => this.habits().filter((h) => h.completed).length);
-
-  progressPercentage = computed(() => {
-    if (this.totalHabits() === 0) return 0;
-    return Math.round((this.completedHabits() / this.totalHabits()) * 100);
+  // Pull first name from localStorage
+  firstName = computed(() => {
+    const user = this.authService.getCurrentUser();
+    if (!user?.fullName) return 'there';
+    return user.fullName.split(' ')[0];
   });
 
-  // 3. Update state locally
-  toggleHabit(id: string) {
-    this.stateService.toggleCompletion(id);
+  today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  greeting = computed(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  });
+
+  ngOnInit() {
+    this.loadDashboard();
+  }
+
+  loadDashboard() {
+    this.habitsService.getDashboard().subscribe({
+      next: (data) => {
+        this.dashboard.set(data);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load dashboard.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  toggleHabit(habitId: string, completedToday: boolean) {
+    const request$ = completedToday
+      ? this.habitsService.uncompleteHabit(habitId)
+      : this.habitsService.completeHabit(habitId);
+
+    request$.subscribe({
+      next: () => this.loadDashboard(),
+      error: () => this.errorMessage.set('Failed to update habit.'),
+    });
   }
 }

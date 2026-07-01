@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { seedHabits } from './habits/habits.seed';
+import { DataSource } from 'typeorm';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +11,9 @@ async function bootstrap() {
     origin: process.env.FRONTEND_URL || 'http://localhost:4200',
     credentials: true,
   });
+
+  const dataSource = app.get(DataSource);
+  await seedHabits(dataSource);
 
   // Global validation pipe — strips unknown fields and auto-validates DTOs
   app.useGlobalPipes(

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -26,39 +27,29 @@ export class SignupComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  // onSubmit() {
-  //   if (this.signupForm.valid) {
-  //     console.log('Sending to backend:', this.signupForm.getRawValue());
-  //     this.router.navigate(['/login']);
-  //   } else {
-  //     this.signupForm.markAllAsTouched();
-  //   }
-  // }
-
   onSubmit(): void {
     if (this.signupForm.invalid) {
       this.signupForm.markAllAsTouched();
       return;
     }
- 
+
     this.isLoading.set(true);
     this.errorMessage.set(null);
- 
+
     this.authService.register(this.signupForm.getRawValue()).subscribe({
       next: () => {
         this.isLoading.set(false);
-        // Registration also logs the user in — go straight to onboarding
+        // New user always goes to onboarding
         this.router.navigate(['/habit-selection']);
       },
-      error: (err: Error) => {
+      error: (err: HttpErrorResponse) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err.message);
+        this.errorMessage.set(err.error?.message || err.message);
       },
     });
   }
 
   onGoogleAuth() {
     console.log('Triggering Google OAuth flow...');
-    // TODO: Implement Google Auth
   }
 }
