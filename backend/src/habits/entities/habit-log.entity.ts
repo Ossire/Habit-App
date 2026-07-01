@@ -1,4 +1,40 @@
-// src/habits/entities/habit-log.entity.ts
+// // src/habits/entities/habit-log.entity.ts
+// import {
+//   Entity,
+//   PrimaryGeneratedColumn,
+//   Column,
+//   ManyToOne,
+//   CreateDateColumn,
+//   Unique,
+// } from 'typeorm';
+// import { User } from '../../users/entities/user.entity';
+// import { Habit } from './habit.entity';
+
+// @Entity('habit_logs')
+// @Unique(['userId', 'habitId', 'date']) // one log per user per habit per day
+// export class HabitLog {
+//   @PrimaryGeneratedColumn('uuid')
+//   id!: string;
+
+//   @ManyToOne(() => User, { onDelete: 'CASCADE' })
+//   user!: User;
+
+//   @Column()
+//   userId!: string;
+
+//   @ManyToOne(() => Habit, (habit) => habit.logs, { onDelete: 'CASCADE' })
+//   habit!: Habit;
+
+//   @Column()
+//   habitId!: string;
+
+//   @Column({ type: 'date' })
+//   date!: string; // stored as 'YYYY-MM-DD'
+
+//   @CreateDateColumn()
+//   completedAt!: Date;
+// }
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,7 +47,7 @@ import { User } from '../../users/entities/user.entity';
 import { Habit } from './habit.entity';
 
 @Entity('habit_logs')
-@Unique(['userId', 'habitId', 'date']) // one log per user per habit per day
+@Unique(['userId', 'habitId', 'date'])
 export class HabitLog {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -29,7 +65,12 @@ export class HabitLog {
   habitId!: string;
 
   @Column({ type: 'date' })
-  date!: string; // stored as 'YYYY-MM-DD'
+  date!: string;
+
+  // Stores the logged value for count/duration/timer habits
+  // null means toggle habit (just completed = true)
+  @Column({ type: 'float', nullable: true })
+  value!: number | null;
 
   @CreateDateColumn()
   completedAt!: Date;
