@@ -43,6 +43,7 @@ The content is organized as follows:
 .gitignore
 .prettierrc
 eslint.config.mjs
+FRONTEND_API_GUIDE.md
 nest-cli.json
 package.json
 README.md
@@ -61,6 +62,7 @@ src/auth/entities/auth.entity.ts
 src/auth/guards/jwt-auth.guard.ts
 src/auth/jwt.strategy.ts
 src/habits/dto/create-habit.dto.ts
+src/habits/dto/log-habit.dto.ts
 src/habits/dto/select-habits.dto.ts
 src/habits/dto/update-habit.dto.ts
 src/habits/entities/habit-log.entity.ts
@@ -72,7 +74,9 @@ src/habits/habits.seed.ts
 src/habits/habits.service.spec.ts
 src/habits/habits.service.ts
 src/main.ts
+src/users/dto/change-password.dto.ts
 src/users/dto/create-user.dto.ts
+src/users/dto/update-profile.dto.ts
 src/users/dto/update-user.dto.ts
 src/users/entities/user.entity.ts
 src/users/users.controller.spec.ts
@@ -84,6 +88,7 @@ test/app.e2e-spec.ts
 test/jest-e2e.json
 tsconfig.build.json
 tsconfig.json
+WORK_SPLIT.md
 </directory_structure>
 
 <files>
@@ -209,6 +214,505 @@ export default tseslint.config(
   //   "prettier/prettier": ["error", { endOfLine: "auto" }],
   // },
 );
+</file>
+
+<file path="FRONTEND_API_GUIDE.md">
+# HabitUp — Frontend API Reference Guide
+This document covers every backend endpoint available for you to wire up.
+Base URL: `http://localhost:3000`
+All protected routes require: `Authorization: Bearer <token>`
+
+---
+
+## Auth (Not your concern — already wired by auth engineer)
+
+| Method | Route | Purpose |
+|--------|-------|---------|
+| POST | `/auth/register` | Create account |
+| POST | `/auth/login` | Login, returns `accessToken` |
+
+The token is stored in `localStorage` automatically via `AuthService`.
+The `authInterceptor` attaches it to every request automatically — you don't need to manually add headers.
+
+---
+
+## Users
+
+### GET /users/profile
+Returns the logged-in user's profile.
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "fullName": "Alex Johnson",
+  "school": "University of Life",
+  "email": "alex@test.com",
+  "createdAt": "2026-06-26T08:38:04.975Z",
+  "updatedAt": "2026-06-26T08:38:04.975Z"
+}
+```
+
+---
+
+### PATCH /users/profile
+Update the logged-in user's name and/or school.
+
+**Request body:**
+```json
+{
+  "fullName": "Alex Updated",
+  "school": "New School"
+}
+```
+
+**Response:** Updated user object (same shape as GET /users/profile)
+
+---
+
+### PATCH /users/change-password
+Change the logged-in user's password.
+
+**Request body:**
+```json
+{
+  "currentPassword": "oldpassword",
+  "newPassword": "newpassword"
+}
+```
+
+**Response:**
+```json
+{ "message": "Password updated successfully" }
+```
+
+**Error (wrong current password):**
+```json
+{ "message": "Current password is incorrect.", "statusCode": 400 }
+```
+
+---
+
+## Habits
+
+### GET /habits/system
+Returns all 6 pre-seeded system habits for the onboarding screen.
+
+**Response:**
+```json
+[
+  {
+    "id": "uuid",
+    "name": "Drink Water",
+    "description": "8 glasses daily",
+    "category": "Health",
+    "icon": "drop",
+    "isSystem": true,
+    "trackingType": "toggle",
+    "dailyTarget": null,
+    "targetUnit": null
+  },
+  ...
+]
+```
+
+---
+
+### POST /habits/select
+Save the habits the user picked during onboarding.
+Creates personal copies of the selected system habits for the user.
+
+**Request body:**
+```json
+{
+  "habitIds": ["uuid1", "uuid2", "uuid3"]
+}
+```
+
+**Response:** Array of the user's newly created habit objects.
+
+---
+
+### GET /habits/dashboard
+Returns today's habits with completion status and progress summary.
+
+**Response:**
+```json
+{
+  "date": "2026-07-01",
+  "progressPercentage": 33,
+  "completedCount": 1,
+  "totalCount": 3,
+  "habits": [
+    {
+      "id": "uuid",
+      "name": "Drink Water",
+      "description": "8 glasses daily",
+      "category": "Health",
+      "icon": "drop",
+      "trackingType": "toggle",
+      "dailyTarget": null,
+      "targetUnit": null,
+      "completedToday": true,
+      "loggedValue": null
+    },
+    {
+      "id": "uuid",
+      "name": "Push Ups",
+      "description": "Daily strength",
+      "category": "Fitness",
+      "icon": "default",
+      "trackingType": "count",
+      "dailyTarget": 30,
+      "targetUnit": "reps",
+      "completedToday": false,
+      "loggedValue": 20
+    }
+  ]
+}
+```
+
+**Notes:**
+- `completedToday` — use this to show the checkbox state
+- `loggedValue` — for count/duration habits, shows how much has been logged today (even if target not reached yet)
+- `progressPercentage` — use this for the circular progress ring
+
+---
+
+### POST /habits
+Create a custom habit from the "Quick Add Habit" modal.
+
+**Request body:**
+```json
+{
+  "name": "Push Ups",
+  "description": "Daily strength",
+  "category": "Fitness",
+  "icon": "default",
+  "trackingType": "count",
+  "dailyTarget": 30,
+  "targetUnit": "reps"
+}
+```
+
+**Tracking types:** `toggle` | `count` | `duration` | `timer`
+
+**Response:** The newly created habit object.
+
+**Notes:**
+- `trackingType` defaults to `toggle` if not sent
+- `dailyTarget` and `targetUnit` are optional — only needed for count/duration/timer habits
+- After creating, call `GET /habits/dashboard` to refresh the list
+
+---
+
+### POST /habits/:id/complete
+Mark a **toggle** or **timer** habit as done for today.
+
+**No request body needed.**
+
+**Response:**
+```json
+{ "message": "Habit completed" }
+```
+
+**Error (if used on count/duration habit):**
+```json
+{ "message": "Use POST /habits/:id/log for count and duration habits", "statusCode": 400 }
+```
+
+---
+
+### DELETE /habits/:id/complete
+Unmark a habit (toggle it off).
+
+**No request body needed.**
+
+**Response:**
+```json
+{ "message": "Habit uncompleted" }
+```
+
+---
+
+### POST /habits/:id/log
+Log a value for **count** or **duration** habits.
+Can be called multiple times — updates the value if already logged today.
+
+**Request body:**
+```json
+{ "value": 25 }
+```
+
+**Response:**
+```json
+{
+  "message": "Target reached!",
+  "value": 30,
+  "target": 30,
+  "targetUnit": "reps",
+  "completed": true
+}
+```
+
+Or if target not yet met:
+```json
+{
+  "message": "Progress logged",
+  "value": 20,
+  "target": 30,
+  "targetUnit": "reps",
+  "completed": false
+}
+```
+
+**Notes:**
+- Use `completed` from the response to update the UI immediately
+- For timer habits — when the timer finishes, call `POST /habits/:id/complete` instead
+
+---
+
+### GET /habits/:id
+Returns full detail for a single habit — streak, weekly activity grid, tracking info.
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "name": "Drink Water",
+  "description": "8 glasses daily",
+  "category": "Health",
+  "icon": "drop",
+  "trackingType": "toggle",
+  "dailyTarget": null,
+  "targetUnit": null,
+  "currentStreak": 1,
+  "weeklyActivity": [
+    { "date": "2026-06-25", "completed": false, "value": null },
+    { "date": "2026-06-26", "completed": false, "value": null },
+    { "date": "2026-06-27", "completed": false, "value": null },
+    { "date": "2026-06-28", "completed": false, "value": null },
+    { "date": "2026-06-29", "completed": false, "value": null },
+    { "date": "2026-06-30", "completed": false, "value": null },
+    { "date": "2026-07-01", "completed": true, "value": null }
+  ]
+}
+```
+
+**Notes:**
+- `weeklyActivity` is always 7 items — Mon to Sun of the current week
+- `value` in weeklyActivity shows what was logged that day (useful for count/duration habits)
+
+---
+
+### GET /habits/progress
+Returns habit performance stats for the progress/analytics screen.
+
+**Response:**
+```json
+{
+  "strongHabits": [
+    {
+      "id": "uuid",
+      "name": "Drink Water",
+      "icon": "drop",
+      "category": "Health",
+      "consistency": 95,
+      "streak": 12,
+      "status": "LOW_CONSISTENCY",
+      "completedToday": true
+    }
+  ],
+  "needsAttention": [
+    {
+      "id": "uuid",
+      "name": "Go for a Run",
+      "icon": "run",
+      "category": "Fitness",
+      "consistency": 0,
+      "streak": 0,
+      "status": "STAGNANT",
+      "completedToday": false
+    }
+  ],
+  "monthlyTrend": [
+    { "label": "W1", "completions": 0 },
+    { "label": "W2", "completions": 0 },
+    { "label": "W3", "completions": 0 },
+    { "label": "W4", "completions": 1 }
+  ],
+  "domainMastery": [
+    { "category": "Health", "consistency": 85, "totalHabits": 2, "completedToday": 1 },
+    { "category": "Fitness", "consistency": 42, "totalHabits": 1, "completedToday": 0 },
+    { "category": "Study", "consistency": 0, "totalHabits": 1, "completedToday": 0 }
+  ]
+}
+```
+
+**Status values for needsAttention:**
+- `MISSED_3_DAYS` — habit exists but not completed in 3+ days → show "MISSED 3 DAYS" badge
+- `STAGNANT` — never completed or consistency below 20% → show "STAGNANT" badge
+- `LOW_CONSISTENCY` — below 90% but recently active → no special badge needed
+
+**domainMastery** — use this for the "YOUR DOMAINS" section on dashboard and domain mastery bars on progress screen.
+
+---
+
+### GET /habits/heatmap
+Returns 84 days of activity data for the heatmap grid.
+
+**Response:**
+```json
+{
+  "grid": [
+    { "date": "2026-04-08", "count": 0, "intensity": 0 },
+    { "date": "2026-04-09", "count": 0, "intensity": 0 },
+    ...
+    { "date": "2026-07-01", "count": 2, "intensity": 2 }
+  ]
+}
+```
+
+**Intensity values:**
+- `0` — no activity
+- `1` — 1 habit completed
+- `2` — 2 habits completed
+- `3` — 3+ habits completed
+
+**Notes:**
+- Always 84 items (12 weeks)
+- Slice for weekly view: `grid.slice(-7)`
+- Slice for monthly view: `grid.slice(-28)`
+- Full array = annual view
+
+---
+
+## How Tracking Types Affect the UI
+
+| Tracking Type | How to complete | UI element needed |
+|---------------|----------------|-------------------|
+| `toggle` | `POST /habits/:id/complete` | Checkbox / tap to complete |
+| `timer` | `POST /habits/:id/complete` | Countdown timer, auto-completes |
+| `count` | `POST /habits/:id/log` with value | Number input + log button |
+| `duration` | `POST /habits/:id/log` with value | Number input + unit label |
+
+**For the dashboard habit list:**
+- If `trackingType === 'toggle'` → show checkbox
+- If `trackingType === 'count'` → show `loggedValue / dailyTarget reps` and a log button
+- If `trackingType === 'duration'` → show `loggedValue / dailyTarget minutes` and a log button
+- If `trackingType === 'timer'` → show a timer button that counts down from `dailyTarget`
+
+---
+
+## Angular Service Methods to Add
+
+Add these to `src/app/services/habits.service.ts`:
+
+```typescript
+// Already exists — keeping for reference
+getSystemHabits(): Observable<Habit[]>
+selectHabits(habitIds: string[]): Observable<Habit[]>
+getDashboard(): Observable<DashboardResponse>
+completeHabit(habitId: string): Observable<{ message: string }>
+uncompleteHabit(habitId: string): Observable<{ message: string }>
+getHabitDetail(habitId: string): Observable<HabitDetail>
+getProgress(): Observable<any>
+getHeatmap(): Observable<any>
+hasUserHabits(): Observable<boolean>
+
+// New — add these
+createHabit(dto: CreateHabitDto): Observable<Habit>
+logHabit(habitId: string, value: number): Observable<LogResponse>
+updateProfile(dto: UpdateProfileDto): Observable<User>
+changePassword(dto: ChangePasswordDto): Observable<{ message: string }>
+```
+
+**Add to habits.service.ts:**
+```typescript
+createHabit(dto: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}`, dto);
+}
+
+logHabit(habitId: string, value: number): Observable<any> {
+  return this.http.post(`${this.apiUrl}/${habitId}/log`, { value });
+}
+```
+
+**Add to auth.service.ts:**
+```typescript
+updateProfile(dto: { fullName?: string; school?: string }): Observable<any> {
+  return this.http.patch('http://localhost:3000/users/profile', dto).pipe(
+    tap((updatedUser) => {
+      // Update the stored user in localStorage
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }),
+  );
+}
+
+changePassword(dto: { currentPassword: string; newPassword: string }): Observable<any> {
+  return this.http.patch('http://localhost:3000/users/change-password', dto);
+}
+```
+
+---
+
+## Error Handling Pattern
+
+All endpoints return errors in this shape:
+```json
+{
+  "message": "Error description here",
+  "statusCode": 400
+}
+```
+
+Common status codes:
+- `400` — Bad request (wrong data sent)
+- `401` — Unauthorized (token missing or expired → redirect to login)
+- `404` — Not found
+- `409` — Conflict (e.g. email already exists)
+
+Standard error handling pattern in Angular:
+```typescript
+this.habitsService.someMethod().subscribe({
+  next: (data) => {
+    // handle success
+  },
+  error: (err: HttpErrorResponse) => {
+    this.errorMessage.set(err.error?.message || 'Something went wrong');
+  },
+});
+```
+
+---
+
+## Files You Own (Do Not Touch Backend)
+
+```
+src/app/pages/dashboard/*
+src/app/pages/progress/*
+src/app/pages/settings/*
+src/app/pages/heatmap/*
+src/app/pages/habit-detail/*
+src/app/pages/onboarding/*
+src/app/services/habits.service.ts
+src/styles.css
+```
+
+## Files Osi Owns (Do Not Touch)
+
+```
+src/habits/*
+src/users/*
+src/auth/*
+```
+
+## Shared — Coordinate Before Touching
+
+```
+src/app/services/auth.service.ts
+src/app/app.routes.ts
+```
 </file>
 
 <file path="nest-cli.json">
@@ -760,7 +1264,47 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 </file>
 
 <file path="src/habits/dto/create-habit.dto.ts">
-export class CreateHabitDto {}
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+
+export class CreateHabitDto {
+  @IsNotEmpty()
+  @IsString()
+  name!: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  category!: string;
+
+  @IsOptional()
+  @IsString()
+  icon?: string;
+
+  @IsOptional()
+  @IsString()
+  trackingType?: string; // defaults to 'toggle' if not sent
+
+  @IsOptional()
+  @IsNumber()
+  dailyTarget?: number;
+
+  @IsOptional()
+  @IsString()
+  targetUnit?: string;
+}
+</file>
+
+<file path="src/habits/dto/log-habit.dto.ts">
+import { IsNumber, IsPositive } from 'class-validator';
+
+export class LogHabitDto {
+  @IsNumber()
+  @IsPositive()
+  value!: number; // e.g. 25 minutes, 30 reps, 45 seconds
+}
 </file>
 
 <file path="src/habits/dto/select-habits.dto.ts">
@@ -782,7 +1326,43 @@ export class UpdateHabitDto extends PartialType(CreateHabitDto) {}
 </file>
 
 <file path="src/habits/entities/habit-log.entity.ts">
-// src/habits/entities/habit-log.entity.ts
+// // src/habits/entities/habit-log.entity.ts
+// import {
+//   Entity,
+//   PrimaryGeneratedColumn,
+//   Column,
+//   ManyToOne,
+//   CreateDateColumn,
+//   Unique,
+// } from 'typeorm';
+// import { User } from '../../users/entities/user.entity';
+// import { Habit } from './habit.entity';
+
+// @Entity('habit_logs')
+// @Unique(['userId', 'habitId', 'date']) // one log per user per habit per day
+// export class HabitLog {
+//   @PrimaryGeneratedColumn('uuid')
+//   id!: string;
+
+//   @ManyToOne(() => User, { onDelete: 'CASCADE' })
+//   user!: User;
+
+//   @Column()
+//   userId!: string;
+
+//   @ManyToOne(() => Habit, (habit) => habit.logs, { onDelete: 'CASCADE' })
+//   habit!: Habit;
+
+//   @Column()
+//   habitId!: string;
+
+//   @Column({ type: 'date' })
+//   date!: string; // stored as 'YYYY-MM-DD'
+
+//   @CreateDateColumn()
+//   completedAt!: Date;
+// }
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -795,7 +1375,7 @@ import { User } from '../../users/entities/user.entity';
 import { Habit } from './habit.entity';
 
 @Entity('habit_logs')
-@Unique(['userId', 'habitId', 'date']) // one log per user per habit per day
+@Unique(['userId', 'habitId', 'date'])
 export class HabitLog {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -813,7 +1393,12 @@ export class HabitLog {
   habitId!: string;
 
   @Column({ type: 'date' })
-  date!: string; // stored as 'YYYY-MM-DD'
+  date!: string;
+
+  // Stores the logged value for count/duration/timer habits
+  // null means toggle habit (just completed = true)
+  @Column({ type: 'float', nullable: true })
+  value!: number | null;
 
   @CreateDateColumn()
   completedAt!: Date;
@@ -821,7 +1406,52 @@ export class HabitLog {
 </file>
 
 <file path="src/habits/entities/habit.entity.ts">
-// src/habits/entities/habit.entity.ts
+// // src/habits/entities/habit.entity.ts
+// import {
+//   Entity,
+//   PrimaryGeneratedColumn,
+//   Column,
+//   ManyToOne,
+//   OneToMany,
+//   CreateDateColumn,
+// } from 'typeorm';
+// import { User } from '../../users/entities/user.entity';
+// import { HabitLog } from './habit-log.entity';
+
+// @Entity('habits')
+// export class Habit {
+//   @PrimaryGeneratedColumn('uuid')
+//   id!: string;
+
+//   @Column()
+//   name!: string;
+
+//   @Column({ nullable: true })
+//   description!: string;
+
+//   @Column()
+//   category!: string;
+
+//   @Column()
+//   icon!: string;
+
+//   @Column({ default: false })
+//   isSystem!: boolean;
+
+//   // If null, it's a system habit. If set, it belongs to a specific user.
+//   @ManyToOne(() => User, { nullable: true, onDelete: 'CASCADE' })
+//   user!: User;
+
+//   @Column({ nullable: true })
+//   userId!: string;
+
+//   @OneToMany(() => HabitLog, (log) => log.habit)
+//   logs!: HabitLog[];
+
+//   @CreateDateColumn()
+//   createdAt!: Date;
+// }
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -853,7 +1483,15 @@ export class Habit {
   @Column({ default: false })
   isSystem!: boolean;
 
-  // If null, it's a system habit. If set, it belongs to a specific user.
+  @Column({ default: 'toggle' })
+  trackingType!: string; // 'toggle' | 'count' | 'duration' | 'timer'
+
+  @Column({ nullable: true })
+  dailyTarget!: number; // e.g. 30
+
+  @Column({ nullable: true })
+  targetUnit!: string; // e.g. 'minutes' | 'reps' | 'pages'
+
   @ManyToOne(() => User, { nullable: true, onDelete: 'CASCADE' })
   user!: User;
 
@@ -906,6 +1544,8 @@ import {
 import { HabitsService } from './habits.service';
 import { SelectHabitsDto } from './dto/select-habits.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateHabitDto } from './dto/create-habit.dto';
+import { LogHabitDto } from './dto/log-habit.dto';
 
 @Controller('habits')
 @UseGuards(AuthGuard('jwt'))
@@ -932,15 +1572,29 @@ export class HabitsController {
     return this.habitsService.getHeatmap(req.user.id);
   }
 
+  @Post('select')
+  selectHabits(@Req() req: any, @Body() dto: SelectHabitsDto) {
+    return this.habitsService.selectHabits(req.user.id, dto);
+  }
+
+  @Post()
+  createHabit(@Req() req: any, @Body() dto: CreateHabitDto) {
+    return this.habitsService.createHabit(req.user.id, dto);
+  }
+
   // Param routes always last
   @Get(':id')
   getHabitDetail(@Req() req: any, @Param('id') habitId: string) {
     return this.habitsService.getHabitDetail(req.user.id, habitId);
   }
 
-  @Post('select')
-  selectHabits(@Req() req: any, @Body() dto: SelectHabitsDto) {
-    return this.habitsService.selectHabits(req.user.id, dto);
+  @Post(':id/log')
+  logHabit(
+    @Req() req: any,
+    @Param('id') habitId: string,
+    @Body() dto: LogHabitDto,
+  ) {
+    return this.habitsService.logHabit(req.user.id, habitId, dto);
   }
 
   @Post(':id/complete')
@@ -1060,13 +1714,18 @@ describe('HabitsService', () => {
 </file>
 
 <file path="src/habits/habits.service.ts">
-// src/habits/habits.service.ts
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SelectHabitsDto } from './dto/select-habits.dto';
 import { Habit } from './entities/habit.entity';
 import { HabitLog } from './entities/habit-log.entity';
+import { CreateHabitDto } from './dto/create-habit.dto';
+import { LogHabitDto } from './dto/log-habit.dto';
 
 @Injectable()
 export class HabitsService {
@@ -1078,6 +1737,22 @@ export class HabitsService {
     private habitLogRepository: Repository<HabitLog>,
   ) {}
 
+  async createHabit(userId: string, dto: CreateHabitDto): Promise<Habit> {
+    const habit = this.habitRepository.create({
+      name: dto.name,
+      description: dto.description ?? '',
+      category: dto.category,
+      icon: dto.icon ?? 'default',
+      trackingType: dto.trackingType ?? 'toggle',
+      dailyTarget: dto.dailyTarget ?? null,
+      targetUnit: dto.targetUnit ?? null,
+      isSystem: false,
+      userId,
+    } as Habit);
+
+    return this.habitRepository.save(habit);
+  }
+
   async getSystemHabits(): Promise<Habit[]> {
     return this.habitRepository.find({
       where: { isSystem: true },
@@ -1086,24 +1761,23 @@ export class HabitsService {
   }
 
   async selectHabits(userId: string, dto: SelectHabitsDto): Promise<Habit[]> {
-    // Verify all the IDs the user sent actually exist as system habits
     const habits = await this.habitRepository.find({
       where: dto.habitIds.map((id) => ({ id, isSystem: true })),
     });
 
     if (habits.length === 0) {
-      throw new Error('No valid habits found');
+      throw new NotFoundException('No valid habits found');
     }
 
-    // For each selected habit, create a personal copy for that user
     const userHabits = habits.map((habit) =>
       this.habitRepository.create({
         name: habit.name,
         description: habit.description,
         category: habit.category,
         icon: habit.icon,
+        trackingType: 'toggle', // system habits default to toggle
         isSystem: false,
-        userId: userId,
+        userId,
       }),
     );
 
@@ -1113,27 +1787,36 @@ export class HabitsService {
   async getDashboard(userId: string) {
     const today = new Date().toISOString().split('T')[0];
 
-    // Get all habits belonging to this user
     const habits = await this.habitRepository.find({
       where: { userId, isSystem: false },
       order: { createdAt: 'ASC' },
     });
 
-    // Get all logs for today
     const todayLogs = await this.habitLogRepository.find({
       where: { userId, date: today },
     });
 
-    const completedHabitIds = new Set(todayLogs.map((log) => log.habitId));
+    // Map habitId -> log for today
+    const todayLogMap = new Map(todayLogs.map((log) => [log.habitId, log]));
 
-    const formattedHabits = habits.map((habit) => ({
-      id: habit.id,
-      name: habit.name,
-      description: habit.description,
-      category: habit.category,
-      icon: habit.icon,
-      completedToday: completedHabitIds.has(habit.id),
-    }));
+    const formattedHabits = habits.map((habit) => {
+      const todayLog = todayLogMap.get(habit.id);
+      const completedToday = this.isCompleted(habit, todayLog);
+
+      return {
+        id: habit.id,
+        name: habit.name,
+        description: habit.description,
+        category: habit.category,
+        icon: habit.icon,
+        trackingType: habit.trackingType,
+        dailyTarget: habit.dailyTarget,
+        targetUnit: habit.targetUnit,
+        completedToday,
+        // For count/duration/timer — show current logged value
+        loggedValue: todayLog?.value ?? null,
+      };
+    });
 
     const completedCount = formattedHabits.filter(
       (h) => h.completedToday,
@@ -1151,10 +1834,22 @@ export class HabitsService {
     };
   }
 
+  // Toggle and Timer habits — just mark done/undone
   async completeHabit(userId: string, habitId: string) {
     const today = new Date().toISOString().split('T')[0];
 
-    // Check if already completed today
+    const habit = await this.habitRepository.findOne({
+      where: { id: habitId, userId },
+    });
+    if (!habit) throw new NotFoundException('Habit not found');
+
+    // Only toggle and timer use this endpoint
+    if (habit.trackingType === 'count' || habit.trackingType === 'duration') {
+      throw new BadRequestException(
+        'Use POST /habits/:id/log for count and duration habits',
+      );
+    }
+
     const existing = await this.habitLogRepository.findOne({
       where: { userId, habitId, date: today },
     });
@@ -1167,17 +1862,61 @@ export class HabitsService {
       userId,
       habitId,
       date: today,
+      value: null, // toggle/timer don't need a value
     });
     await this.habitLogRepository.save(log);
 
     return { message: 'Habit completed' };
   }
 
-  async uncompleteHabit(userId: string, habitId: string) {
+  // Count and Duration habits — log a value
+  async logHabit(userId: string, habitId: string, dto: LogHabitDto) {
     const today = new Date().toISOString().split('T')[0];
 
-    await this.habitLogRepository.delete({ userId, habitId, date: today });
+    const habit = await this.habitRepository.findOne({
+      where: { id: habitId, userId },
+    });
+    if (!habit) throw new NotFoundException('Habit not found');
 
+    if (habit.trackingType !== 'count' && habit.trackingType !== 'duration') {
+      throw new BadRequestException(
+        'Use POST /habits/:id/complete for toggle and timer habits',
+      );
+    }
+
+    // Check if a log already exists for today — update it if so
+    const existing = await this.habitLogRepository.findOne({
+      where: { userId, habitId, date: today },
+    });
+
+    if (existing) {
+      existing.value = dto.value;
+      await this.habitLogRepository.save(existing);
+    } else {
+      const log = this.habitLogRepository.create({
+        userId,
+        habitId,
+        date: today,
+        value: dto.value,
+      });
+      await this.habitLogRepository.save(log);
+    }
+
+    // Check if target is met
+    const completed = habit.dailyTarget ? dto.value >= habit.dailyTarget : true;
+
+    return {
+      message: completed ? 'Target reached!' : 'Progress logged',
+      value: dto.value,
+      target: habit.dailyTarget,
+      targetUnit: habit.targetUnit,
+      completed,
+    };
+  }
+
+  async uncompleteHabit(userId: string, habitId: string) {
+    const today = new Date().toISOString().split('T')[0];
+    await this.habitLogRepository.delete({ userId, habitId, date: today });
     return { message: 'Habit uncompleted' };
   }
 
@@ -1186,31 +1925,32 @@ export class HabitsService {
       where: { id: habitId, userId },
     });
 
-    if (!habit) {
-      throw new Error('Habit not found');
-    }
+    if (!habit) throw new NotFoundException('Habit not found');
 
-    // Get the last 7 days as 'YYYY-MM-DD' strings
     const last7Days = Array.from({ length: 7 }, (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() - (6 - i));
       return date.toISOString().split('T')[0];
     });
 
-    // Get logs for this habit in the last 7 days
     const logs = await this.habitLogRepository.find({
       where: { userId, habitId },
     });
 
-    const completedDates = new Set(logs.map((log) => log.date));
+    // For completion check, consider tracking type
+    const completedDates = new Set(
+      logs.filter((log) => this.isCompleted(habit, log)).map((log) => log.date),
+    );
 
-    // Build the weekly activity array (Mon - Sun)
-    const weeklyActivity = last7Days.map((date) => ({
-      date,
-      completed: completedDates.has(date),
-    }));
+    const weeklyActivity = last7Days.map((date) => {
+      const log = logs.find((l) => l.date === date);
+      return {
+        date,
+        completed: completedDates.has(date),
+        value: log?.value ?? null,
+      };
+    });
 
-    // Calculate current streak — count back from today
     let streak = 0;
     for (let i = 0; i < 30; i++) {
       const date = new Date();
@@ -1229,6 +1969,9 @@ export class HabitsService {
       description: habit.description,
       category: habit.category,
       icon: habit.icon,
+      trackingType: habit.trackingType,
+      dailyTarget: habit.dailyTarget,
+      targetUnit: habit.targetUnit,
       currentStreak: streak,
       weeklyActivity,
     };
@@ -1239,7 +1982,6 @@ export class HabitsService {
       where: { userId, isSystem: false },
     });
 
-    // Get all logs for this user in the last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const fromDate = thirtyDaysAgo.toISOString().split('T')[0];
@@ -1250,23 +1992,29 @@ export class HabitsService {
       .andWhere('log.date >= :fromDate', { fromDate })
       .getMany();
 
-    // Group logs by habitId for easy lookup
-    const logsByHabit = new Map<string, string[]>();
+    const logsByHabit = new Map<string, HabitLog[]>();
     for (const log of logs) {
       if (!logsByHabit.has(log.habitId)) {
         logsByHabit.set(log.habitId, []);
       }
-      logsByHabit.get(log.habitId)!.push(log.date);
+      logsByHabit.get(log.habitId)!.push(log);
     }
 
-    // Calculate consistency % for each habit (completed days / 30)
+    const today = new Date().toISOString().split('T')[0];
+
     const habitStats = habits.map((habit) => {
-      const completedDays = logsByHabit.get(habit.id)?.length ?? 0;
+      const habitLogs = logsByHabit.get(habit.id) ?? [];
+
+      // Count only logs where target was actually met
+      const completedLogs = habitLogs.filter((log) =>
+        this.isCompleted(habit, log),
+      );
+      const completedDates = new Set(completedLogs.map((log) => log.date));
+
+      const completedDays = completedDates.size;
       const consistency = Math.round((completedDays / 30) * 100);
 
-      // Calculate streak
       let streak = 0;
-      const completedDates = new Set(logsByHabit.get(habit.id) ?? []);
       for (let i = 0; i < 30; i++) {
         const date = new Date();
         date.setDate(date.getDate() - i);
@@ -1278,6 +2026,24 @@ export class HabitsService {
         }
       }
 
+      let daysSinceLastCompletion = 999;
+      for (let i = 0; i < 30; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        if (completedDates.has(dateStr)) {
+          daysSinceLastCompletion = i;
+          break;
+        }
+      }
+
+      let status = 'LOW_CONSISTENCY';
+      if (daysSinceLastCompletion >= 3 && daysSinceLastCompletion < 999) {
+        status = 'MISSED_3_DAYS';
+      } else if (daysSinceLastCompletion === 999 || consistency < 20) {
+        status = 'STAGNANT';
+      }
+
       return {
         id: habit.id,
         name: habit.name,
@@ -1285,34 +2051,53 @@ export class HabitsService {
         category: habit.category,
         consistency,
         streak,
+        status,
+        completedToday: completedDates.has(today),
       };
     });
 
-    // Split into strong (90%+) and needs attention (below 90%)
     const strongHabits = habitStats.filter((h) => h.consistency >= 90);
     const needsAttention = habitStats.filter((h) => h.consistency < 90);
 
-    // Monthly trend — group completions by week (W1-W4)
     const monthlyTrend = [1, 2, 3, 4].map((week) => {
       const weekLogs = logs.filter((log) => {
         const dayOfMonth = new Date(log.date).getDate();
         return Math.ceil(dayOfMonth / 7) === week;
       });
-      return {
-        label: `W${week}`,
-        completions: weekLogs.length,
-      };
+      return { label: `W${week}`, completions: weekLogs.length };
     });
 
-    return {
-      strongHabits,
-      needsAttention,
-      monthlyTrend,
-    };
+    const categoryMap = new Map<string, typeof habitStats>();
+    for (const habit of habitStats) {
+      if (!categoryMap.has(habit.category)) {
+        categoryMap.set(habit.category, []);
+      }
+      categoryMap.get(habit.category)!.push(habit);
+    }
+
+    const domainMastery = Array.from(categoryMap.entries()).map(
+      ([category, categoryHabits]) => {
+        const avgConsistency = Math.round(
+          categoryHabits.reduce((sum, h) => sum + h.consistency, 0) /
+            categoryHabits.length,
+        );
+        const completedToday = categoryHabits.filter(
+          (h) => h.completedToday,
+        ).length;
+
+        return {
+          category,
+          consistency: avgConsistency,
+          totalHabits: categoryHabits.length,
+          completedToday,
+        };
+      },
+    );
+
+    return { strongHabits, needsAttention, monthlyTrend, domainMastery };
   }
 
   async getHeatmap(userId: string) {
-    // Get last 84 days
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - 83);
     const fromDate = startDate.toISOString().split('T')[0];
@@ -1323,20 +2108,17 @@ export class HabitsService {
       .andWhere('log.date >= :fromDate', { fromDate })
       .getMany();
 
-    // Count completions per day
     const countByDate = new Map<string, number>();
     for (const log of logs) {
       countByDate.set(log.date, (countByDate.get(log.date) ?? 0) + 1);
     }
 
-    // Build 84 day grid
     const grid = Array.from({ length: 84 }, (_, i) => {
       const date = new Date();
       date.setDate(date.getDate() - (83 - i));
       const dateStr = date.toISOString().split('T')[0];
       const count = countByDate.get(dateStr) ?? 0;
 
-      // Intensity: 0 = none, 1 = low, 2 = medium, 3 = high
       let intensity = 0;
       if (count >= 1) intensity = 1;
       if (count >= 2) intensity = 2;
@@ -1346,6 +2128,25 @@ export class HabitsService {
     });
 
     return { grid };
+  }
+
+  // Helper — determines if a log counts as "completed" based on tracking type
+  private isCompleted(habit: Habit, log: HabitLog | undefined): boolean {
+    if (!log) return false;
+
+    // Toggle and timer — just having a log means done
+    if (habit.trackingType === 'toggle' || habit.trackingType === 'timer') {
+      return true;
+    }
+
+    // Count and duration — value must meet or exceed the daily target
+    if (habit.trackingType === 'count' || habit.trackingType === 'duration') {
+      if (log.value === null || log.value === undefined) return false;
+      if (!habit.dailyTarget) return true; // no target set = any value counts
+      return log.value >= habit.dailyTarget;
+    }
+
+    return false;
   }
 }
 </file>
@@ -1381,6 +2182,21 @@ async function bootstrap() {
 bootstrap();
 </file>
 
+<file path="src/users/dto/change-password.dto.ts">
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+
+export class ChangePasswordDto {
+  @IsNotEmpty()
+  @IsString()
+  currentPassword!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  newPassword!: string;
+}
+</file>
+
 <file path="src/users/dto/create-user.dto.ts">
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
@@ -1399,6 +2215,20 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(6)
   password: string;
+}
+</file>
+
+<file path="src/users/dto/update-profile.dto.ts">
+import { IsOptional, IsString } from 'class-validator';
+
+export class UpdateProfileDto {
+  @IsOptional()
+  @IsString()
+  fullName?: string;
+
+  @IsOptional()
+  @IsString()
+  school?: string;
 }
 </file>
 
@@ -1467,10 +2297,10 @@ describe('UsersController', () => {
 </file>
 
 <file path="src/users/users.controller.ts">
-import { Controller, Get, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Body, Req, UseGuards, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
@@ -1482,30 +2312,16 @@ export class UsersController {
   getProfile(@Req() req: any) {
     return this.usersService.getProfile(req.user.id);
   }
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto);
-  // }
 
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
+  @Patch('profile')
+  updateProfile(@Req() req: any, @Body() dto: UpdateProfileDto) {
+    return this.usersService.updateProfile(req.user.id, dto);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
+  @Patch('change-password')
+  changePassword(@Req() req: any, @Body() dto: ChangePasswordDto) {
+    return this.usersService.changePassword(req.user.id, dto);
+  }
 }
 </file>
 
@@ -1547,12 +2363,19 @@ describe('UsersService', () => {
 </file>
 
 <file path="src/users/users.service.ts">
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -1594,6 +2417,45 @@ export class UsersService {
     if (!user) throw new Error('User not found');
     const { password, ...result } = user;
     return result;
+  }
+
+  async updateProfile(
+    id: string,
+    dto: UpdateProfileDto,
+  ): Promise<Omit<User, 'password'>> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('User not found');
+
+    // Only update fields that were actually sent
+    if (dto.fullName) user.fullName = dto.fullName;
+    if (dto.school) user.school = dto.school;
+
+    await this.usersRepository.save(user);
+
+    const { password, ...result } = user;
+    return result;
+  }
+
+  async changePassword(
+    id: string,
+    dto: ChangePasswordDto,
+  ): Promise<{ message: string }> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('User not found');
+
+    // Verify current password is correct before allowing change
+    const passwordMatch = await bcrypt.compare(
+      dto.currentPassword,
+      user.password,
+    );
+    if (!passwordMatch) {
+      throw new BadRequestException('Current password is incorrect.');
+    }
+
+    user.password = await bcrypt.hash(dto.newPassword, 10);
+    await this.usersRepository.save(user);
+
+    return { message: 'Password updated successfully' };
   }
 }
 </file>
@@ -1671,6 +2533,231 @@ describe('AppController (e2e)', () => {
     "noFallthroughCasesInSwitch": false
   }
 }
+</file>
+
+<file path="WORK_SPLIT.md">
+# HabitUp — Work Split
+**Deadline:** Tomorrow evening
+**Team:** Osi (Backend) + Teammate (Frontend)
+
+---
+
+## API Contract (Agree on this first before building)
+
+These are the request/response shapes both sides must honour.
+
+### PATCH /users/profile
+```json
+// Request
+{ "fullName": "Alex Johnson", "school": "University of Life" }
+
+// Response
+{ "id": "uuid", "fullName": "Alex Johnson", "school": "University of Life", "email": "..." }
+```
+
+### PATCH /users/change-password
+```json
+// Request
+{ "currentPassword": "oldpass", "newPassword": "newpass" }
+
+// Response
+{ "message": "Password updated successfully" }
+```
+
+### GET /habits/progress (extended)
+```json
+// Response (additions to existing shape)
+{
+  "strongHabits": [...],
+  "needsAttention": [...],
+  "monthlyTrend": [...],
+  "domainMastery": [
+    { "category": "Health", "consistency": 85, "totalHabits": 2, "completedToday": 1 },
+    { "category": "Fitness", "consistency": 42, "totalHabits": 1, "completedToday": 0 }
+  ]
+}
+```
+
+### POST /habits (add custom habit)
+```json
+// Request
+{ "name": "Deep Work", "description": "2 hours focused", "category": "Study", "icon": "book" }
+
+// Response
+{ "id": "uuid", "name": "Deep Work", "description": "...", "category": "Study", "icon": "book" }
+```
+
+### GET /habits/progress (missed/stagnant flags)
+```json
+// needsAttention items will now include a status field
+{
+  "needsAttention": [
+    { "id": "uuid", "name": "Go for a Run", "streak": 0, "consistency": 42, "status": "MISSED_3_DAYS" },
+    { "id": "uuid", "name": "Meditate", "streak": 0, "consistency": 10, "status": "STAGNANT" }
+  ]
+}
+```
+
+---
+
+## Osi — Backend
+
+### Priority 1 — Edit Profile & Change Password
+**Files to touch:**
+- `src/users/users.service.ts` — add `updateProfile()` and `changePassword()` methods
+- `src/users/users.controller.ts` — add `PATCH /users/profile` and `PATCH /users/change-password` endpoints
+- `src/users/dto/update-user.dto.ts` — already exists, add fields if needed
+
+**Done when:** Postman returns updated user on PATCH /users/profile
+
+---
+
+### Priority 2 — Domain Mastery on Progress Endpoint
+**Files to touch:**
+- `src/habits/habits.service.ts` — extend `getProgress()` to group by category and compute per-category consistency
+- No controller change needed — same endpoint, extended response
+
+**Done when:** GET /habits/progress returns `domainMastery` array
+
+---
+
+### Priority 3 — Add Custom Habit
+**Files to touch:**
+- `src/habits/habits.service.ts` — add `createHabit()` method
+- `src/habits/habits.controller.ts` — add `POST /habits` endpoint
+- `src/habits/dto/create-habit.dto.ts` — already exists, verify fields
+
+**Done when:** POST /habits creates a habit linked to the logged-in user
+
+---
+
+### Priority 4 — Missed / Stagnant Status Flags
+**Files to touch:**
+- `src/habits/habits.service.ts` — extend `needsAttention` items to include a `status` field
+  - `MISSED_3_DAYS` = no log in last 3 days
+  - `STAGNANT` = consistency below 20% with no recent activity
+
+**Done when:** GET /habits/progress needsAttention items include `status`
+
+---
+
+## Teammate — Frontend
+
+### Priority 1 — Dashboard Redesign
+**Files to touch:**
+- `src/app/pages/dashboard/dashboard.ts`
+- `src/app/pages/dashboard/dashboard.html`
+- `src/app/pages/dashboard/dashboard.css`
+
+**Changes:**
+- Replace linear progress bar with circular progress ring
+- Add "YOUR DOMAINS" section — group habits by category using existing dashboard data
+- Add motivational quote card (hardcoded rotation of 3-4 quotes)
+- Update color scheme to match new Figma (yellow/green accents, dark mode option)
+- Wire `+ ADD NEW HABIT` button to navigate to `/habit-selection`
+
+**Done when:** Dashboard matches new Figma screens
+
+---
+
+### Priority 2 — Theme Selection
+**Files to touch:**
+- `src/app/pages/settings/settings.ts`
+- `src/app/pages/settings/settings.html`
+- `src/app/pages/settings/settings.css`
+- `src/styles.css` — add CSS variables for Light/Dark/Vibrant themes
+
+**Changes:**
+- Add theme toggle UI (Light / Dark / Vibrant buttons)
+- Save selection to localStorage
+- Apply theme class to `<body>` on load
+
+**Done when:** Switching themes changes the app appearance
+
+---
+
+### Priority 3 — Progress Screen Updates
+**Files to touch:**
+- `src/app/pages/progress/progress.ts`
+- `src/app/pages/progress/progress.html`
+- `src/app/pages/progress/progress.css`
+
+**Changes:**
+- Add "DOMAIN MASTERY" section using `domainMastery` from extended progress endpoint
+- Add `status` badge on needs attention items (MISSED 3 DAYS / STAGNANT)
+- Add "CONSISTENCY IS POWER" community card (hardcoded copy for now)
+
+**Wait for:** Osi to finish Priority 2 and 4 before wiring domain mastery and status flags
+
+---
+
+### Priority 4 — Settings Screen Updates
+**Files to touch:**
+- `src/app/pages/settings/settings.ts`
+- `src/app/pages/settings/settings.html`
+- `src/app/pages/settings/settings.css`
+
+**Changes:**
+- Add Edit Profile form (calls PATCH /users/profile)
+- Add Change Password form (calls PATCH /users/change-password)
+- Add Manage Domains UI (frontend only for now)
+
+**Wait for:** Osi to finish Priority 1 before wiring Edit Profile and Change Password
+
+---
+
+## Files Each Person Owns
+
+| File | Owner |
+|------|-------|
+| `src/habits/habits.service.ts` | Osi |
+| `src/habits/habits.controller.ts` | Osi |
+| `src/users/users.service.ts` | Osi |
+| `src/users/users.controller.ts` | Osi |
+| `src/app/pages/dashboard/*` | Teammate |
+| `src/app/pages/progress/*` | Teammate |
+| `src/app/pages/settings/*` | Teammate |
+| `src/app/services/habits.service.ts` | Teammate |
+| `src/styles.css` | Teammate |
+
+---
+
+## Shared Files — Coordinate Before Touching
+
+| File | Why it's shared |
+|------|----------------|
+| `src/app/services/auth.service.ts` | Teammate may need to add `updateProfile()` and `changePassword()` calls |
+| `src/app/app.routes.ts` | If any new pages/routes are added |
+
+**Rule:** If you need to touch a shared file, message the other person first.
+
+---
+
+## Git Workflow
+
+```bash
+# Osi's branch
+git checkout -b feat/backend-profile-domain-mastery
+
+# Teammate's branch
+git checkout -b feat/frontend-dashboard-redesign
+```
+
+Neither person merges their own PR — review each other's work before merging.
+
+---
+
+## Quick Checklist Before Presentation
+
+- [ ] Edit Profile works end to end
+- [ ] Change Password works end to end
+- [ ] Dashboard shows circular progress + domain grouping
+- [ ] Progress shows domain mastery bars
+- [ ] Needs Attention shows MISSED / STAGNANT badges
+- [ ] Theme selection works
+- [ ] Add New Habit works
+- [ ] Logout works
+- [ ] Two different user accounts demo cleanly
 </file>
 
 </files>
