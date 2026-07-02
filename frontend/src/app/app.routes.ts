@@ -67,6 +67,21 @@ export const routes: Routes = [
   },
 
   {
+    path: 'settings/edit-profile',
+    loadComponent: () =>
+      import('./pages/edit-profile/edit-profile')
+        .then(m => m.EditProfile),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'settings/change-password',
+    loadComponent: () =>
+      import('./pages/change-password/change-password')
+        .then(m => m.ChangePassword),
+    canActivate: [authGuard],
+  },
+
+  {
     // Catch-all route for 404s
     path: '**',
     redirectTo: '',

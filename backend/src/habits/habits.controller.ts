@@ -12,6 +12,8 @@ import {
 import { HabitsService } from './habits.service';
 import { SelectHabitsDto } from './dto/select-habits.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateHabitDto } from './dto/create-habit.dto';
+import { LogHabitDto } from './dto/log-habit.dto';
 
 @Controller('habits')
 @UseGuards(AuthGuard('jwt'))
@@ -38,15 +40,29 @@ export class HabitsController {
     return this.habitsService.getHeatmap(req.user.id);
   }
 
+  @Post('select')
+  selectHabits(@Req() req: any, @Body() dto: SelectHabitsDto) {
+    return this.habitsService.selectHabits(req.user.id, dto);
+  }
+
+  @Post()
+  createHabit(@Req() req: any, @Body() dto: CreateHabitDto) {
+    return this.habitsService.createHabit(req.user.id, dto);
+  }
+
   // Param routes always last
   @Get(':id')
   getHabitDetail(@Req() req: any, @Param('id') habitId: string) {
     return this.habitsService.getHabitDetail(req.user.id, habitId);
   }
 
-  @Post('select')
-  selectHabits(@Req() req: any, @Body() dto: SelectHabitsDto) {
-    return this.habitsService.selectHabits(req.user.id, dto);
+  @Post(':id/log')
+  logHabit(
+    @Req() req: any,
+    @Param('id') habitId: string,
+    @Body() dto: LogHabitDto,
+  ) {
+    return this.habitsService.logHabit(req.user.id, habitId, dto);
   }
 
   @Post(':id/complete')

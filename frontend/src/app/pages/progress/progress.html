@@ -24,8 +24,44 @@
         } @else if (errorMessage()) {
         <p style="padding: 2rem; text-align: center;">{{ errorMessage() }}</p>
         } @else {
-
         <section class="stat-section">
+            <div class="section-header">
+                <h2>DOMAIN MASTERY</h2>
+            </div>
+
+            @if(domainMastery().length === 0){
+                <p class="empty-message">
+                    Complete habits to build mastery across your domains.
+                </p>
+            } @else {
+                <div class="domain-list">
+                    @for(domain of domainMastery(); track domain.category){
+                        <div class="domain-card">
+                            <div class="domain-header">
+                                <span class="domain-name">
+                                    {{ domain.category }}
+                                </span>
+                                <span class="domain-score">
+                                    {{ domain.consistency }}%
+                                </span>
+                            </div>
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill"
+                                    [style.width.%]="domain.consistency">
+                                </div>
+                            </div>
+                            <div class="domain-meta">
+                                {{ domain.completedToday }}/{{ domain.totalHabits }}
+                                completed today
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+
+        <!-- <section class="stat-section">
             <div class="section-header">
                 <h2>STRONG HABITS</h2>
                 <span class="badge badge-gray">90%+ CONSISTENCY</span>
@@ -58,9 +94,40 @@
                 }
             </div>
             }
-        </section>
+        </section> -->
 
         <section class="stat-section">
+            <div class="section-header">
+                <svg class="section-icon strong-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>
+                </svg>
+                <h2>STRONG HABITS</h2>
+            </div>
+
+            @if (strongHabits().length === 0) {
+                <p class="empty-message">
+                    No strong habits yet. Keep building consistency!
+                </p>
+            } @else {
+                <div class="insight-list">
+                    @for(habit of strongHabits(); track habit.id){
+                        <div class="insight-card">
+                            <div class="insight-left">
+                                <div class="insight-info">
+                                    <h3>{{ habit.name }}</h3>
+                                    <small>{{ habit.streak }} day streak</small>
+                                </div>
+                            </div>
+                            <div class="insight-right">
+                                {{ habit.consistency }}%
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+
+        <!-- <section class="stat-section">
             <div class="section-header">
                 <h2>NEEDS ATTENTION</h2>
                 <span class="badge badge-red">LOW TREND</span>
@@ -92,6 +159,42 @@
                 </div>
                 }
             </div>
+            }
+        </section> -->
+
+        <section class="stat-section">
+            <div class="section-header">
+                <svg class="section-icon warning-icon" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                </svg>
+                <h2>NEEDS ATTENTION</h2>
+            </div>
+
+            @if (needsAttention().length === 0) {
+                <p class="empty-message">
+                    🎉 Great job! All your habits are on track.
+                </p>
+            } @else {
+                <div class="insight-list">
+                    @for(habit of needsAttention(); track habit.id){
+                        <div class="insight-card warning">
+                            <div class="insight-left">
+                                <div class="insight-info">
+                                    <h3>{{ habit.name }}</h3>
+                                    <!-- <small>{{ habit.streak }} day streak</small> -->
+                                     <small>{{ habit.status.replace('_', ' ') }}</small>
+                                </div>
+                            </div>
+
+                            <div class="insight-right warning">
+                                {{ habit.consistency }}%
+                            </div>
+                        </div>
+                    }
+                </div>
             }
         </section>
 

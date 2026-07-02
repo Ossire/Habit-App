@@ -30,6 +30,36 @@ export interface HabitDetail {
   weeklyActivity: { date: string; completed: boolean }[];
 }
 
+export interface ProgressHabit {
+  id: string;
+  name: string;
+  icon: string;
+  category: string;
+  consistency: number;
+  streak: number;
+  status: string;
+  completedToday: boolean;
+}
+
+export interface MonthlyTrend {
+  label: string;
+  completions: number;
+}
+
+export interface DomainMastery {
+  category: string;
+  consistency: number;
+  totalHabits: number;
+  completedToday: number;
+}
+
+export interface ProgressResponse {
+  strongHabits: ProgressHabit[];
+  needsAttention: ProgressHabit[];
+  monthlyTrend: MonthlyTrend[];
+  domainMastery: DomainMastery[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -66,8 +96,8 @@ export class HabitsService {
     return this.http.get<HabitDetail>(`${this.apiUrl}/${habitId}`);
   }
 
-  getProgress(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/progress`);
+  getProgress(): Observable<ProgressResponse> {
+    return this.http.get<ProgressResponse>(`${this.apiUrl}/progress`);
   }
 
   getHeatmap(): Observable<any> {
