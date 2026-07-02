@@ -21,7 +21,7 @@
 
         @if (isLoading()) {
         <p style="padding: 2rem; text-align: center;">Loading...</p>
-        } @else if (user()) {
+        } @else if (user(); as currentUser) {
 
         <div class="profile-content">
 
@@ -32,8 +32,30 @@
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                 </div>
-                <h2>{{ user().fullName }}</h2>
-                <p class="school">{{ user().school }}</p>
+                <h2>{{ currentUser.fullName }}</h2>
+                <p class="school">{{ currentUser.school }}</p>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">ACCOUNT</h3>
+
+                <button
+                    class="settings-row"
+                    routerLink="/settings/edit-profile">
+
+                    <span>Edit Profile</span>
+
+                    <span class="arrow">›</span>
+                </button>
+
+                <button
+                    class="settings-row"
+                    routerLink="/settings/change-password">
+
+                    <span>Change Password</span>
+
+                    <span class="arrow">›</span>
+                </button>
             </div>
 
             <div class="section-block">
@@ -69,6 +91,28 @@
                     <div class="toggle" [class.on]="streakAlerts()" (click)="streakAlerts.update(v => !v)">
                         <div class="toggle-thumb"></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">
+                    APPEARANCE
+                </h3>
+                <div class="theme-grid">
+                    @for(theme of themes; track theme){
+                        <button
+                            class="theme-card"
+                            [class.active]="selectedTheme()===theme"
+                            (click)="setTheme(theme)">
+
+                            <div class="theme-preview"
+                                [class.light]="theme==='Light'"
+                                [class.dark]="theme==='Dark'"
+                                [class.vibrant]="theme==='Vibrant'">
+                            </div>
+                            <span>{{theme}}</span>
+                        </button>
+                    }
                 </div>
             </div>
 

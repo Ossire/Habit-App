@@ -8,7 +8,9 @@
 .mobile-container {
   width: 100%;
   max-width: 400px;
-  background-color: #f8f8f8; /* Very light gray interior */
+  /* background-color: #f8f8f8; Very light gray interior */
+  /* background-color: var(--surface); */
+  background-color: var(--background);
   min-height: 100vh;
   position: relative;
   padding-bottom: 80px; /* Space for bottom nav */
@@ -21,15 +23,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #000;
-  background-color: #fff;
+  /* border-bottom: 1px solid #000; */
+  border-bottom: 1px solid var(--border);;
+  /* background-color: #fff; */
+  background-color: var(--surface);
 }
 
 .header h1 {
   font-size: 1.2rem;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: #000;
+  /* color: #000; */
+  color: var(--text);
   margin: 0;
 }
 
@@ -38,7 +43,8 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  color: #000;
+  /* color: #000; */
+  color: var(--text);
   width: 20px;
   height: 20px;
 }
@@ -53,14 +59,16 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  gap: 10px;
 }
 
 .stat-section h2 {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #111;
+  color: var(--text);
   letter-spacing: -0.5px;
   margin: 0;
+  flex: 1;
 }
 
 /* Badges */
@@ -91,8 +99,10 @@
 }
 
 .habit-card {
-  background-color: #fff;
-  border: 1px solid #000;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border: 1px solid #000; */
+  border: 1px solid var(--border);
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -113,13 +123,17 @@
 }
 
 .icon-box.dark {
-  background-color: #000;
-  color: #fff;
+  /* background-color: #000; */
+  background-color: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
 }
 
 .icon-box.light {
-  background-color: #fff;
-  color: #000;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* color: #000; */
+  color: var(--text);
   border: 1px solid #ccc;
 }
 
@@ -130,7 +144,8 @@
 .habit-info h3 {
   font-size: 1rem;
   font-weight: 700;
-  color: #000;
+  /* color: #000; */
+  color: var(--text);
   margin: 0 0 0.25rem 0;
 }
 
@@ -158,19 +173,23 @@
 
 .mini-bar-fill {
   height: 100%;
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: var(--primary);
 }
 
 .consistency-score span {
   font-size: 0.75rem;
   font-weight: 800;
-  color: #000;
+  /* color: #000; */
+  color: var(--text);
 }
 
 /* Chart Card */
 .chart-card {
-  background-color: #fff;
-  border: 1px solid #000;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border: 1px solid #000; */
+  border: 1px solid var(--border);
   padding: 1.5rem;
   margin-top: 1rem;
 }
@@ -198,14 +217,16 @@
 }
 
 .bar.high {
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: var(--primary);
 }
 
 .bar-label {
   margin-top: 0.75rem;
   font-size: 0.65rem;
   font-weight: 800;
-  color: #000;
+  /* color: #000; */
+  color: var(--text);
 }
 
 /* Bottom Navigation */
@@ -214,8 +235,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff;
-  border-top: 1px solid #000;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border-top: 1px solid #000; */
+  border-top: 1px solid var(--border);;
   display: flex;
   justify-content: space-around;
   padding: 0;
@@ -248,11 +271,149 @@
 
 /* The exact active state from your image */
 .nav-item.active {
-  background-color: #000;
-  color: #fff;
+  /* background-color: #000; */
+  background-color: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
 }
 
 .nav-item.active .nav-icon {
   filter: grayscale(0%);
   opacity: 1;
+}
+
+
+.domain-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.domain-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    padding:16px;
+}
+
+.domain-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.domain-name{
+    font-weight:700;
+    color:var(--text);
+}
+
+.domain-score{
+    font-weight:800;
+    color:var(--primary);
+}
+
+.progress-track{
+    height:8px;
+    background:#ddd;
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:8px;
+}
+
+.progress-fill{
+    height:100%;
+    background:var(--primary);
+    transition:width .3s ease;
+}
+
+.domain-meta{
+    font-size:12px;
+    color:var(--text-muted);
+}
+
+.empty-message{
+    color:var(--text-muted);
+    font-size:.85rem;
+}
+
+.insight-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.insight-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:var(--surface);
+    border:1px solid var(--border);
+    /* border-radius:12px; */
+
+    padding:13px;
+}
+
+
+.insight-icon{
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+    color:var(--primary-text);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:20px;
+}
+
+.insight-info h3{
+    margin:0;
+    font-size:15px;
+    color:var(--text);
+}
+
+.insight-info small{
+    color:var(--text-muted);
+    font-size:12px;
+}
+
+.insight-right{
+    font-size:20px;
+    font-weight:800;
+    color:var(--primary);
+}
+
+/* Needs Attention styling */
+
+.insight-card.warning{
+    border-color: #f0b429;
+}
+
+.insight-icon.warning{
+    background:#fff4db;
+    color:#d48806;
+    border:1px solid #f0b429;
+}
+
+.insight-right.warning{
+    color: #d48806;
+}
+
+.section-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.strong-icon {
+  color: var(--primary);
+}
+
+.warning-icon {
+  color: #f59e0b;
 }

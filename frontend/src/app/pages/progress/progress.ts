@@ -2,7 +2,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HabitsService } from '../../services/habits.service';
+import { HabitsService, ProgressHabit, MonthlyTrend, DomainMastery } from '../../services/habits.service';
 
 @Component({
   selector: 'app-progress',
@@ -14,9 +14,10 @@ import { HabitsService } from '../../services/habits.service';
 export class ProgressComponent implements OnInit {
   private habitsService = inject(HabitsService);
 
-  strongHabits = signal<any[]>([]);
-  needsAttention = signal<any[]>([]);
-  monthlyTrend = signal<any[]>([]);
+  strongHabits = signal<ProgressHabit[]>([]);
+  needsAttention = signal<ProgressHabit[]>([]);
+  monthlyTrend = signal<MonthlyTrend[]>([]);
+  domainMastery = signal<DomainMastery[]>([]);
   isLoading = signal(true);
   errorMessage = signal<string | null>(null);
 
@@ -26,6 +27,7 @@ export class ProgressComponent implements OnInit {
         this.strongHabits.set(data.strongHabits);
         this.needsAttention.set(data.needsAttention);
         this.monthlyTrend.set(data.monthlyTrend);
+        this.domainMastery.set(data.domainMastery);
         this.isLoading.set(false);
       },
       error: () => {

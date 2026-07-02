@@ -1,3 +1,4 @@
+<div class="page-wrapper">
 <div class="mobile-container">
 
     @if (isLoading()) {
@@ -16,19 +17,89 @@
             <div class="progress-text">
                 <span class="label">TODAY'S PROGRESS</span>
                 <span class="value">
-                    {{ dashboard()!.completedCount }} of {{ dashboard()!.totalCount }} habits completed
+                    {{ dashboard()!.completedCount }} / {{ dashboard()!.totalCount }} Habits
                 </span>
             </div>
-            <a routerLink="/heatmap" class="link-stats">
+            <!-- <a routerLink="/heatmap" class="link-stats">
                 View heatmap
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
-            </a>
+            </a> -->
         </div>
-        <div class="progress-bar-bg">
+        <!-- <div class="progress-bar-bg">
             <div class="progress-bar-fill" [style.width.%]="dashboard()!.progressPercentage"></div>
+        </div> -->
+    </section>
+
+    <section class="quote-card">
+        <div class="quote-label">
+            DAILY GOAL
+        </div>
+        <div class="progress-ring-card">
+            <svg
+                class="progress-ring"
+                width="150"
+                height="150"
+                viewBox="0 0 150 150">
+                <circle
+                    class="ring-bg"
+                    cx="75"
+                    cy="75"
+                    [attr.r]="radius">
+                </circle>
+
+                <circle
+                    class="ring-progress"
+                    cx="75"
+                    cy="75"
+                    [attr.r]="radius"
+                    [attr.stroke-dasharray]="circumference"
+                    [attr.stroke-dashoffset]="getProgressOffset(dashboard()!.progressPercentage)">
+                </circle>
+            </svg>
+
+            <div class="progress-center">
+                <h2>{{ dashboard()!.progressPercentage }}%</h2>
+                <span>COMPLETE</span>
+            </div>
+
+        </div>
+
+        <p class="quote-text">
+            "{{ quoteOfTheDay().quote }}"
+        </p>
+
+        <p class="quote-author">
+            — {{ quoteOfTheDay().author }}
+        </p>
+    </section>
+
+    <section class="domains-section">
+        <div class="domains-header">
+            <h3 class="section-title">YOUR DOMAINS</h3>
+            <a class="edit-link">Edit</a>
+        </div>
+
+        <div class="domains-grid">
+            @for(domain of domains(); track domain.category){
+                <div class="domain-card">
+                    <div class="domain-icon">
+                        📚
+                    </div>
+                    <h4 class="domain-title">
+                        {{ domain.category }}
+                    </h4>
+                    <p class="domain-count">
+                        {{ domain.activeCount }} Active
+                    </p>
+                </div>
+            } @empty {
+                <p class="empty-state">
+                    No habits yet.
+                </p>
+            }
         </div>
     </section>
 
@@ -56,7 +127,7 @@
 
     <div class="focus-card">
         <div class="focus-badge">FOCUS ON THE PROCESS</div>
-        <button class="fab-button">+</button>
+        <button class="fab-button" routerLink="/habit-selection">+</button>
     </div>
 
     }
@@ -80,4 +151,5 @@
         </div>
     </nav>
 
+</div>
 </div>
