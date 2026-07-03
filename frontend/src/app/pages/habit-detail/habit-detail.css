@@ -225,6 +225,12 @@
   transition: opacity 0.2s;
 }
 
+.btn-mark-done.done {
+  background-color: #444;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
 .btn-mark-done:hover {
   opacity: 0.9;
 }

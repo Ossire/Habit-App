@@ -65,7 +65,7 @@
                     </div>
                     <p>{{ habit()!.description }}</p>
                 </div>
-                <button class="btn-mark-done" (click)="markAsDone()">
+                <button class="btn-mark-done" (click)="markAsDone()" [class.done]="markedDone()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>

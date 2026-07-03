@@ -92,4 +92,21 @@ export class UsersService {
 
     return { message: 'Password updated successfully' };
   }
+
+  async updateNotificationPreferences(
+    id: string,
+    dto: { dailyReminders?: boolean; streakAlerts?: boolean },
+  ): Promise<Omit<User, 'password'>> {
+    const user = await this.usersRepository.findOne({ where: { id } });
+    if (!user) throw new NotFoundException('User not found');
+
+    if (dto.dailyReminders !== undefined)
+      user.dailyReminders = dto.dailyReminders;
+    if (dto.streakAlerts !== undefined) user.streakAlerts = dto.streakAlerts;
+
+    await this.usersRepository.save(user);
+
+    const { password, ...result } = user;
+    return result;
+  }
 }

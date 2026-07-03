@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
 
-  background: rgba(0, 0, 0, .55);
+  background: rgba(0, 0, 0, 0.55);
 
   display: flex;
   justify-content: center;
@@ -26,46 +26,42 @@
 
   box-sizing: border-box;
 
-  animation: pop .18s ease;
+  animation: pop 0.18s ease;
+
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @keyframes pop {
-
   from {
     opacity: 0;
-    transform: scale(.96);
+    transform: scale(0.96);
   }
 
   to {
     opacity: 1;
     transform: scale(1);
   }
-
 }
 
 .modal-header {
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   margin-bottom: 22px;
-
 }
 
 .modal-header h2 {
-
   margin: 0;
 
   font-size: 22px;
   font-weight: 800;
 
   color: var(--text);
-
 }
 
 .close-btn {
-
   width: 36px;
   height: 36px;
 
@@ -80,30 +76,22 @@
   color: var(--text-muted);
 
   cursor: pointer;
-
 }
 
 .close-btn:hover {
-
   color: var(--primary);
-
 }
 
 .close-btn svg {
-
   width: 22px;
   height: 22px;
-
 }
 
 .form-group {
-
   margin-bottom: 22px;
-
 }
 
 .form-group label {
-
   display: block;
 
   margin-bottom: 10px;
@@ -111,14 +99,12 @@
   font-size: 12px;
   font-weight: 800;
 
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
 
   color: var(--text-muted);
-
 }
 
 .form-group input {
-
   width: 100%;
 
   padding: 14px;
@@ -132,29 +118,23 @@
   color: var(--text);
 
   font-size: 15px;
-
 }
 
 .button-grid {
-
   display: flex;
 
   flex-wrap: wrap;
 
   gap: 10px;
-
 }
 
 .tracking-grid {
-
   display: grid;
 
   grid-template-columns: repeat(2, 1fr);
-
 }
 
 .option-btn {
-
   padding: 12px 16px;
 
   border: 2px solid var(--border);
@@ -167,28 +147,22 @@
 
   cursor: pointer;
 
-  transition: .2s;
-
+  transition: 0.2s;
 }
 
 .option-btn.active {
-
   background: var(--primary);
 
   color: var(--primary-text);
 
   border-color: var(--primary);
-
 }
 
 .option-btn:hover {
-
   transform: translateY(-2px);
-
 }
 
 .create-btn {
-
   width: 100%;
 
   padding: 16px;
@@ -205,29 +179,24 @@
   font-weight: 800;
 
   cursor: pointer;
-
 }
 
 .create-btn:disabled {
-
-  opacity: .7;
+  opacity: 0.7;
   cursor: not-allowed;
-
 }
 
 .error-message {
-
   margin-bottom: 18px;
 
   padding: 12px;
 
   border: 1px solid #ef4444;
 
-  background: rgba(239, 68, 68, .08);
+  background: rgba(239, 68, 68, 0.08);
 
   color: #ef4444;
 
   font-size: 14px;
   font-weight: 600;
-
 }

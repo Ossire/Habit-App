@@ -1,18 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DOMAINS } from '../../constants/domainS';
 
-import {
-  HabitsService,
-  CreateHabitDto,
-} from '../../services/habits.service';
+import { HabitsService, CreateHabitDto } from '../../services/habits.service';
 
 @Component({
   selector: 'app-quick-add-habit',
@@ -29,19 +20,14 @@ export class QuickAddHabitComponent {
 
   readonly domains = DOMAINS;
 
-  readonly trackingTypes = [
-    'duration',
-    'count',
-    'toggle',
-    'timer',
-  ];
+  readonly trackingTypes = ['toggle', 'duration', 'count', 'timer'];
 
   // Form State
   name = signal('');
 
   selectedDomain = signal('Health');
 
-  selectedTrackingType = signal('duration');
+  selectedTrackingType = signal('toggle');
 
   dailyTarget = signal(30);
 
@@ -112,9 +98,7 @@ export class QuickAddHabitComponent {
       },
 
       error: (err) => {
-        this.errorMessage.set(
-          err.error?.message ?? 'Unable to create habit.'
-        );
+        this.errorMessage.set(err.error?.message ?? 'Unable to create habit.');
 
         this.isSaving.set(false);
       },
