@@ -98,13 +98,15 @@
 
     </div>
 
-    <!-- Daily Target -->
+    <!-- Daily Target + Unit -->
+
+    <div class="form-row">
 
     <div class="form-group">
 
-      <label>DAILY TARGET</label>
+        <label>DAILY TARGET</label>
 
-      <input
+        <input
         type="number"
         min="1"
         [value]="dailyTarget()"
@@ -112,16 +114,16 @@
 
     </div>
 
-    <!-- Target Unit -->
-
     <div class="form-group">
 
-      <label>UNIT</label>
+        <label>UNIT</label>
 
-      <input
+        <input
         type="text"
         [value]="targetUnit()"
         readonly>
+
+    </div>
 
     </div>
 
