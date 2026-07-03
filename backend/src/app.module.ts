@@ -6,17 +6,15 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { NotificationsModule } from './notifications/notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'better-sqlite3', // <-- The fix is right here
-    //   database: 'habitup.sqlite',
-    //   autoLoadEntities: true,
-    //   synchronize: true,
-    // }),
-    // Load .env first so every other module can access config
     ConfigModule.forRoot({ isGlobal: true }),
+
+    // Register the scheduler globally
+    ScheduleModule.forRoot(),
 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -37,6 +35,7 @@ import { AppService } from './app.service';
     AuthModule,
     UsersModule,
     HabitsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

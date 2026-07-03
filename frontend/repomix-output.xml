@@ -1,0 +1,6717 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.editorconfig
+.gitignore
+angular.json
+package.json
+public/favicon.ico
+README.md
+src/app/app.config.ts
+src/app/app.css
+src/app/app.html
+src/app/app.routes.ts
+src/app/app.spec.ts
+src/app/app.ts
+src/app/components/habit-card/habit-card.css
+src/app/components/habit-card/habit-card.html
+src/app/components/habit-card/habit-card.spec.ts
+src/app/components/habit-card/habit-card.ts
+src/app/components/progress-bar/progress-bar.css
+src/app/components/progress-bar/progress-bar.html
+src/app/components/progress-bar/progress-bar.spec.ts
+src/app/components/progress-bar/progress-bar.ts
+src/app/core/guards/auth.guard.ts
+src/app/core/guards/guest.guard.ts
+src/app/core/interceptors/auth.interceptor.ts
+src/app/pages/auth/login/login.css
+src/app/pages/auth/login/login.html
+src/app/pages/auth/login/login.spec.ts
+src/app/pages/auth/login/login.ts
+src/app/pages/auth/signup/signup.css
+src/app/pages/auth/signup/signup.html
+src/app/pages/auth/signup/signup.spec.ts
+src/app/pages/auth/signup/signup.ts
+src/app/pages/change-password/change-password.css
+src/app/pages/change-password/change-password.html
+src/app/pages/change-password/change-password.spec.ts
+src/app/pages/change-password/change-password.ts
+src/app/pages/dashboard/dashboard.css
+src/app/pages/dashboard/dashboard.html
+src/app/pages/dashboard/dashboard.spec.ts
+src/app/pages/dashboard/dashboard.ts
+src/app/pages/edit-profile/edit-profile.css
+src/app/pages/edit-profile/edit-profile.html
+src/app/pages/edit-profile/edit-profile.spec.ts
+src/app/pages/edit-profile/edit-profile.ts
+src/app/pages/habit-detail/habit-detail.css
+src/app/pages/habit-detail/habit-detail.html
+src/app/pages/habit-detail/habit-detail.spec.ts
+src/app/pages/habit-detail/habit-detail.ts
+src/app/pages/heatmap/heatmap.css
+src/app/pages/heatmap/heatmap.html
+src/app/pages/heatmap/heatmap.spec.ts
+src/app/pages/heatmap/heatmap.ts
+src/app/pages/landing/landing.css
+src/app/pages/landing/landing.html
+src/app/pages/landing/landing.spec.ts
+src/app/pages/landing/landing.ts
+src/app/pages/onboarding/habit-selection/habit-selection.css
+src/app/pages/onboarding/habit-selection/habit-selection.html
+src/app/pages/onboarding/habit-selection/habit-selection.spec.ts
+src/app/pages/onboarding/habit-selection/habit-selection.ts
+src/app/pages/profile/profile.css
+src/app/pages/profile/profile.html
+src/app/pages/profile/profile.spec.ts
+src/app/pages/profile/profile.ts
+src/app/pages/progress/progress.css
+src/app/pages/progress/progress.html
+src/app/pages/progress/progress.spec.ts
+src/app/pages/progress/progress.ts
+src/app/pages/settings/settings.css
+src/app/pages/settings/settings.html
+src/app/pages/settings/settings.spec.ts
+src/app/pages/settings/settings.ts
+src/app/services/auth.service.ts
+src/app/services/habits.service.ts
+src/app/services/user.service.ts
+src/index.html
+src/main.ts
+src/styles.css
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".editorconfig">
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+quote_type = single
+ij_typescript_use_double_quotes = false
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+</file>
+
+<file path=".gitignore">
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db
+</file>
+
+<file path="angular.json">
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": false
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "habitup-frontend": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "habitup-frontend:build:production"
+            },
+            "development": {
+              "buildTarget": "habitup-frontend:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
+  }
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "habitup-frontend",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
+  "private": true,
+  "packageManager": "npm@11.6.2",
+  "dependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/compiler": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/router": "^21.0.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.0.4",
+    "@angular/cli": "^21.0.4",
+    "@angular/compiler-cli": "^21.0.0",
+    "jsdom": "^27.1.0",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
+  }
+}
+</file>
+
+<file path="README.md">
+# HabitupFrontend
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+
+## Development server
+
+To start a local development server, run:
+
+```bash
+ng serve
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
+```bash
+ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+</file>
+
+<file path="src/app/app.config.ts">
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideBrowserGlobalErrorListeners(), provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    )],
+};
+</file>
+
+<file path="src/app/app.css">
+
+</file>
+
+<file path="src/app/app.html">
+<router-outlet></router-outlet>
+</file>
+
+<file path="src/app/app.routes.ts">
+import { Routes } from '@angular/router';
+import { guestGuard } from './core/guards/guest.guard';
+import { authGuard } from './core/guards/auth.guard';
+
+export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./pages/landing/landing').then((m) => m.LandingComponent),
+    canActivate: [guestGuard],
+  },
+
+  // Auth pages (redirect to dashboard if already logged in)
+  {
+    path: 'signup',
+    loadComponent: () => import('./pages/auth/signup/signup').then((m) => m.SignupComponent),
+    canActivate: [guestGuard],
+  },
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile').then((m) => m.ProfileComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/auth/login/login').then((m) => m.LoginComponent),
+    canActivate: [guestGuard],
+  },
+
+  // Onboarding (requires auth)
+  {
+    path: 'habit-selection',
+    loadComponent: () =>
+      import('./pages/onboarding/habit-selection/habit-selection').then(
+        (m) => m.HabitSelectionComponent,
+      ),
+    canActivate: [authGuard],
+  },
+
+  // Protected app routes
+  {
+    path: 'habit/:id',
+    loadComponent: () =>
+      import('./pages/habit-detail/habit-detail').then((m) => m.HabitDetailComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.DashboardComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'progress',
+    loadComponent: () => import('./pages/progress/progress').then((m) => m.ProgressComponent),
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'heatmap',
+    loadComponent: () => import('./pages/heatmap/heatmap').then((m) => m.HeatmapComponent),
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'settings/edit-profile',
+    loadComponent: () =>
+      import('./pages/edit-profile/edit-profile')
+        .then(m => m.EditProfile),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'settings/change-password',
+    loadComponent: () =>
+      import('./pages/change-password/change-password')
+        .then(m => m.ChangePassword),
+    canActivate: [authGuard],
+  },
+
+  {
+    // Catch-all route for 404s
+    path: '**',
+    redirectTo: '',
+  },
+];
+</file>
+
+<file path="src/app/app.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { App } from './app';
+
+describe('App', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [App],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it('should render title', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, habitup-frontend');
+  });
+});
+</file>
+
+<file path="src/app/app.ts">
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { DashboardComponent } from './pages/dashboard/dashboard';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.css',
+})
+export class App {
+  protected readonly title = signal('habitup-frontend');
+}
+</file>
+
+<file path="src/app/components/habit-card/habit-card.css">
+
+</file>
+
+<file path="src/app/components/habit-card/habit-card.html">
+<p>habit-card works!</p>
+</file>
+
+<file path="src/app/components/habit-card/habit-card.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HabitCard } from './habit-card';
+
+describe('HabitCard', () => {
+  let component: HabitCard;
+  let fixture: ComponentFixture<HabitCard>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HabitCard]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(HabitCard);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/components/habit-card/habit-card.ts">
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-habit-card',
+  imports: [],
+  templateUrl: './habit-card.html',
+  styleUrl: './habit-card.css',
+})
+export class HabitCard {
+
+}
+</file>
+
+<file path="src/app/components/progress-bar/progress-bar.css">
+
+</file>
+
+<file path="src/app/components/progress-bar/progress-bar.html">
+<p>progress-bar works!</p>
+</file>
+
+<file path="src/app/components/progress-bar/progress-bar.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ProgressBar } from './progress-bar';
+
+describe('ProgressBar', () => {
+  let component: ProgressBar;
+  let fixture: ComponentFixture<ProgressBar>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ProgressBar]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(ProgressBar);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/components/progress-bar/progress-bar.ts">
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-progress-bar',
+  imports: [],
+  templateUrl: './progress-bar.html',
+  styleUrl: './progress-bar.css',
+})
+export class ProgressBar {
+
+}
+</file>
+
+<file path="src/app/core/guards/auth.guard.ts">
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+
+export const authGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  return auth.isAuthenticated()
+    ? true
+    : router.createUrlTree(['/login']);
+};
+</file>
+
+<file path="src/app/core/guards/guest.guard.ts">
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+
+export const guestGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  return !auth.isAuthenticated()
+    ? true
+    : router.createUrlTree(['/dashboard']);
+};
+</file>
+
+<file path="src/app/core/interceptors/auth.interceptor.ts">
+import { inject } from '@angular/core';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+
+  const token = authService.getToken();
+
+  if (!token) {
+    return next(req);
+  }
+
+  return next(
+    req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  );
+};
+</file>
+
+<file path="src/app/pages/auth/login/login.css">
+/* Full page dark background */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* The White Card */
+.login-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #000;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.link-bold {
+  color: #000;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Form Controls */
+.form-control {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.5px;
+}
+
+.password-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.forgot-link {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #000;
+  text-decoration: underline;
+}
+
+.form-control input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control input:focus {
+  border-color: #000;
+}
+
+.form-control input::placeholder {
+  color: #aaa;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.btn-primary {
+  background-color: #000;
+  color: #fff;
+  margin-top: 1rem;
+}
+
+.btn-primary:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+  padding: 0 10px;
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* Google Button */
+.btn-google {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-google:hover {
+  background-color: #f9f9f9;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Decorative Bottom Icon */
+.decorative-icon {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.icon-box {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box svg {
+  width: 24px;
+  height: 24px;
+}
+</file>
+
+<file path="src/app/pages/auth/login/login.html">
+<div class="page-wrapper">
+    <div class="login-card">
+
+        <div class="header">
+            <h3 class="logo">HabitUp</h3>
+            <h1>Login</h1>
+            <p class="subtitle">Don't have an account? <a routerLink="/signup" class="link-bold">Sign Up</a></p>
+        </div>
+
+        <!-- Error banner -->
+        @if (errorMessage()) {
+            <div class="error-banner" role="alert">
+            {{ errorMessage() }}
+            </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-control">
+                <label for="email">EMAIL ADDRESS</label>
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  placeholder="name@example.com"
+                  autocomplete="email"
+                  [class.input-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+                >
+                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                    <span class="field-error">Enter a valid email address.</span>
+                }
+            </div>
+
+            <div class="form-control">
+                <div class="password-header">
+                    <label for="password">PASSWORD</label>
+                    <a href="#" class="forgot-link">Forgot?</a>
+                </div>
+                <input
+                  id="password"
+                  type="password"
+                  formControlName="password"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  [class.input-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                >
+                @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                  <span class="field-error">Password is required.</span>
+                }
+            </div>
+
+            <button type="submit" class="btn-primary" [disabled]="isLoading()">
+                @if (isLoading()) {
+                    <span class="spinner"></span> Logging in...
+                } @else {
+                    Login
+                }
+            </button>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <button type="button" class="btn-google" (click)="onGoogleAuth()">
+                <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        fill="#4285F4" />
+                    <path
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        fill="#34A853" />
+                    <path
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                        fill="#FBBC05" />
+                    <path
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                        fill="#EA4335" />
+                </svg>
+                CONTINUE WITH GOOGLE
+            </button>
+        </form>
+
+        <!-- Decorative Bottom Icon -->
+        <div class="decorative-icon">
+            <div class="icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 12l3 3 5-5"></path>
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/auth/login/login.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Login } from './login';
+
+describe('Login', () => {
+  let component: Login;
+  let fixture: ComponentFixture<Login>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Login]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Login);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/auth/login/login.ts">
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { HabitsService } from '../../../services/habits.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+})
+export class LoginComponent {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private habitsService = inject(HabitsService);
+
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+
+  loginForm = this.fb.nonNullable.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
+    this.authService.login(this.loginForm.getRawValue()).subscribe({
+      next: () => {
+        this.habitsService.hasUserHabits().subscribe({
+          next: (hasHabits) => {
+            this.isLoading.set(false);
+            this.router.navigate([hasHabits ? '/dashboard' : '/habit-selection']);
+          },
+          error: () => {
+            // Login succeeded but habit check failed — just go to dashboard
+            this.isLoading.set(false);
+            this.router.navigate(['/dashboard']);
+          },
+        });
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isLoading.set(false);
+        this.errorMessage.set(err.error?.message || err.message);
+      },
+    });
+  }
+
+  onGoogleAuth() {
+    console.log('Triggering mocked Google OAuth flow...');
+  }
+}
+</file>
+
+<file path="src/app/pages/auth/signup/signup.css">
+/* .container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #666;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 390px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-header {
+  gap: 10px;
+}
+
+.logo-text {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  color: #666;
+  text-align: left;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.continue-btn {
+  width: 100%;
+  height: 50px;
+  background: black;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #1f1f1f;
+  transition: background-color 0.2s ease;
+}
+
+.google-btn:hover {
+  background-color: #f9f9f9;
+}
+
+.google-logo {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  object-fit: contain;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+  margin: 0 10px;
+}
+
+.signin {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.confirmation-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirmation-box {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(239, 238, 238);
+  margin: 40px auto;
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  background: rgb(239, 238, 238);
+  border-radius: 50%;
+  border: 2px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+} */
+
+/* Full page dark background */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* The White Card */
+.signup-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #000;
+}
+
+.header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Form Controls */
+.form-control {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.5px;
+}
+
+.form-control input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control input:focus {
+  border-color: #000;
+}
+
+.form-control input::placeholder {
+  color: #aaa;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.btn-primary {
+  background-color: #000;
+  color: #fff;
+  margin-top: 1rem;
+}
+
+.btn-primary:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.divider span {
+  padding: 0 10px;
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* Google Button */
+.btn-google {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-google:hover {
+  background-color: #f9f9f9;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Footer Links */
+.footer-links {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.footer-links a {
+  color: #000;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Decorative Bottom Icon */
+.decorative-icon {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.icon-box {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box svg {
+  width: 24px;
+  height: 24px;
+}
+</file>
+
+<file path="src/app/pages/auth/signup/signup.html">
+<div class="page-wrapper">
+  <div class="signup-card">
+
+    <div class="header">
+      <h3 class="logo">HabitUp</h3>
+      <h1>Create Account</h1>
+      <p class="subtitle">Build better habits, one day at a time.</p>
+    </div>
+
+    <!-- Error banner -->
+    @if (errorMessage()) {
+      <div class="error-banner" role="alert">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-control">
+        <label for="fullName">FULL NAME</label>
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          placeholder="John Doe"
+          autocomplete="name"
+          [class.input-error]="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched"
+        >
+        @if (signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched) {
+          <span class="field-error">Full name is required.</span>
+        }
+      </div>
+
+      <div class="form-control">
+        <label for="school">SCHOOL</label>
+        <input
+          id="school"
+          type="text"
+          formControlName="school"
+          placeholder="University of Life"
+          autocomplete="organization"
+        >
+      </div>
+
+      <div class="form-control">
+        <label for="email">EMAIL ADDRESS</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="name@example.com"
+          autocomplete="email"
+          [class.input-error]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+        >
+        @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+          <span class="field-error">Enter a valid email address.</span>
+        }
+      </div>
+
+      <div class="form-control">
+        <label for="password">PASSWORD</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          [class.input-error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+        >
+        @if (signupForm.get('password')?.errors?.['required'] && signupForm.get('password')?.touched) {
+          <span class="field-error">Password is required.</span>
+        }
+        @if (signupForm.get('password')?.errors?.['minlength'] && signupForm.get('password')?.touched) {
+          <span class="field-error">Password must be at least 6 characters.</span>
+        }
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <span class="spinner"></span> Creating account...
+        } @else {
+          Continue
+        }
+      </button>
+
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <button type="button" class="btn-google" (click)="onGoogleAuth()">
+        <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            fill="#4285F4" />
+          <path
+            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            fill="#34A853" />
+          <path
+            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+            fill="#FBBC05" />
+          <path
+            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+            fill="#EA4335" />
+        </svg>
+        CONTINUE WITH GOOGLE
+      </button>
+
+    </form>
+
+    <div class="footer-links">
+      <p>Already have an account? <a routerLink="/login">Log In</a></p>
+    </div>
+
+    <div class="decorative-icon">
+      <div class="icon-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M8 12l3 3 5-5"></path>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+</file>
+
+<file path="src/app/pages/auth/signup/signup.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Signup } from './signup';
+
+describe('Signup', () => {
+  let component: Signup;
+  let fixture: ComponentFixture<Signup>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Signup]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Signup);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/auth/signup/signup.ts">
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
+@Component({
+  selector: 'app-signup',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  templateUrl: './signup.html',
+  styleUrls: ['./signup.css'],
+})
+export class SignupComponent {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+
+  signupForm = this.fb.nonNullable.group({
+    fullName: ['', Validators.required],
+    school: [''],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+  });
+
+  onSubmit(): void {
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+
+    this.authService.register(this.signupForm.getRawValue()).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        // New user always goes to onboarding
+        this.router.navigate(['/habit-selection']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.isLoading.set(false);
+        this.errorMessage.set(err.error?.message || err.message);
+      },
+    });
+  }
+
+  onGoogleAuth() {
+    console.log('Triggering Google OAuth flow...');
+  }
+}
+</file>
+
+<file path="src/app/pages/change-password/change-password.css">
+
+</file>
+
+<file path="src/app/pages/change-password/change-password.html">
+<p>change-password works!</p>
+</file>
+
+<file path="src/app/pages/change-password/change-password.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ChangePassword } from './change-password';
+
+describe('ChangePassword', () => {
+  let component: ChangePassword;
+  let fixture: ComponentFixture<ChangePassword>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ChangePassword]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(ChangePassword);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/change-password/change-password.ts">
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-change-password',
+  imports: [],
+  templateUrl: './change-password.html',
+  styleUrl: './change-password.css',
+})
+export class ChangePassword {
+
+}
+</file>
+
+<file path="src/app/pages/dashboard/dashboard.css">
+/* Base Mobile Wrapper */
+.mobile-container {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  /* background-color: #f8f9fa; Slight off-white like the design */
+  /* background-color: var(--surface); */
+  background-color: var(--background);
+  min-height: 100vh;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding-bottom: 80px; /* Space for the bottom nav */
+  /* color: #000; */
+  color: var(--text);
+}
+
+/* Header */
+.header {
+  padding: 30px 20px 20px;
+}
+.header h1 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.header .date {
+  margin: 8px 0 0;
+  color: #666;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Streak Card */
+.streak-card {
+  margin: 0 20px 24px;
+  /* border: 2px solid #000; */
+  border: 2px solid var(--border);
+  /* background: #fff; */
+  background: var(--surface);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.streak-text h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+.streak-text p {
+  margin: 4px 0 0;
+  font-size: 10px;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 1px;
+}
+.flame-icon {
+  width: 36px;
+  height: 36px;
+  /* background: #000; */
+  background: var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+/* Add this near your progress section styles */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.link-stats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  /* color: #000; */
+  color: var(--text);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.link-stats:hover {
+  opacity: 0.7;
+}
+
+.link-stats svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Progress Section */
+.progress-section {
+  margin: 0 20px 30px;
+}
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  align-items: flex-end;
+  width: 100%;
+}
+.progress-text .label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.progress-text .value {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+/* .progress-bar-bg {
+  width: 100%;
+  height: 16px;
+  border: 2px solid #000;
+  border: 2px solid var(--border);
+  background: #fff;
+  background: var(--surface);
+}
+.progress-bar-fill {
+  height: 100%;
+  background-color: #000;
+  background-color: var(--primary);
+  transition: width 0.4s ease;
+}
+*/
+
+.progress-ring-card{
+  width:170px;
+  height:170px;
+  margin:24px auto;
+  position:relative;
+}
+
+.progress-ring{
+  transform:rotate(-90deg);
+}
+
+.ring-bg{
+  fill:none;
+  stroke:var(--border);
+  stroke-width:10;
+  opacity:.15;
+}
+
+.ring-progress{
+  fill:none;
+  stroke:var(--primary);
+  stroke-width:10;
+  stroke-linecap:round;
+  transition:stroke-dashoffset .4s ease;
+}
+
+.progress-center{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.progress-center h2{
+  margin:0;
+  font-size:34px;
+  font-weight:800;
+  color:var(--text);
+}
+
+.progress-center span{
+  margin-top:6px;
+  font-size:14px;
+  color:var(--text-muted);
+}
+
+
+/* Habits List */
+.section-title {
+  margin: 0 20px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.habits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.habit-card {
+  /* border: 2px solid #000; */
+  border: 2px solid var(--border);
+  /* background: #f1f1f1; */
+  background: var(--surface);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.habit-card:active {
+  transform: scale(0.98);
+}
+
+/* Checkbox */
+.checkbox {
+  width: 24px;
+  height: 24px;
+  /* border: 2px solid #000; */
+  border: 2px solid var(--border);
+  /* background: #fff; */
+  background: var(--surface);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+  font-weight: bold;
+}
+.checkbox.checked {
+  /* background: #000; */
+  background: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+}
+
+.habit-details {
+  flex-grow: 1;
+}
+.habit-details h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.habit-details p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted)
+}
+.habit-icon {
+  font-size: 20px;
+  color: #666;
+  font-weight: bold;
+}
+
+/* Focus Image Card & FAB */
+.focus-card {
+  margin: 24px 20px;
+  height: 140px;
+  background: linear-gradient(135deg, #bbb, #777); /* Placeholder for abstract image */
+  /* border: 2px solid #000; */
+  border: 2px solid var(--border);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+.focus-badge {
+  /* background: #000; */
+  background: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 12px;
+}
+.fab-button {
+  position: absolute;
+  bottom: -20px;
+  right: -10px;
+  width: 50px;
+  height: 50px;
+  /* background: #000; */
+  background: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Bottom Navigation */
+/* .bottom-nav {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: #fff;
+  border-top: 2px solid #000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+} */
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed; /* Glues it to the viewport, not the container */
+  bottom: 0;
+  left: 50%; /* These two lines keep it perfectly centered */
+  transform: translateX(-50%); /* with your 400px mobile container */
+  width: 100%;
+  max-width: 400px; /* Matches your mobile-container width */
+  height: 70px;
+  /* background: #fff; */
+  background: var(--surface);
+  /* border-top: 2px solid #000; */
+  border-top: 2px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999; /* Forces it to hover above the heatmap */
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #888;
+}
+.nav-icon {
+  width: 44px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 16px;
+}
+.nav-item.active {
+  /* color: #000; */
+  color: var(--text);
+}
+.nav-item.active .nav-icon {
+  /* background: #000; */
+  background: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+}
+.empty-state {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #181818;
+  display: flex;
+  justify-content: center;
+}
+
+.domains-section{
+    padding:0 20px;
+    margin-bottom: 30px;
+}
+
+/* .domain-card{
+    background:var(--surface);
+    border:2px solid var(--border);
+    padding:16px;
+    margin-bottom:18px;
+    border-radius:12px;
+}
+
+.domain-title{
+    margin:0 0 14px;
+    color:var(--text);
+    font-size:18px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.domain-habit{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:10px 0;
+}
+
+.domain-habit:not(:last-child){
+    border-bottom:1px solid var(--divider);
+} */
+
+.domains-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.edit-link{
+    font-size:12px;
+    color:var(--text-muted);
+    cursor:pointer;
+}
+
+.domains-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.domain-card{
+    background:var(--surface);
+    border:2px solid var(--border);
+    padding:18px;
+    text-align:center;
+}
+
+.domain-icon{
+    font-size:28px;
+    margin-bottom:12px;
+}
+
+.domain-title{
+    margin:0;
+    font-size:18px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.domain-count{
+    margin-top:8px;
+    color:var(--text-muted);
+    font-size:13px;
+}
+
+.quote-card {
+  margin: 24px 20px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  padding: 20px;
+  text-align: center;
+}
+
+.quote-label {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  margin-bottom: 18px;
+}
+
+.quote-circle {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 18px;
+  border: 6px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.quote-percent {
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.quote-complete {
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.quote-text {
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.quote-author {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+</file>
+
+<file path="src/app/pages/dashboard/dashboard.html">
+<div class="page-wrapper">
+<div class="mobile-container">
+
+    @if (isLoading()) {
+    <p class="empty-state">Loading...</p>
+    } @else if (errorMessage()) {
+    <p class="empty-state">{{ errorMessage() }}</p>
+    } @else if (dashboard()) {
+
+    <header class="header">
+        <h1>{{ greeting() }},<br>{{ firstName() }}</h1>
+        <p class="date">{{ today }}</p>
+    </header>
+
+    <section class="progress-section">
+        <div class="progress-header">
+            <div class="progress-text">
+                <span class="label">TODAY'S PROGRESS</span>
+                <span class="value">
+                    {{ dashboard()!.completedCount }} / {{ dashboard()!.totalCount }} Habits
+                </span>
+            </div>
+            <!-- <a routerLink="/heatmap" class="link-stats">
+                View heatmap
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a> -->
+        </div>
+        <!-- <div class="progress-bar-bg">
+            <div class="progress-bar-fill" [style.width.%]="dashboard()!.progressPercentage"></div>
+        </div> -->
+    </section>
+
+    <section class="quote-card">
+        <div class="quote-label">
+            DAILY GOAL
+        </div>
+        <div class="progress-ring-card">
+            <svg
+                class="progress-ring"
+                width="150"
+                height="150"
+                viewBox="0 0 150 150">
+                <circle
+                    class="ring-bg"
+                    cx="75"
+                    cy="75"
+                    [attr.r]="radius">
+                </circle>
+
+                <circle
+                    class="ring-progress"
+                    cx="75"
+                    cy="75"
+                    [attr.r]="radius"
+                    [attr.stroke-dasharray]="circumference"
+                    [attr.stroke-dashoffset]="getProgressOffset(dashboard()!.progressPercentage)">
+                </circle>
+            </svg>
+
+            <div class="progress-center">
+                <h2>{{ dashboard()!.progressPercentage }}%</h2>
+                <span>COMPLETE</span>
+            </div>
+
+        </div>
+
+        <p class="quote-text">
+            "{{ quoteOfTheDay().quote }}"
+        </p>
+
+        <p class="quote-author">
+            — {{ quoteOfTheDay().author }}
+        </p>
+    </section>
+
+    <section class="domains-section">
+        <div class="domains-header">
+            <h3 class="section-title">YOUR DOMAINS</h3>
+            <a class="edit-link">Edit</a>
+        </div>
+
+        <div class="domains-grid">
+            @for(domain of domains(); track domain.category){
+                <div class="domain-card">
+                    <div class="domain-icon">
+                        📚
+                    </div>
+                    <h4 class="domain-title">
+                        {{ domain.category }}
+                    </h4>
+                    <p class="domain-count">
+                        {{ domain.activeCount }} Active
+                    </p>
+                </div>
+            } @empty {
+                <p class="empty-state">
+                    No habits yet.
+                </p>
+            }
+        </div>
+    </section>
+
+    <section class="habits-list">
+        <h3 class="section-title">HABIT LIST</h3>
+
+        @for (habit of dashboard()!.habits; track habit.id) {
+        <div class="habit-card">
+            <div class="checkbox" [class.checked]="habit.completedToday"
+                (click)="toggleHabit(habit.id, habit.completedToday!); $event.stopPropagation()">
+                @if (habit.completedToday) {
+                <span>✓</span>
+                }
+            </div>
+            <div class="habit-details" [routerLink]="['/habit', habit.id]" style="cursor: pointer; flex-grow: 1;">
+                <h4>{{ habit.name }}</h4>
+                <p>{{ habit.description }}</p>
+            </div>
+            <div class="habit-icon" [routerLink]="['/habit', habit.id]" style="cursor: pointer;">⚬</div>
+        </div>
+        } @empty {
+        <p class="empty-state">No habits yet. Let's add some!</p>
+        }
+    </section>
+
+    <div class="focus-card">
+        <div class="focus-badge">FOCUS ON THE PROCESS</div>
+        <button class="fab-button" routerLink="/habit-selection">+</button>
+    </div>
+
+    }
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" routerLink="/dashboard">
+            <div class="nav-icon">📅</div>
+            <span>Today</span>
+        </div>
+        <div class="nav-item" routerLink="/progress">
+            <div class="nav-icon">📊</div>
+            <span>Progress</span>
+        </div>
+        <div class="nav-item" routerLink="/heatmap">
+            <div class="nav-icon">✓</div>
+            <span>Habits</span>
+        </div>
+        <div class="nav-item" routerLink="/settings">
+            <div class="nav-icon">⚙️</div>
+            <span>Settings</span>
+        </div>
+    </nav>
+
+</div>
+</div>
+</file>
+
+<file path="src/app/pages/dashboard/dashboard.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Dashboard } from './dashboard';
+
+describe('Dashboard', () => {
+  let component: Dashboard;
+  let fixture: ComponentFixture<Dashboard>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Dashboard]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Dashboard);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/dashboard/dashboard.ts">
+// src/app/pages/dashboard/dashboard.ts
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { HabitsService, DashboardResponse, Habit } from '../../services/habits.service';
+import { AuthService } from '../../services/auth.service';
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.css'],
+})
+export class DashboardComponent implements OnInit {
+  private habitsService = inject(HabitsService);
+  private authService = inject(AuthService);
+  readonly radius = 54;
+  readonly circumference = 2 * Math.PI * this.radius;
+  readonly quotes = [
+    {
+      quote: 'Consistency is the playground of the unimaginative.',
+      author: 'Azooki, 2025 HackUp Coding'
+    },
+    {
+      quote: 'Small habits become remarkable results.',
+      author: 'HabitUp'
+    },
+    {
+      quote: 'Progress beats perfection every time.',
+      author: 'HabitUp'
+    },
+    {
+      quote: 'Success is built one habit at a time.',
+      author: 'HabitUp'
+    }
+  ];
+
+  dashboard = signal<DashboardResponse | null>(null);
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
+
+  // Pull first name from localStorage
+  firstName = computed(() => {
+    const user = this.authService.getCurrentUser();
+    if (!user?.fullName) return 'there';
+    return user.fullName.split(' ')[0];
+  });
+
+  today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  greeting = computed(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  });
+
+  domains = computed(() => {
+    const dashboard = this.dashboard();
+
+    if (!dashboard) return [];
+
+    const grouped = new Map<string, Habit[]>();
+
+    dashboard.habits.forEach((habit) => {
+      if (!grouped.has(habit.category)) {
+        grouped.set(habit.category, []);
+      }
+
+      grouped.get(habit.category)!.push(habit);
+    });
+
+    return Array.from(grouped.entries()).map(([category, habits]) => ({
+      category,
+      activeCount: habits.length,
+    }));
+  });
+
+  quoteOfTheDay = computed(() => {
+    const day = new Date().getDate();
+
+    return this.quotes[day % this.quotes.length];
+  });
+
+  ngOnInit() {
+    this.loadDashboard();
+  }
+
+  loadDashboard() {
+    this.habitsService.getDashboard().subscribe({
+      next: (data) => {
+        this.dashboard.set(data);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load dashboard.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  toggleHabit(habitId: string, completedToday: boolean) {
+    const request$ = completedToday
+      ? this.habitsService.uncompleteHabit(habitId)
+      : this.habitsService.completeHabit(habitId);
+
+    request$.subscribe({
+      next: () => this.loadDashboard(),
+      error: () => this.errorMessage.set('Failed to update habit.'),
+    });
+  }
+
+  getProgressOffset(progress: number): number {
+    return this.circumference - (progress / 100) * this.circumference;
+  }
+}
+</file>
+
+<file path="src/app/pages/edit-profile/edit-profile.css">
+.page-wrapper {
+  min-height: 100vh;
+  background: #181818;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:28px 20px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+}
+
+.back-btn{
+    background:none;
+    border:none;
+    color:var(--text);
+    font-size:24px;
+    cursor:pointer;
+}
+
+.form-card{
+    margin:0 20px;
+    padding:20px;
+    background:var(--surface);
+    border:2px solid var(--border);
+}
+
+.section-title{
+    margin-bottom:24px;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.form-group input{
+    padding:14px;
+    background:var(--background);
+    border:2px solid var(--border);
+    color:var(--text);
+    font-size:15px;
+}
+
+.form-group input[readonly]{
+    opacity:.75;
+}
+
+.save-btn{
+    width:100%;
+    margin-top:12px;
+    padding:16px;
+
+    border:none;
+
+    background:var(--primary);
+    color:var(--primary-text);
+
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.empty-state{
+    text-align:center;
+    margin-top:60px;
+    color:var(--text-muted);
+}
+
+.error-message {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.success-message {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #22c55e;
+  background: rgba(34, 197, 94, 0.08);
+  color: #22c55e;
+  font-size: 14px;
+  font-weight: 600;
+}
+</file>
+
+<file path="src/app/pages/edit-profile/edit-profile.html">
+<div class="page-wrapper">
+  <div class="mobile-container">
+
+    <header class="header">
+      <button
+        class="back-btn"
+        routerLink="/settings">
+        ←
+      </button>
+      <h1>Edit Profile</h1>
+    </header>
+
+    @if (isLoading()) {
+      <p class="empty-state">
+        Loading profile...
+      </p>
+
+    } @else if (errorMessage()) {
+      <p class="empty-state">
+        {{ errorMessage() }}
+      </p>
+    } @else {
+      <section class="form-card">
+        <h3 class="section-title">
+          PROFILE INFORMATION
+        </h3>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input
+            type="text"
+            [ngModel]="fullName()"
+            (ngModelChange)="fullName.set($event)">
+        </div>
+        <div class="form-group">
+          <label>School</label>
+          <input
+            type="text"
+            [ngModel]="school()"
+            (ngModelChange)="school.set($event)">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            [value]="email()"
+            readonly>
+        </div>
+        @if (errorMessage()) {
+            <p class="error-message">
+                {{ errorMessage() }}
+            </p>
+        }
+
+        @if (successMessage()) {
+            <p class="success-message">
+                {{ successMessage() }}
+            </p>
+        }
+        <button
+          class="save-btn"
+          [disabled]="
+            isSaving()
+            || !fullName().trim()
+            || !school().trim()
+          "
+          (click)="saveProfile()">
+          @if(isSaving()){
+            Saving...
+          } @else {
+            Save Changes
+          }
+        </button>
+      </section>
+    }
+  </div>
+</div>
+</file>
+
+<file path="src/app/pages/edit-profile/edit-profile.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { EditProfile } from './edit-profile';
+
+describe('EditProfile', () => {
+  let component: EditProfile;
+  let fixture: ComponentFixture<EditProfile>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [EditProfile]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(EditProfile);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/edit-profile/edit-profile.ts">
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service'
+
+import {
+  UserService,
+  UserProfile,
+} from '../../services/user.service';
+
+@Component({
+  selector: 'app-edit-profile',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './edit-profile.html',
+  styleUrls: ['./edit-profile.css'],
+})
+export class EditProfile implements OnInit {
+  private userService = inject(UserService);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
+  profile = signal<UserProfile | null>(null);
+
+  fullName = signal('');
+  school = signal('');
+  email = signal('');
+
+  isLoading = signal(true);
+  isSaving = signal(false);
+  errorMessage = signal<string | null>(null);
+  successMessage = signal<string | null>(null);
+
+  ngOnInit() {
+    this.userService.getProfile().subscribe({
+      next: (user) => {
+        this.profile.set(user);
+
+        this.fullName.set(user.fullName);
+        this.school.set(user.school);
+        this.email.set(user.email);
+
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Unable to load profile.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  saveProfile() {
+    this.errorMessage.set(null);
+    this.successMessage.set(null);
+
+    if (!this.fullName().trim()) {
+      this.errorMessage.set('Full name is required.');
+      return;
+    }
+
+    if (!this.school().trim()) {
+      this.errorMessage.set('School is required.');
+      return;
+    }
+
+    this.isSaving.set(true);
+
+    this.userService.updateProfile({
+      fullName: this.fullName(),
+      school: this.school(),
+    }).subscribe({
+      next: (updatedUser) => {
+        this.profile.set(updatedUser);
+
+        this.fullName.set(updatedUser.fullName);
+        this.school.set(updatedUser.school);
+        this.email.set(updatedUser.email);
+
+        this.authService.updateCurrentUser(updatedUser);
+
+        this.isSaving.set(false);
+        
+        // Return to Settings 
+        this.successMessage.set('Profile updated successfully!');
+        setTimeout(() => {
+          this.router.navigate(['/settings']);
+        }, 1000);
+      },
+      error: (error) => {
+        this.errorMessage.set(
+          error.error?.message ?? 'Failed to update profile.'
+        );
+
+        this.isSaving.set(false);
+      },
+    });
+  }
+}
+</file>
+
+<file path="src/app/pages/habit-detail/habit-detail.css">
+/* Layout Wrappers */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fcfcfc;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #000;
+  background-color: #fff;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000;
+  width: 24px;
+  height: 24px;
+}
+
+/* Main Content */
+.habit-content {
+  padding: 1.5rem;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.title-row h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0 0 0.25rem 0;
+}
+
+.category-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #000;
+  border: 1px solid #000;
+  padding: 2px 6px;
+  text-transform: uppercase;
+}
+
+.habit-icon {
+  width: 24px;
+  height: 24px;
+  color: #000;
+}
+
+/* Streak Box */
+.streak-box {
+  border: 1px solid #000;
+  padding: 1.5rem;
+  text-align: center;
+  background-color: #fff;
+  margin-bottom: 2rem;
+}
+
+.streak-number {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #000;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.streak-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+/* Sections */
+.section-block {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #111;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Activity Grid */
+.activity-grid {
+  display: flex;
+  justify-content: space-between;
+}
+
+.day-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.day-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #666;
+}
+
+.checkbox-square {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #000;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.checkbox-square.checked {
+  background-color: #000;
+}
+
+.checkbox-square svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Intake Chart */
+.intake-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 100px;
+  margin-top: 2rem;
+}
+
+.chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.intake-bar {
+  width: 20px;
+  background-color: #eee; /* Very faint gray for the bars based on image space */
+  border-radius: 2px 2px 0 0;
+}
+
+/* Insight Card & CTA */
+.insight-card {
+  border: 1px solid #000;
+  background-color: #f9f9f9;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.insight-text-area {
+  padding: 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.insight-text-area p {
+  font-size: 0.8rem;
+  color: #333;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.btn-mark-done {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-mark-done:hover {
+  opacity: 0.9;
+}
+
+.btn-mark-done svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top: 1px solid #000;
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.nav-item.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.nav-item.active .nav-icon {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+</file>
+
+<file path="src/app/pages/habit-detail/habit-detail.html">
+<div class="page-wrapper">
+    <div class="mobile-container">
+
+        <header class="header">
+            <button class="icon-btn" routerLink="/dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <h1>HabitUp</h1>
+            <button class="icon-btn">⋮</button>
+        </header>
+
+        @if (isLoading()) {
+        <p style="padding: 2rem; text-align: center;">Loading...</p>
+        } @else if (errorMessage()) {
+        <p style="padding: 2rem; text-align: center;">{{ errorMessage() }}</p>
+        } @else if (habit()) {
+        <div class="habit-content">
+
+            <div class="title-row">
+                <div>
+                    <h2>{{ habit()!.name }}</h2>
+                    <span class="category-badge">{{ habit()!.category }}</span>
+                </div>
+                <div class="habit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="streak-box">
+                <span class="streak-number">{{ habit()!.currentStreak }}</span>
+                <span class="streak-label">CURRENT STREAK</span>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-title">WEEKLY ACTIVITY</h3>
+                <div class="activity-grid">
+                    @for (day of habit()!.weeklyActivity; track day.date; let i = $index) {
+                    <div class="day-col">
+                        <span class="day-label">{{ days[i] }}</span>
+                        <div class="checkbox-square" [class.checked]="day.completed">
+                            @if (day.completed) {
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="square">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <div class="insight-text-area">
+                    <div class="info-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    <p>{{ habit()!.description }}</p>
+                </div>
+                <button class="btn-mark-done" (click)="markAsDone()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    {{ markedDone() ? 'Marked as Done ✓' : 'Mark as Done Today' }}
+                </button>
+            </div>
+
+        </div>
+        }
+
+        <nav class="bottom-nav">
+            <div class="nav-item" routerLink="/dashboard">
+                <div class="nav-icon">📅</div>
+                <span>Today</span>
+            </div>
+            <div class="nav-item" routerLink="/progress">
+                <div class="nav-icon">📊</div>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">✓</div>
+                <span>Habits</span>
+            </div>
+            <div class="nav-item" routerLink="/settings">
+                <div class="nav-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+        </nav>
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/habit-detail/habit-detail.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HabitDetail } from './habit-detail';
+
+describe('HabitDetail', () => {
+  let component: HabitDetail;
+  let fixture: ComponentFixture<HabitDetail>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HabitDetail]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(HabitDetail);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/habit-detail/habit-detail.ts">
+// src/app/pages/habit-detail/habit-detail.ts
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { HabitsService, HabitDetail } from '../../services/habits.service';
+
+@Component({
+  selector: 'app-habit-detail',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './habit-detail.html',
+  styleUrls: ['./habit-detail.css'],
+})
+export class HabitDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private habitsService = inject(HabitsService);
+
+  habit = signal<HabitDetail | null>(null);
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
+  markedDone = signal(false);
+
+  days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) this.loadHabit(id);
+    });
+  }
+
+  loadHabit(id: string) {
+    this.isLoading.set(true);
+    this.habitsService.getHabitDetail(id).subscribe({
+      next: (data) => {
+        this.habit.set(data);
+        // Check if already completed today
+        const today = new Date().toISOString().split('T')[0];
+        const todayEntry = data.weeklyActivity.find((d) => d.date === today);
+        this.markedDone.set(todayEntry?.completed ?? false);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load habit.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  markAsDone() {
+    const id = this.habit()?.id;
+    if (!id) return;
+
+    const request$ = this.markedDone()
+      ? this.habitsService.uncompleteHabit(id)
+      : this.habitsService.completeHabit(id);
+
+    request$.subscribe({
+      next: () => {
+        this.markedDone.update((v) => !v);
+        this.loadHabit(id);
+      },
+      error: () => this.errorMessage.set('Failed to update habit.'),
+    });
+  }
+}
+</file>
+
+<file path="src/app/pages/heatmap/heatmap.css">
+/* 1. This dark wrapper centers the app on desktop */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+}
+
+/* 2. This forces the 400px width and traps the nav bar */
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  position: relative; /* CRITICAL: This keeps the bottom nav inside this box */
+  padding: 1.5rem 1.5rem 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #000;
+  padding-bottom: 1rem;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #000;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+}
+
+/* Toggle Buttons */
+.toggle-container {
+  display: flex;
+  border: 1px solid #000;
+  margin-bottom: 2rem;
+  background-color: #fff;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.75rem 0.25rem;
+  border: none;
+  border-right: 1px solid #000;
+  background: transparent;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #000;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.toggle-btn:last-child {
+  border-right: none;
+}
+
+.toggle-btn.active {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Chart Sections */
+.chart-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #111;
+  text-transform: uppercase;
+}
+
+.section-header span {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.bar-chart-card,
+.heatmap-card {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 1.5rem;
+}
+
+/* Bar Chart */
+.bars-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 120px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #000;
+}
+
+.bar-wrapper {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  background-color: #000;
+  transition: height 0.4s ease-out;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-labels span {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #000;
+  width: 10%;
+  text-align: center;
+}
+
+/* Heatmap */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.heat-square {
+  aspect-ratio: 1;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s;
+}
+
+/* Intense Contrast to match the image */
+.heat-square[data-intensity='1'] {
+  background-color: #e0e0e0;
+  border-color: #999;
+}
+.heat-square[data-intensity='2'] {
+  background-color: #666;
+  border-color: #000;
+}
+.heat-square[data-intensity='3'] {
+  background-color: #000;
+  border-color: #000;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #666;
+}
+
+.legend-squares {
+  display: flex;
+  gap: 4px;
+}
+
+.legend-squares .heat-square {
+  width: 12px;
+  height: 12px;
+}
+
+/* Summary Grid */
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.stat-card {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 1.25rem;
+}
+
+.stat-card .icon {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #000;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 0.25rem;
+}
+
+.stat-card p {
+  font-size: 0.65rem;
+  color: #666;
+  font-weight: 700;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: absolute; /* CRITICAL: Changed from fixed to absolute */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top: 1px solid #000;
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.nav-item.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.nav-item.active .nav-icon {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+</file>
+
+<file path="src/app/pages/heatmap/heatmap.html">
+<div class="page-wrapper">
+    <div class="mobile-container">
+
+        <header class="header">
+            <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <h1>STATISTICS</h1>
+            <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="12" cy="5" r="1"></circle>
+                    <circle cx="12" cy="19" r="1"></circle>
+                </svg>
+            </button>
+        </header>
+
+        @if (isLoading()) {
+        <p style="padding: 2rem; text-align: center;">Loading...</p>
+        } @else if (errorMessage()) {
+        <p style="padding: 2rem; text-align: center;">{{ errorMessage() }}</p>
+        } @else {
+
+        <div class="toggle-container">
+            <button class="toggle-btn" [class.active]="activeTab() === 'weekly'" (click)="setTab('weekly')">WEEKLY
+                VIEW</button>
+            <button class="toggle-btn" [class.active]="activeTab() === 'monthly'" (click)="setTab('monthly')">MONTHLY
+                VIEW</button>
+            <button class="toggle-btn" [class.active]="activeTab() === 'annual'"
+                (click)="setTab('annual')">ANNUAL</button>
+        </div>
+
+        <section class="chart-section">
+            <div class="section-header">
+                <h2>ACTIVITY HEATMAP</h2>
+                <span class="month">
+                    @if (activeTab() === 'weekly') { LAST 7 DAYS }
+                    @else if (activeTab() === 'monthly') { LAST 28 DAYS }
+                    @else { LAST 12 WEEKS }
+                </span>
+            </div>
+
+            <div class="heatmap-card">
+                <div class="heatmap-grid">
+                    @for (block of visibleGrid(); track block.date) {
+                    <div class="heat-square" [attr.data-intensity]="block.intensity"
+                        [title]="block.date + ' — ' + block.count + ' completed'">
+                    </div>
+                    }
+                </div>
+                <div class="heatmap-legend">
+                    <span>LESS</span>
+                    <div class="legend-squares">
+                        <div class="heat-square" data-intensity="0"></div>
+                        <div class="heat-square" data-intensity="1"></div>
+                        <div class="heat-square" data-intensity="2"></div>
+                        <div class="heat-square" data-intensity="3"></div>
+                    </div>
+                    <span>MORE</span>
+                </div>
+            </div>
+        </section>
+
+        }
+
+        <nav class="bottom-nav">
+            <div class="nav-item" routerLink="/dashboard">
+                <div class="nav-icon">📅</div>
+                <span>Today</span>
+            </div>
+            <div class="nav-item" routerLink="/progress">
+                <div class="nav-icon">📊</div>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item active" routerLink="/heatmap">
+                <div class="nav-icon">✓</div>
+                <span>Habits</span>
+            </div>
+            <div class="nav-item" routerLink="/settings">
+                <div class="nav-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+        </nav>
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/heatmap/heatmap.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Heatmap } from './heatmap';
+
+describe('Heatmap', () => {
+  let component: Heatmap;
+  let fixture: ComponentFixture<Heatmap>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Heatmap]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Heatmap);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/heatmap/heatmap.ts">
+// src/app/pages/heatmap/heatmap.ts
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { HabitsService } from '../../services/habits.service';
+
+type Tab = 'weekly' | 'monthly' | 'annual';
+
+@Component({
+  selector: 'app-heatmap',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './heatmap.html',
+  styleUrls: ['./heatmap.css'],
+})
+export class HeatmapComponent implements OnInit {
+  private habitsService = inject(HabitsService);
+
+  allGrid = signal<{ date: string; count: number; intensity: number }[]>([]);
+  activeTab = signal<Tab>('weekly');
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
+
+  // Slice the full 84-day grid based on active tab
+  visibleGrid = computed(() => {
+    const grid = this.allGrid();
+    const tab = this.activeTab();
+    if (tab === 'weekly') return grid.slice(-7);
+    if (tab === 'monthly') return grid.slice(-28);
+    return grid; // annual = all 84 days
+  });
+
+  ngOnInit() {
+    this.habitsService.getHeatmap().subscribe({
+      next: (data) => {
+        this.allGrid.set(data.grid);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load heatmap.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  setTab(tab: Tab) {
+    this.activeTab.set(tab);
+  }
+}
+</file>
+
+<file path="src/app/pages/landing/landing.css">
+/* Full page dark background */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* The White Card */
+.landing-card {
+  background-color: #f9f9f9; /* Slightly off-white based on the image */
+  width: 100%;
+  max-width: 380px;
+  min-height: 650px;
+  padding: 3rem 2rem 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.logo-box {
+  width: 60px;
+  height: 60px;
+  border: 1.5px solid #000;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo-box svg {
+  width: 32px;
+  height: 32px;
+  color: #000;
+}
+
+.brand-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.brand-subtitle {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+}
+
+.decorative-oval {
+  width: 8px;
+  height: 16px;
+  border-radius: 10px;
+  background-color: #e0e0e0;
+  margin-bottom: 2rem;
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e5e5e5;
+  margin-bottom: 2rem;
+}
+
+/* Feature Box */
+.feature-box {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #000;
+  margin-bottom: 1rem;
+  background-color: #fff;
+}
+
+.check-icon {
+  width: 18px;
+  height: 18px;
+  color: #000;
+  margin-right: 0.75rem;
+}
+
+.feature-box span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Button */
+.btn-primary {
+  width: 100%;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-bottom: 2rem;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.arrow-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Footer Link */
+.footer-link {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.footer-link a {
+  color: #666;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer-link a:hover {
+  color: #000;
+}
+
+/* Home Indicator */
+.home-indicator {
+  width: 35%;
+  height: 4px;
+  background-color: #ccc;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+</file>
+
+<file path="src/app/pages/landing/landing.html">
+<div class="page-wrapper">
+  <div class="landing-card">
+
+    <div class="hero-section">
+      <!-- Grid Logo Icon -->
+      <div class="logo-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+      </div>
+
+      <h1 class="brand-title">HabitUp</h1>
+      <p class="brand-subtitle">Radical simplicity for<br>disciplined growth.</p>
+
+      <!-- Small decorative oval -->
+      <div class="decorative-oval"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="feature-box">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="check-icon">
+        <path
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+      </svg>
+      <span>Zero distraction, maximum focus.</span>
+    </div>
+
+    <button class="btn-primary" routerLink="/signup">
+      Get Started
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" class="arrow-icon">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </button>
+
+    <div class="footer-link">
+      <a routerLink="/login">Sign in to your account</a>
+    </div>
+
+    <!-- iOS style home indicator for the mobile feel -->
+    <div class="home-indicator"></div>
+
+  </div>
+</div>
+</file>
+
+<file path="src/app/pages/landing/landing.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Landing } from './landing';
+
+describe('Landing', () => {
+  let component: Landing;
+  let fixture: ComponentFixture<Landing>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Landing]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Landing);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/landing/landing.ts">
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-landing',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './landing.html',
+  styleUrls: ['./landing.css'],
+})
+export class LandingComponent {
+  // No complex state needed here, purely presentational and routing.
+}
+</file>
+
+<file path="src/app/pages/onboarding/habit-selection/habit-selection.css">
+/* .mobile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  position: relative;
+  font-family: sans-serif;
+  padding-bottom: 100px; 
+  color: #000;
+}
+
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 2px solid #000;
+  background: #fff;
+}
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.logo-text {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+
+.header {
+  padding: 24px 20px 16px;
+}
+.header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 800;
+}
+.header p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+
+.chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 20px 24px;
+  scrollbar-width: none;
+}
+.chips-scroll::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  padding: 8px 16px;
+  border: 2px solid #000;
+  background: #fff;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chip.active {
+  background: #000;
+  color: #fff;
+}
+
+
+.habits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 20px 24px;
+}
+.habit-grid-card {
+  border: 2px solid #000;
+  background: #fff;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  position: relative;
+}
+.habit-grid-card:active {
+  transform: scale(0.97);
+}
+.habit-grid-card.selected {
+  background: #f1f1f1;
+  border-width: 3px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  height: 24px;
+}
+.icon {
+  font-size: 24px;
+}
+.check-badge {
+  width: 20px;
+  height: 20px;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.habit-grid-card h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 800;
+}
+.habit-grid-card p {
+  margin: 0;
+  font-size: 11px;
+  color: #666;
+  font-weight: 600;
+}
+
+
+.stats-card {
+  margin: 0 20px;
+  border: 2px solid #000;
+  background: #fff;
+  padding: 16px;
+}
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.stats-title span {
+  font-size: 10px;
+  font-weight: 800;
+  color: #666;
+  letter-spacing: 0.5px;
+}
+.stats-title h4 {
+  margin: 4px 0 0;
+  font-size: 16px;
+  font-weight: 800;
+}
+.trend-icon {
+  width: 32px;
+  height: 32px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mock-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 80px;
+  background: #f1f1f1;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.bar {
+  background: #000;
+  flex: 1;
+}
+
+.stats-desc {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+
+.bottom-action {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #ddd;
+}
+.continue-btn {
+  width: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 18px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.continue-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}  */
+
+/* Full page dark background */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* The White Card */
+.selection-card {
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Navigation */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.spacer {
+  width: 24px; /* Balances the flex layout against the back button */
+}
+
+/* Header */
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Category Chips */
+.category-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none; /* Firefox */
+}
+.category-scroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.chip {
+  padding: 0.4rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: transparent;
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.chip.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Habits Grid */
+.habits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.habit-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.habit-box.selected {
+  background-color: #eaeaea;
+  border: 2px solid #000;
+}
+
+.check-circle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  color: #000;
+}
+
+.habit-icon-wrapper {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.75rem;
+  color: #000;
+}
+
+.habit-box h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 0.25rem;
+}
+
+.habit-box p {
+  font-size: 0.65rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Stats Card */
+.stats-card {
+  background-color: #eaeaea;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.stats-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #666;
+  letter-spacing: 0.5px;
+}
+
+.stats-header h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #000;
+  margin-top: 0.25rem;
+}
+
+.trend-icon {
+  background-color: #000;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  height: 80px;
+  gap: 4px;
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 1rem;
+}
+
+.bar {
+  flex: 1;
+  background-color: #000;
+}
+
+.stats-desc {
+  font-size: 0.75rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* Button */
+.btn-primary {
+  width: 100%;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+</file>
+
+<file path="src/app/pages/onboarding/habit-selection/habit-selection.html">
+<div class="page-wrapper">
+    <div class="selection-card">
+
+        <div class="top-nav">
+            <button class="icon-btn" routerLink="/">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <h3 class="logo">HabitUp</h3>
+            <div class="spacer"></div>
+        </div>
+
+        <div class="header">
+            <h1>Choose Your Habits</h1>
+            <p class="subtitle">Select the disciplines you want to build.</p>
+        </div>
+
+        @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+        }
+
+        @if (isLoading()) {
+        <p class="loading-state">Loading habits...</p>
+        } @else {
+        <div class="category-scroll">
+            @for (cat of categories; track cat) {
+            <button class="chip" [class.active]="activeCategory === cat" (click)="setCategory(cat)">
+                {{ cat }}
+            </button>
+            }
+        </div>
+
+        <div class="habits-grid">
+            @for (habit of filteredHabits; track habit.id) {
+            <div class="habit-box" [class.selected]="selectedHabits.has(habit.id)" (click)="toggleHabit(habit.id)">
+
+                @if (selectedHabits.has(habit.id)) {
+                <div class="check-circle">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                </div>
+                }
+
+                <div class="habit-icon-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 8v4l3 3"></path>
+                    </svg>
+                </div>
+
+                <h4>{{ habit.name }}</h4>
+                <p>{{ habit.description }}</p>
+            </div>
+            }
+        </div>
+
+        <div class="stats-card">
+            <div class="stats-header">
+                <div>
+                    <span class="stats-label">SYSTEM STATISTICS</span>
+                    <h4>Community Growth</h4>
+                </div>
+                <div class="trend-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bar-chart">
+                <div class="bar" style="height: 30%"></div>
+                <div class="bar" style="height: 60%"></div>
+                <div class="bar" style="height: 45%"></div>
+                <div class="bar" style="height: 85%"></div>
+                <div class="bar" style="height: 35%"></div>
+                <div class="bar" style="height: 70%"></div>
+                <div class="bar" style="height: 55%"></div>
+            </div>
+
+            <p class="stats-desc">Users picking Fitness habits increased by 14% this week.</p>
+        </div>
+
+        <button class="btn-primary" (click)="onContinue()" [disabled]="selectedHabits.size === 0 || isSubmitting()">
+            @if (isSubmitting()) {
+            Saving...
+            } @else {
+            CONTINUE
+            }
+        </button>
+        }
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/onboarding/habit-selection/habit-selection.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { HabitSelection } from './habit-selection';
+
+describe('HabitSelection', () => {
+  let component: HabitSelection;
+  let fixture: ComponentFixture<HabitSelection>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [HabitSelection]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(HabitSelection);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/onboarding/habit-selection/habit-selection.ts">
+// src/app/pages/onboarding/habit-selection/habit-selection.ts
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { HabitsService, Habit } from '../../../services/habits.service';
+
+@Component({
+  selector: 'app-habit-selection',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './habit-selection.html',
+  styleUrls: ['./habit-selection.css'],
+})
+export class HabitSelectionComponent implements OnInit {
+  private router = inject(Router);
+  private habitsService = inject(HabitsService);
+
+  categories = ['Health', 'Study', 'Fitness', 'Mindfulness'];
+  activeCategory = 'Health';
+  selectedHabits = new Set<string>();
+
+  habits = signal<Habit[]>([]);
+  isLoading = signal(true);
+  isSubmitting = signal(false);
+  errorMessage = signal<string | null>(null);
+
+  ngOnInit() {
+    this.habitsService.getSystemHabits().subscribe({
+      next: (habits) => {
+        this.habits.set(habits);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load habits. Please try again.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  get filteredHabits() {
+    return this.habits().filter((h) => h.category === this.activeCategory);
+  }
+
+  setCategory(cat: string) {
+    this.activeCategory = cat;
+  }
+
+  toggleHabit(id: string) {
+    if (this.selectedHabits.has(id)) {
+      this.selectedHabits.delete(id);
+    } else {
+      this.selectedHabits.add(id);
+    }
+  }
+
+  onContinue() {
+    if (this.selectedHabits.size === 0) return;
+
+    this.isSubmitting.set(true);
+
+    this.habitsService.selectHabits([...this.selectedHabits]).subscribe({
+      next: () => {
+        this.isSubmitting.set(false);
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.isSubmitting.set(false);
+        this.errorMessage.set('Failed to save habits. Please try again.');
+      },
+    });
+  }
+}
+</file>
+
+<file path="src/app/pages/profile/profile.css">
+/* src/app/pages/profile/profile.css */
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #000;
+  background-color: #fff;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000;
+  width: 24px;
+  height: 24px;
+}
+
+.profile-content {
+  padding: 2rem 1.5rem;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.avatar-box {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  background-color: #fff;
+}
+
+.avatar-box svg {
+  width: 40px;
+  height: 40px;
+}
+
+.avatar-section h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0 0 0.25rem;
+}
+
+.school {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+}
+
+.section-block {
+  margin-bottom: 2rem;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #555;
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.toggle-info {
+  flex: 1;
+}
+
+.toggle-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 0.25rem;
+}
+
+.toggle-desc {
+  font-size: 0.7rem;
+  color: #666;
+  margin: 0;
+}
+
+.toggle {
+  width: 44px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle.on {
+  background-color: #000;
+}
+
+.toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.2s;
+}
+
+.toggle.on .toggle-thumb {
+  left: 22px;
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 1rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-logout:hover {
+  opacity: 0.9;
+}
+
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top: 1px solid #000;
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.nav-item.active {
+  background-color: #000;
+  color: #fff;
+}
+</file>
+
+<file path="src/app/pages/profile/profile.html">
+<!-- src/app/pages/profile/profile.html -->
+<div class="page-wrapper">
+    <div class="mobile-container">
+
+        <header class="header">
+            <button class="icon-btn" routerLink="/dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <h1>Profile</h1>
+            <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+        </header>
+
+        @if (isLoading()) {
+        <p style="padding: 2rem; text-align: center;">Loading...</p>
+        } @else if (user()) {
+
+        <div class="profile-content">
+
+            <div class="avatar-section">
+                <div class="avatar-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <h2>{{ user().fullName }}</h2>
+                <p class="school">{{ user().school }}</p>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">NOTIFICATIONS</h3>
+
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <p class="toggle-title">Daily Reminders</p>
+                        <p class="toggle-desc">Get nudged to complete your habits</p>
+                    </div>
+                    <div class="toggle" [class.on]="dailyReminders()" (click)="dailyReminders.update(v => !v)">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <p class="toggle-title">Streak Alerts</p>
+                        <p class="toggle-desc">Don't lose your progress</p>
+                    </div>
+                    <div class="toggle" [class.on]="streakAlerts()" (click)="streakAlerts.update(v => !v)">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-logout" (click)="logout()">LOGOUT</button>
+
+        </div>
+        }
+
+        <nav class="bottom-nav">
+            <div class="nav-item" routerLink="/dashboard">
+                <div class="nav-icon">📅</div>
+                <span>Today</span>
+            </div>
+            <div class="nav-item" routerLink="/progress">
+                <div class="nav-icon">📊</div>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item" routerLink="/heatmap">
+                <div class="nav-icon">✓</div>
+                <span>Habits</span>
+            </div>
+            <div class="nav-item active" routerLink="/profile">
+                <div class="nav-icon">👤</div>
+                <span>Profile</span>
+            </div>
+        </nav>
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/profile/profile.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Profile } from './profile';
+
+describe('Profile', () => {
+  let component: Profile;
+  let fixture: ComponentFixture<Profile>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Profile]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Profile);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/profile/profile.ts">
+// src/app/pages/profile/profile.ts
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+
+@Component({
+  selector: 'app-profile',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './profile.html',
+  styleUrls: ['./profile.css'],
+})
+export class ProfileComponent implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  user = signal<any>(null);
+  isLoading = signal(true);
+  dailyReminders = signal(true);
+  streakAlerts = signal(false);
+
+  ngOnInit() {
+    this.authService.getProfile().subscribe({
+      next: (data) => {
+        this.user.set(data);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}
+</file>
+
+<file path="src/app/pages/progress/progress.css">
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a; /* Dark outer background like your screenshot */
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  /* background-color: #f8f8f8; Very light gray interior */
+  /* background-color: var(--surface); */
+  background-color: var(--background);
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px; /* Space for bottom nav */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  /* border-bottom: 1px solid #000; */
+  border-bottom: 1px solid var(--border);;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  /* color: #000; */
+  color: var(--text);
+  margin: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  /* color: #000; */
+  color: var(--text);
+  width: 20px;
+  height: 20px;
+}
+
+/* Sections */
+.stat-section {
+  padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 10px;
+}
+
+.stat-section h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  margin: 0;
+  flex: 1;
+}
+
+/* Badges */
+.badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+
+.badge-gray {
+  background-color: #e0e0e0;
+  color: #555;
+}
+
+.badge-red {
+  background-color: transparent;
+  color: #d32f2f;
+  border: 1px solid #d32f2f;
+}
+
+/* Habit Cards */
+.habit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.habit-card {
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border: 1px solid #000; */
+  border: 1px solid var(--border);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.icon-box {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.icon-box svg {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-box.dark {
+  /* background-color: #000; */
+  background-color: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+}
+
+.icon-box.light {
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* color: #000; */
+  color: var(--text);
+  border: 1px solid #ccc;
+}
+
+.habit-info {
+  flex-grow: 1;
+}
+
+.habit-info h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  /* color: #000; */
+  color: var(--text);
+  margin: 0 0 0.25rem 0;
+}
+
+.habit-info p {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #888;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.consistency-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 40px;
+}
+
+.mini-bar {
+  width: 100%;
+  height: 3px;
+  background-color: #eee;
+  margin-bottom: 4px;
+}
+
+.mini-bar-fill {
+  height: 100%;
+  /* background-color: #000; */
+  background-color: var(--primary);
+}
+
+.consistency-score span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  /* color: #000; */
+  color: var(--text);
+}
+
+/* Chart Card */
+.chart-card {
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border: 1px solid #000; */
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.bars-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 140px;
+}
+
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  width: 20%;
+}
+
+.bar {
+  width: 80%;
+  background-color: #999;
+  transition: height 0.3s;
+}
+
+.bar.high {
+  /* background-color: #000; */
+  background-color: var(--primary);
+}
+
+.bar-label {
+  margin-top: 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  /* color: #000; */
+  color: var(--text);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border-top: 1px solid #000; */
+  border-top: 1px solid var(--border);;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  height: 60px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  color: #666;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* The exact active state from your image */
+.nav-item.active {
+  /* background-color: #000; */
+  background-color: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+}
+
+.nav-item.active .nav-icon {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+
+.domain-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.domain-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    padding:16px;
+}
+
+.domain-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.domain-name{
+    font-weight:700;
+    color:var(--text);
+}
+
+.domain-score{
+    font-weight:800;
+    color:var(--primary);
+}
+
+.progress-track{
+    height:8px;
+    background:#ddd;
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:8px;
+}
+
+.progress-fill{
+    height:100%;
+    background:var(--primary);
+    transition:width .3s ease;
+}
+
+.domain-meta{
+    font-size:12px;
+    color:var(--text-muted);
+}
+
+.empty-message{
+    color:var(--text-muted);
+    font-size:.85rem;
+}
+
+.insight-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.insight-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:var(--surface);
+    border:1px solid var(--border);
+    /* border-radius:12px; */
+
+    padding:13px;
+}
+
+
+.insight-icon{
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+    color:var(--primary-text);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:20px;
+}
+
+.insight-info h3{
+    margin:0;
+    font-size:15px;
+    color:var(--text);
+}
+
+.insight-info small{
+    color:var(--text-muted);
+    font-size:12px;
+}
+
+.insight-right{
+    font-size:20px;
+    font-weight:800;
+    color:var(--primary);
+}
+
+/* Needs Attention styling */
+
+.insight-card.warning{
+    border-color: #f0b429;
+}
+
+.insight-icon.warning{
+    background:#fff4db;
+    color:#d48806;
+    border:1px solid #f0b429;
+}
+
+.insight-right.warning{
+    color: #d48806;
+}
+
+.section-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.strong-icon {
+  color: var(--primary);
+}
+
+.warning-icon {
+  color: #f59e0b;
+}
+</file>
+
+<file path="src/app/pages/progress/progress.html">
+<div class="page-wrapper">
+    <div class="mobile-container">
+
+        <header class="header">
+            <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <h1>STATISTICS</h1>
+            <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="12" cy="5" r="1"></circle>
+                    <circle cx="12" cy="19" r="1"></circle>
+                </svg>
+            </button>
+        </header>
+
+        @if (isLoading()) {
+        <p style="padding: 2rem; text-align: center;">Loading...</p>
+        } @else if (errorMessage()) {
+        <p style="padding: 2rem; text-align: center;">{{ errorMessage() }}</p>
+        } @else {
+        <section class="stat-section">
+            <div class="section-header">
+                <h2>DOMAIN MASTERY</h2>
+            </div>
+
+            @if(domainMastery().length === 0){
+                <p class="empty-message">
+                    Complete habits to build mastery across your domains.
+                </p>
+            } @else {
+                <div class="domain-list">
+                    @for(domain of domainMastery(); track domain.category){
+                        <div class="domain-card">
+                            <div class="domain-header">
+                                <span class="domain-name">
+                                    {{ domain.category }}
+                                </span>
+                                <span class="domain-score">
+                                    {{ domain.consistency }}%
+                                </span>
+                            </div>
+                            <div class="progress-track">
+                                <div
+                                    class="progress-fill"
+                                    [style.width.%]="domain.consistency">
+                                </div>
+                            </div>
+                            <div class="domain-meta">
+                                {{ domain.completedToday }}/{{ domain.totalHabits }}
+                                completed today
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+
+        <!-- <section class="stat-section">
+            <div class="section-header">
+                <h2>STRONG HABITS</h2>
+                <span class="badge badge-gray">90%+ CONSISTENCY</span>
+            </div>
+
+            @if (strongHabits().length === 0) {
+            <p style="font-size: 0.8rem; color: #666; padding: 0.5rem 0;">
+                Keep going — strong habits appear at 90% consistency.
+            </p>
+            } @else {
+            <div class="habit-list">
+                @for (habit of strongHabits(); track habit.id) {
+                <div class="habit-card">
+                    <div class="icon-box dark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                    </div>
+                    <div class="habit-info">
+                        <h3>{{ habit.name }}</h3>
+                        <p>{{ habit.streak }} DAY STREAK</p>
+                    </div>
+                    <div class="consistency-score">
+                        <div class="mini-bar">
+                            <div class="mini-bar-fill" [style.width.%]="habit.consistency"></div>
+                        </div>
+                        <span>{{ habit.consistency }}%</span>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </section> -->
+
+        <section class="stat-section">
+            <div class="section-header">
+                <svg class="section-icon strong-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>
+                </svg>
+                <h2>STRONG HABITS</h2>
+            </div>
+
+            @if (strongHabits().length === 0) {
+                <p class="empty-message">
+                    No strong habits yet. Keep building consistency!
+                </p>
+            } @else {
+                <div class="insight-list">
+                    @for(habit of strongHabits(); track habit.id){
+                        <div class="insight-card">
+                            <div class="insight-left">
+                                <div class="insight-info">
+                                    <h3>{{ habit.name }}</h3>
+                                    <small>{{ habit.streak }} day streak</small>
+                                </div>
+                            </div>
+                            <div class="insight-right">
+                                {{ habit.consistency }}%
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+
+        <!-- <section class="stat-section">
+            <div class="section-header">
+                <h2>NEEDS ATTENTION</h2>
+                <span class="badge badge-red">LOW TREND</span>
+            </div>
+
+            @if (needsAttention().length === 0) {
+            <p style="font-size: 0.8rem; color: #666; padding: 0.5rem 0;">
+                All habits are performing well!
+            </p>
+            } @else {
+            <div class="habit-list">
+                @for (habit of needsAttention(); track habit.id) {
+                <div class="habit-card">
+                    <div class="icon-box light">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                    </div>
+                    <div class="habit-info">
+                        <h3>{{ habit.name }}</h3>
+                        <p>{{ habit.streak }} DAY STREAK</p>
+                    </div>
+                    <div class="consistency-score">
+                        <div class="mini-bar">
+                            <div class="mini-bar-fill" [style.width.%]="habit.consistency"></div>
+                        </div>
+                        <span>{{ habit.consistency }}%</span>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </section> -->
+
+        <section class="stat-section">
+            <div class="section-header">
+                <svg class="section-icon warning-icon" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                </svg>
+                <h2>NEEDS ATTENTION</h2>
+            </div>
+
+            @if (needsAttention().length === 0) {
+                <p class="empty-message">
+                    🎉 Great job! All your habits are on track.
+                </p>
+            } @else {
+                <div class="insight-list">
+                    @for(habit of needsAttention(); track habit.id){
+                        <div class="insight-card warning">
+                            <div class="insight-left">
+                                <div class="insight-info">
+                                    <h3>{{ habit.name }}</h3>
+                                    <!-- <small>{{ habit.streak }} day streak</small> -->
+                                     <small>{{ habit.status.replace('_', ' ') }}</small>
+                                </div>
+                            </div>
+
+                            <div class="insight-right warning">
+                                {{ habit.consistency }}%
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+
+        <section class="stat-section">
+            <h2>MONTHLY TREND</h2>
+            <div class="chart-card">
+                <div class="bars-container">
+                    @for (bar of monthlyTrend(); track bar.label) {
+                    <div class="bar-col">
+                        <div class="bar" [style.height.%]="(bar.completions / getMaxCompletions()) * 100"
+                            [class.high]="bar.completions === getMaxCompletions()">
+                        </div>
+                        <span class="bar-label">{{ bar.label }}</span>
+                    </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+        }
+
+        <nav class="bottom-nav">
+            <div class="nav-item" routerLink="/dashboard">
+                <div class="nav-icon">📅</div>
+                <span>Today</span>
+            </div>
+            <div class="nav-item active" routerLink="/progress">
+                <div class="nav-icon">📊</div>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item" routerLink="/heatmap">
+                <div class="nav-icon">✓</div>
+                <span>Habits</span>
+            </div>
+            <div class="nav-item" routerLink="/settings">
+                <div class="nav-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+        </nav>
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/progress/progress.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ProgressComponent } from './progress-component';
+
+describe('ProgressComponent', () => {
+  let component: ProgressComponent;
+  let fixture: ComponentFixture<ProgressComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ProgressComponent]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(ProgressComponent);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/progress/progress.ts">
+// src/app/pages/progress/progress.ts
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { HabitsService, ProgressHabit, MonthlyTrend, DomainMastery } from '../../services/habits.service';
+
+@Component({
+  selector: 'app-progress',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './progress.html',
+  styleUrls: ['./progress.css'],
+})
+export class ProgressComponent implements OnInit {
+  private habitsService = inject(HabitsService);
+
+  strongHabits = signal<ProgressHabit[]>([]);
+  needsAttention = signal<ProgressHabit[]>([]);
+  monthlyTrend = signal<MonthlyTrend[]>([]);
+  domainMastery = signal<DomainMastery[]>([]);
+  isLoading = signal(true);
+  errorMessage = signal<string | null>(null);
+
+  ngOnInit() {
+    this.habitsService.getProgress().subscribe({
+      next: (data) => {
+        this.strongHabits.set(data.strongHabits);
+        this.needsAttention.set(data.needsAttention);
+        this.monthlyTrend.set(data.monthlyTrend);
+        this.domainMastery.set(data.domainMastery);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Failed to load progress.');
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  getMaxCompletions(): number {
+    const max = Math.max(...this.monthlyTrend().map((w) => w.completions));
+    return max === 0 ? 1 : max;
+  }
+}
+</file>
+
+<file path="src/app/pages/settings/settings.css">
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #181818;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  /* background-color: #f9f9f9; */
+  background-color: var(--background);
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  /* border-bottom: 1px solid #000; */
+  border-bottom: 1px solid var(--border);
+  /* background-color: #fff; */
+  background-color: var(--surface);
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  /* color: #000; */
+  color:var(--text);
+  margin: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  /* color: #000; */
+  color:var(--text);
+  width: 24px;
+  height: 24px;
+}
+
+.profile-content {
+  padding: 2rem 1.5rem;
+}
+
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.avatar-box {
+  width: 80px;
+  height: 80px;
+  /* border: 2px solid #000; */
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+}
+
+.avatar-box svg {
+  width: 40px;
+  height: 40px;
+}
+
+.avatar-section h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  /* color: #000; */
+  color:var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.school {
+  font-size: 0.8rem;
+  /* color: #666; */
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.section-block {
+  margin-bottom: 2rem;
+}
+
+.interests-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.interest-chip {
+  padding: 0.4rem 1rem;
+  /* border: 1px solid #000; */
+  border: 1px solid var(--border);
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* color: #000; */
+  color:var(--text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.interest-chip.active {
+  /* background-color: #000; */
+  background-color: var(--primary);
+  color: var(--primary-text);
+  /* color: #fff; */
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  /* color: #555; */
+  color:var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border: 1px solid #000; */
+  border: 1px solid var(--border);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.toggle-info {
+  flex: 1;
+}
+
+.toggle-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  /* color: #000; */
+  color:var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.toggle-desc {
+  font-size: 0.7rem;
+  /* color: #666; */
+  color:var(--text-muted);
+  margin: 0;
+}
+
+.toggle {
+  width: 44px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.toggle.on {
+  /* background-color: #000; */
+  background-color: var(--primary);
+}
+
+.toggle-thumb {
+  width: 20px;
+  height: 20px;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.2s;
+}
+
+.toggle.on .toggle-thumb {
+  left: 22px;
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 1rem;
+  /* background-color: #000; */
+  background-color: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-logout:hover {
+  opacity: 0.9;
+}
+
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* background-color: #fff; */
+  background-color: var(--surface);
+  /* border-top: 1px solid #000; */
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  /* color: #666; */
+  color:var(--text-muted);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.nav-item.active {
+  /* background-color: #000; */
+  background-color: var(--primary);
+  /* color: #fff; */
+  color: var(--primary-text);
+}
+
+.theme-grid{
+    display:flex;
+    gap:12px;
+}
+
+.theme-card{
+    flex:1;
+    border:1px solid var(--border);
+    background:var(--surface);
+    cursor:pointer;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+}
+
+.theme-card span {
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.theme-card.active{
+    outline:3px solid var(--accent);
+}
+
+.theme-preview{
+    width:36px;
+    height:36px;
+    /* border:1px solid #000; */
+    border:1px solid var(--border);
+}
+
+.theme-preview.light{
+    background:#ffffff;
+}
+
+.theme-preview.dark{
+    background:#111111;
+}
+
+.theme-preview.vibrant{
+    background:#d8ff00;
+}
+
+
+.settings-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 16px 0;
+
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--divider);
+
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.settings-row p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.settings-row span {
+  font-size: 16px;
+  color: var(--text);
+}
+</file>
+
+<file path="src/app/pages/settings/settings.html">
+<div class="page-wrapper">
+    <div class="mobile-container">
+
+        <header class="header">
+            <button class="icon-btn" routerLink="/dashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <h1>Profile</h1>
+            <button class="icon-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+        </header>
+
+        @if (isLoading()) {
+        <p style="padding: 2rem; text-align: center;">Loading...</p>
+        } @else if (user(); as currentUser) {
+
+        <div class="profile-content">
+
+            <div class="avatar-section">
+                <div class="avatar-box">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <h2>{{ currentUser.fullName }}</h2>
+                <p class="school">{{ currentUser.school }}</p>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">ACCOUNT</h3>
+
+                <button
+                    class="settings-row"
+                    routerLink="/settings/edit-profile">
+
+                    <span>Edit Profile</span>
+
+                    <span class="arrow">›</span>
+                </button>
+
+                <button
+                    class="settings-row"
+                    routerLink="/settings/change-password">
+
+                    <span>Change Password</span>
+
+                    <span class="arrow">›</span>
+                </button>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">INTERESTS</h3>
+                <div class="interests-grid">
+                    @for (interest of allInterests; track interest) {
+                    <button class="interest-chip" [class.active]="selectedInterests().has(interest)"
+                        (click)="toggleInterest(interest)">
+                        {{ interest }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">NOTIFICATIONS</h3>
+
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <p class="toggle-title">Daily Reminders</p>
+                        <p class="toggle-desc">Get nudged to complete your habits</p>
+                    </div>
+                    <div class="toggle" [class.on]="dailyReminders()" (click)="dailyReminders.update(v => !v)">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <p class="toggle-title">Streak Alerts</p>
+                        <p class="toggle-desc">Don't lose your progress</p>
+                    </div>
+                    <div class="toggle" [class.on]="streakAlerts()" (click)="streakAlerts.update(v => !v)">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <h3 class="section-label">
+                    APPEARANCE
+                </h3>
+                <div class="theme-grid">
+                    @for(theme of themes; track theme){
+                        <button
+                            class="theme-card"
+                            [class.active]="selectedTheme()===theme"
+                            (click)="setTheme(theme)">
+
+                            <div class="theme-preview"
+                                [class.light]="theme==='Light'"
+                                [class.dark]="theme==='Dark'"
+                                [class.vibrant]="theme==='Vibrant'">
+                            </div>
+                            <span>{{theme}}</span>
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <button class="btn-logout" (click)="logout()">LOGOUT</button>
+
+        </div>
+        }
+
+        <nav class="bottom-nav">
+            <div class="nav-item" routerLink="/dashboard">
+                <div class="nav-icon">📅</div>
+                <span>Today</span>
+            </div>
+            <div class="nav-item" routerLink="/progress">
+                <div class="nav-icon">📊</div>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item" routerLink="/heatmap">
+                <div class="nav-icon">✓</div>
+                <span>Habits</span>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">👤</div>
+                <span>Settings</span>
+            </div>
+        </nav>
+
+    </div>
+</div>
+</file>
+
+<file path="src/app/pages/settings/settings.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Settings } from './settings';
+
+describe('Settings', () => {
+  let component: Settings;
+  let fixture: ComponentFixture<Settings>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Settings]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Settings);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/settings/settings.ts">
+import { Component, inject, signal, OnInit, WritableSignal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserProfile } from '../../services/user.service';
+
+const ALL_INTERESTS = [
+  'Health',
+  'Productivity',
+  'Reading',
+  'Coding',
+  'Running',
+  'Fitness',
+  'Mindfulness',
+  'Study',
+];
+
+@Component({
+  selector: 'app-settings',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './settings.html',
+  styleUrl: './settings.css',
+})
+export class Settings implements OnInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  user = signal<UserProfile | null>(null);
+  isLoading = signal(true);
+  dailyReminders = signal(true);
+  streakAlerts = signal(false);
+
+  allInterests = ALL_INTERESTS;
+  selectedInterests = signal<Set<string>>(new Set(['Health', 'Productivity', 'Reading']));
+
+  themes = ['Light', 'Dark', 'Vibrant'];
+  selectedTheme = signal('Light');
+
+  ngOnInit() {
+    // Load saved interests from localStorage
+    const saved = localStorage.getItem('interests');
+    const theme = localStorage.getItem('theme');
+    
+    if (theme) {
+      this.selectedTheme.set(theme);
+      document.body.className = `${theme.toLowerCase()}-theme`;
+    }
+    if (saved) {
+      this.selectedInterests.set(new Set(JSON.parse(saved)));
+    }    
+
+    this.authService.getProfile().subscribe({
+      next: (data) => {
+        this.user.set(data);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  toggleInterest(interest: string) {
+    this.selectedInterests.update((set) => {
+      const newSet = new Set(set);
+      if (newSet.has(interest)) {
+        newSet.delete(interest);
+      } else {
+        newSet.add(interest);
+      }
+      // Save to localStorage immediately
+      localStorage.setItem('interests', JSON.stringify([...newSet]));
+      return newSet;
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  setTheme(theme: string) {
+    this.selectedTheme.set(theme);
+    localStorage.setItem('theme', theme);
+    document.body.className = `${theme.toLowerCase()}-theme`;
+  }
+
+  toggleSetting(
+    key: string,
+    signalRef: WritableSignal<boolean>,
+  ) {
+    signalRef.update(value => !value);
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(signalRef())
+    );
+  }
+}
+</file>
+
+<file path="src/app/services/auth.service.ts">
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+
+export interface LoginDto {
+  email: string;
+  password: string;
+}
+
+export interface RegisterDto {
+  fullName: string;
+  school?: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  user: {
+    id: string;
+    fullName: string;
+    email: string;
+    school?: string;
+  };
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private http = inject(HttpClient);
+
+  private readonly apiUrl = 'http://localhost:3000/auth';
+
+  getProfile(): Observable<any> {
+    return this.http.get(`http://localhost:3000/users/profile`);
+  }
+
+  register(data: RegisterDto): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }),
+    );
+  }
+
+  login(data: LoginDto): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data).pipe(
+      tap((response) => {
+        localStorage.setItem('token', response.access_token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }),
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getToken();
+  }
+
+  getCurrentUser() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  updateCurrentUser(user: AuthResponse['user']): void {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+}
+</file>
+
+<file path="src/app/services/habits.service.ts">
+// src/app/services/habits.service.ts
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+
+export interface Habit {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  icon: string;
+  completedToday?: boolean;
+}
+
+export interface DashboardResponse {
+  date: string;
+  progressPercentage: number;
+  completedCount: number;
+  totalCount: number;
+  habits: Habit[];
+}
+
+export interface HabitDetail {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  icon: string;
+  currentStreak: number;
+  weeklyActivity: { date: string; completed: boolean }[];
+}
+
+export interface ProgressHabit {
+  id: string;
+  name: string;
+  icon: string;
+  category: string;
+  consistency: number;
+  streak: number;
+  status: string;
+  completedToday: boolean;
+}
+
+export interface MonthlyTrend {
+  label: string;
+  completions: number;
+}
+
+export interface DomainMastery {
+  category: string;
+  consistency: number;
+  totalHabits: number;
+  completedToday: number;
+}
+
+export interface ProgressResponse {
+  strongHabits: ProgressHabit[];
+  needsAttention: ProgressHabit[];
+  monthlyTrend: MonthlyTrend[];
+  domainMastery: DomainMastery[];
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HabitsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/habits';
+
+  // add to habits.service.ts
+  hasUserHabits(): Observable<boolean> {
+    return this.getDashboard().pipe(map((data) => data.totalCount > 0));
+  }
+
+  getSystemHabits(): Observable<Habit[]> {
+    return this.http.get<Habit[]>(`${this.apiUrl}/system`);
+  }
+
+  selectHabits(habitIds: string[]): Observable<Habit[]> {
+    return this.http.post<Habit[]>(`${this.apiUrl}/select`, { habitIds });
+  }
+
+  getDashboard(): Observable<DashboardResponse> {
+    return this.http.get<DashboardResponse>(`${this.apiUrl}/dashboard`);
+  }
+
+  completeHabit(habitId: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/${habitId}/complete`, {});
+  }
+
+  uncompleteHabit(habitId: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${habitId}/complete`);
+  }
+
+  getHabitDetail(habitId: string): Observable<HabitDetail> {
+    return this.http.get<HabitDetail>(`${this.apiUrl}/${habitId}`);
+  }
+
+  getProgress(): Observable<ProgressResponse> {
+    return this.http.get<ProgressResponse>(`${this.apiUrl}/progress`);
+  }
+
+  getHeatmap(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/heatmap`);
+  }
+}
+</file>
+
+<file path="src/app/services/user.service.ts">
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface UserProfile {
+  id: string;
+  fullName: string;
+  school: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateProfileDto {
+  fullName: string;
+  school: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/users';
+
+  getProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/profile`);
+  }
+
+  updateProfile(payload: UpdateProfileDto): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(
+      `${this.apiUrl}/profile`,
+      payload,
+    );
+  }
+}
+</file>
+
+<file path="src/index.html">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HabitupFrontend</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+</file>
+
+<file path="src/main.ts">
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { App } from './app/app';
+
+bootstrapApplication(App, appConfig)
+  .catch((err) => console.error(err));
+</file>
+
+<file path="src/styles.css">
+:root {
+  --background: #f9f9f9;
+  --surface: #ffffff;
+  --text: #111111;
+  --text-muted: #666666;
+  --primary: #000000;
+  --primary-text: #ffffff;
+  --border: #000000;
+  --accent: #d8ff00;
+  --divider: #e5e5e5;
+}
+
+body.dark-theme {
+  --background: #121212;
+  --surface: #1d1d1d;
+  --text: #fff;
+  --text-muted: #b5b5b5;
+  --primary: #d8ff00;
+  --primary-text: #000000;
+  --border: #555;
+  --accent: #d8ff00;
+  --divider: #3d3d3d;
+}
+
+body.vibrant-theme {
+  --background: #fffde7;
+  --surface: #ffffff;
+  --text: #111111;
+  --text-muted: #555555;
+  --primary: #d8ff00;
+  --primary-text: #111111;
+  --border: #111111;
+  --accent: #d8ff00;
+  --divider: #d9d9d9;
+}
+</file>
+
+<file path="tsconfig.app.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}
+</file>
+
+<file path="tsconfig.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}
+</file>
+
+<file path="tsconfig.spec.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.spec.ts"
+  ]
+}
+</file>
+
+</files>
