@@ -82,6 +82,15 @@ export const routes: Routes = [
   },
 
   {
+    path: 'notifications',
+    loadComponent: () =>
+      import('./pages/notifications/notifications').then(
+        (m) => m.NotificationsComponent,
+      ),
+    canActivate: [authGuard],
+  },
+
+  {
     // Catch-all route for 404s
     path: '**',
     redirectTo: '',

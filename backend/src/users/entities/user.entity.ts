@@ -23,6 +23,12 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ default: true })
+  dailyReminders: boolean;
+
+  @Column({ default: false })
+  streakAlerts: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

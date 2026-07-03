@@ -4,16 +4,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HabitsService, DashboardResponse, Habit } from '../../services/habits.service';
 import { AuthService } from '../../services/auth.service';
+import { NotificationsService } from '../../services/notifications.service';
+import { QuickAddHabitComponent } from '../../components/quick-add-habit/quick-add-habit';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, QuickAddHabitComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
   private habitsService = inject(HabitsService);
   private authService = inject(AuthService);
+  private notificationsService = inject(NotificationsService);
   readonly radius = 54;
   readonly circumference = 2 * Math.PI * this.radius;
   readonly quotes = [
@@ -38,6 +41,8 @@ export class DashboardComponent implements OnInit {
   dashboard = signal<DashboardResponse | null>(null);
   isLoading = signal(true);
   errorMessage = signal<string | null>(null);
+  unreadCount = signal(0)
+  showQuickAdd = signal(false);
 
   // Pull first name from localStorage
   firstName = computed(() => {
@@ -101,6 +106,11 @@ export class DashboardComponent implements OnInit {
         this.isLoading.set(false);
       },
     });
+
+    this.notificationsService.getUnreadCount().subscribe({
+      next: (data) => this.unreadCount.set(data.count),
+      error: () => {},
+    });
   }
 
   toggleHabit(habitId: string, completedToday: boolean) {
@@ -116,5 +126,18 @@ export class DashboardComponent implements OnInit {
 
   getProgressOffset(progress: number): number {
     return this.circumference - (progress / 100) * this.circumference;
+  }
+
+  openQuickAdd() {
+    this.showQuickAdd.set(true);
+  }
+
+  closeQuickAdd() {
+    this.showQuickAdd.set(false);
+  }
+
+  onHabitCreated() {
+    this.closeQuickAdd();
+    this.loadDashboard();
   }
 }

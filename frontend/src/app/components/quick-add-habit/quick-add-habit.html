@@ -1,0 +1,147 @@
+<div class="modal-backdrop" (click)="closeModal()">
+
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+
+      <h2>Quick Add Habit</h2>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="closeModal()">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+
+        </svg>
+
+      </button>
+
+    </div>
+
+    @if (errorMessage()) {
+      <div class="error-message">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Habit Name -->
+
+    <div class="form-group">
+
+      <label>HABIT NAME</label>
+
+      <input
+        type="text"
+        placeholder="e.g. Morning Meditation"
+        [value]="name()"
+        (input)="name.set($any($event.target).value)">
+
+    </div>
+
+    <!-- Domain -->
+
+    <div class="form-group">
+
+      <label>SELECT DOMAIN</label>
+
+      <div class="button-grid">
+
+        @for (domain of domains; track domain) {
+
+          <button
+            type="button"
+            class="option-btn"
+            [class.active]="selectedDomain() === domain"
+            (click)="setDomain(domain)">
+
+            {{ domain }}
+
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Tracking Type -->
+
+    <div class="form-group">
+
+      <label>TRACKING TYPE</label>
+
+      <div class="button-grid tracking-grid">
+
+        @for (type of trackingTypes; track type) {
+
+          <button
+            type="button"
+            class="option-btn"
+            [class.active]="selectedTrackingType() === type"
+            (click)="setTrackingType(type)">
+
+            {{ type | titlecase }}
+
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Daily Target -->
+
+    <div class="form-group">
+
+      <label>DAILY TARGET</label>
+
+      <input
+        type="number"
+        min="1"
+        [value]="dailyTarget()"
+        (input)="dailyTarget.set(+$any($event.target).value)">
+
+    </div>
+
+    <!-- Target Unit -->
+
+    <div class="form-group">
+
+      <label>UNIT</label>
+
+      <input
+        type="text"
+        [value]="targetUnit()"
+        readonly>
+
+    </div>
+
+    <button
+      class="create-btn"
+      [disabled]="isSaving()"
+      (click)="createHabit()">
+
+      @if (isSaving()) {
+
+        Creating...
+
+      } @else {
+
+        Initialize Habit 🚀
+
+      }
+
+    </button>
+
+  </div>
+
+</div>

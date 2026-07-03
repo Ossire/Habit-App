@@ -9,7 +9,11 @@ export interface Habit {
   description: string;
   category: string;
   icon: string;
+  trackingType: string; // 'toggle' | 'count' | 'duration' | 'timer'
+  dailyTarget: number | null;
+  targetUnit: string | null;
   completedToday?: boolean;
+  loggedValue?: number | null;
 }
 
 export interface DashboardResponse {
@@ -26,8 +30,11 @@ export interface HabitDetail {
   description: string;
   category: string;
   icon: string;
+  trackingType: string;
+  dailyTarget: number | null;
+  targetUnit: string | null;
   currentStreak: number;
-  weeklyActivity: { date: string; completed: boolean }[];
+  weeklyActivity: { date: string; completed: boolean; value: number | null }[];
 }
 
 export interface ProgressHabit {
@@ -37,7 +44,7 @@ export interface ProgressHabit {
   category: string;
   consistency: number;
   streak: number;
-  status: string;
+  status: string; // 'MISSED_3_DAYS' | 'STAGNANT' | 'LOW_CONSISTENCY'
   completedToday: boolean;
 }
 
@@ -58,6 +65,24 @@ export interface ProgressResponse {
   needsAttention: ProgressHabit[];
   monthlyTrend: MonthlyTrend[];
   domainMastery: DomainMastery[];
+}
+
+export interface CreateHabitDto {
+  name: string;
+  description?: string;
+  category: string;
+  icon?: string;
+  trackingType?: string;
+  dailyTarget?: number;
+  targetUnit?: string;
+}
+
+export interface LogHabitResponse {
+  message: string;
+  value: number;
+  target: number;
+  targetUnit: string;
+  completed: boolean;
 }
 
 @Injectable({
@@ -92,6 +117,11 @@ export class HabitsService {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${habitId}/complete`);
   }
 
+  // For count and duration habits — logs a numeric value
+  logHabit(habitId: string, value: number): Observable<LogHabitResponse> {
+    return this.http.post<LogHabitResponse>(`${this.apiUrl}/${habitId}/log`, { value });
+  }
+
   getHabitDetail(habitId: string): Observable<HabitDetail> {
     return this.http.get<HabitDetail>(`${this.apiUrl}/${habitId}`);
   }
@@ -102,5 +132,10 @@ export class HabitsService {
 
   getHeatmap(): Observable<any> {
     return this.http.get(`${this.apiUrl}/heatmap`);
+  }
+
+  // Create a custom habit from the Quick Add modal
+  createHabit(dto: CreateHabitDto): Observable<Habit> {
+    return this.http.post<Habit>(`${this.apiUrl}`, dto);
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserProfile } from '../../services/user.service';
+import { UserService } from '../../services/user.service';
 
 const ALL_INTERESTS = [
   'Health',
@@ -24,6 +25,7 @@ const ALL_INTERESTS = [
 })
 export class Settings implements OnInit {
   private authService = inject(AuthService);
+  private userService = inject(UserService);
   private router = inject(Router);
 
   user = signal<UserProfile | null>(null);
@@ -50,15 +52,37 @@ export class Settings implements OnInit {
       this.selectedInterests.set(new Set(JSON.parse(saved)));
     }    
 
-    this.authService.getProfile().subscribe({
+    // this.authService.getProfile().subscribe({
+    //   next: (data) => {
+    //     this.user.set(data);
+    //     this.isLoading.set(false);
+    //   },
+    //   error: () => {
+    //     this.isLoading.set(false);
+    //   },
+    // });
+
+    this.userService.getProfile().subscribe({
       next: (data) => {
         this.user.set(data);
+        this.dailyReminders.set(data.dailyReminders);
+        this.streakAlerts.set(data.streakAlerts);
         this.isLoading.set(false);
       },
-      error: () => {
-        this.isLoading.set(false);
-      },
+      error: () => this.isLoading.set(false),
     });
+  }
+
+  toggleDailyReminders() {
+    const newValue = !this.dailyReminders();
+    this.dailyReminders.set(newValue);
+    this.userService.updateNotificationPreferences({ dailyReminders: newValue }).subscribe();
+  }
+
+  toggleStreakAlerts() {
+    const newValue = !this.streakAlerts();
+    this.streakAlerts.set(newValue);
+    this.userService.updateNotificationPreferences({ streakAlerts: newValue }).subscribe();
   }
 
   toggleInterest(interest: string) {
