@@ -11,11 +11,16 @@
   padding: 20px;
 
   z-index: 999;
+  backdrop-filter: blur(4px);
 }
 
 .modal {
   width: 100%;
-  max-width: 380px;
+  max-width: 390px;
+
+  max-height: calc(100vh - 40px);
+  /* max-height: min(720px, calc(100vh - 24px)); */
+  overflow-y: auto;
 
   background: var(--surface);
 
@@ -27,6 +32,11 @@
   box-sizing: border-box;
 
   animation: pop .18s ease;
+  scrollbar-width: none;
+}
+
+.modal::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes pop {
@@ -49,7 +59,7 @@
   justify-content: space-between;
   align-items: center;
 
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 
 }
 
@@ -97,9 +107,18 @@
 }
 
 .form-group {
+  margin-bottom: 14px;
+}
 
-  margin-bottom: 22px;
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
 
+.form-row .form-group {
+  margin-bottom: 0;
 }
 
 .form-group label {
@@ -121,7 +140,7 @@
 
   width: 100%;
 
-  padding: 14px;
+  padding: 10px;
 
   box-sizing: border-box;
 
@@ -136,26 +155,38 @@
 }
 
 .button-grid {
-
   display: flex;
-
-  flex-wrap: wrap;
-
   gap: 10px;
 
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  white-space: nowrap;
+
+  padding-bottom: 4px;
+
+  scrollbar-width: none;
+}
+
+.button-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.button-grid .option-btn {
+  flex: 0 0 auto;
 }
 
 .tracking-grid {
-
-  display: grid;
-
+  display: grid !important;
   grid-template-columns: repeat(2, 1fr);
 
+  overflow: visible;
+  white-space: normal;
 }
 
 .option-btn {
 
-  padding: 12px 16px;
+  padding: 10px 16px;
 
   border: 2px solid var(--border);
 
@@ -188,24 +219,25 @@
 }
 
 .create-btn {
+  position: sticky;
+  bottom: -24px;
 
   width: 100%;
 
   padding: 16px;
 
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-bottom: 50px;
 
   border: none;
 
   background: var(--primary);
-
   color: var(--primary-text);
 
   font-size: 15px;
   font-weight: 800;
 
   cursor: pointer;
-
 }
 
 .create-btn:disabled {
