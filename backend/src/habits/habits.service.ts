@@ -73,7 +73,7 @@ export class HabitsService {
 
     const habits = await this.habitRepository.find({
       where: { userId, isSystem: false },
-      order: { createdAt: 'ASC' },
+      order: { createdAt: 'DESC' },
     });
 
     const todayLogs = await this.habitLogRepository.find({

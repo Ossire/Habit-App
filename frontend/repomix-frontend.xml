@@ -43,6 +43,7 @@ The content is organized as follows:
 .editorconfig
 .gitignore
 angular.json
+final-touches.md
 package.json
 public/favicon.ico
 README.md
@@ -60,6 +61,10 @@ src/app/components/progress-bar/progress-bar.css
 src/app/components/progress-bar/progress-bar.html
 src/app/components/progress-bar/progress-bar.spec.ts
 src/app/components/progress-bar/progress-bar.ts
+src/app/components/quick-add-habit/quick-add-habit.css
+src/app/components/quick-add-habit/quick-add-habit.html
+src/app/components/quick-add-habit/quick-add-habit.ts
+src/app/constants/domainS.ts
 src/app/core/guards/auth.guard.ts
 src/app/core/guards/guest.guard.ts
 src/app/core/interceptors/auth.interceptor.ts
@@ -95,6 +100,10 @@ src/app/pages/landing/landing.css
 src/app/pages/landing/landing.html
 src/app/pages/landing/landing.spec.ts
 src/app/pages/landing/landing.ts
+src/app/pages/notifications/notifications.css
+src/app/pages/notifications/notifications.html
+src/app/pages/notifications/notifications.spec.ts
+src/app/pages/notifications/notifications.ts
 src/app/pages/onboarding/habit-selection/habit-selection.css
 src/app/pages/onboarding/habit-selection/habit-selection.html
 src/app/pages/onboarding/habit-selection/habit-selection.spec.ts
@@ -113,6 +122,7 @@ src/app/pages/settings/settings.spec.ts
 src/app/pages/settings/settings.ts
 src/app/services/auth.service.ts
 src/app/services/habits.service.ts
+src/app/services/notifications.service.ts
 src/app/services/user.service.ts
 src/index.html
 src/main.ts
@@ -266,6 +276,1006 @@ Thumbs.db
     }
   }
 }
+</file>
+
+<file path="final-touches.md">
+# HabitUp — Frontend Remaining Tasks + DB Seeding Guide
+
+---
+
+# PART 1 — Frontend Remaining Tasks
+
+## 1. Update HabitsService interfaces and add missing methods
+
+Replace `src/app/services/habits.service.ts` with:
+
+```typescript
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+
+export interface Habit {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  icon: string;
+  trackingType: string; // 'toggle' | 'count' | 'duration' | 'timer'
+  dailyTarget: number | null;
+  targetUnit: string | null;
+  completedToday?: boolean;
+  loggedValue?: number | null;
+}
+
+export interface DashboardResponse {
+  date: string;
+  progressPercentage: number;
+  completedCount: number;
+  totalCount: number;
+  habits: Habit[];
+}
+
+export interface HabitDetail {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  icon: string;
+  trackingType: string;
+  dailyTarget: number | null;
+  targetUnit: string | null;
+  currentStreak: number;
+  weeklyActivity: { date: string; completed: boolean; value: number | null }[];
+}
+
+export interface ProgressHabit {
+  id: string;
+  name: string;
+  icon: string;
+  category: string;
+  consistency: number;
+  streak: number;
+  status: string; // 'MISSED_3_DAYS' | 'STAGNANT' | 'LOW_CONSISTENCY'
+  completedToday: boolean;
+}
+
+export interface MonthlyTrend {
+  label: string;
+  completions: number;
+}
+
+export interface DomainMastery {
+  category: string;
+  consistency: number;
+  totalHabits: number;
+  completedToday: number;
+}
+
+export interface ProgressResponse {
+  strongHabits: ProgressHabit[];
+  needsAttention: ProgressHabit[];
+  monthlyTrend: MonthlyTrend[];
+  domainMastery: DomainMastery[];
+}
+
+export interface CreateHabitDto {
+  name: string;
+  description?: string;
+  category: string;
+  icon?: string;
+  trackingType?: string;
+  dailyTarget?: number;
+  targetUnit?: string;
+}
+
+export interface LogHabitResponse {
+  message: string;
+  value: number;
+  target: number;
+  targetUnit: string;
+  completed: boolean;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HabitsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/habits';
+
+  hasUserHabits(): Observable<boolean> {
+    return this.getDashboard().pipe(map((data) => data.totalCount > 0));
+  }
+
+  getSystemHabits(): Observable<Habit[]> {
+    return this.http.get<Habit[]>(`${this.apiUrl}/system`);
+  }
+
+  selectHabits(habitIds: string[]): Observable<Habit[]> {
+    return this.http.post<Habit[]>(`${this.apiUrl}/select`, { habitIds });
+  }
+
+  getDashboard(): Observable<DashboardResponse> {
+    return this.http.get<DashboardResponse>(`${this.apiUrl}/dashboard`);
+  }
+
+  completeHabit(habitId: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/${habitId}/complete`, {});
+  }
+
+  uncompleteHabit(habitId: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${habitId}/complete`);
+  }
+
+  // For count and duration habits — logs a numeric value
+  logHabit(habitId: string, value: number): Observable<LogHabitResponse> {
+    return this.http.post<LogHabitResponse>(`${this.apiUrl}/${habitId}/log`, { value });
+  }
+
+  getHabitDetail(habitId: string): Observable<HabitDetail> {
+    return this.http.get<HabitDetail>(`${this.apiUrl}/${habitId}`);
+  }
+
+  getProgress(): Observable<ProgressResponse> {
+    return this.http.get<ProgressResponse>(`${this.apiUrl}/progress`);
+  }
+
+  getHeatmap(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/heatmap`);
+  }
+
+  // Create a custom habit from the Quick Add modal
+  createHabit(dto: CreateHabitDto): Observable<Habit> {
+    return this.http.post<Habit>(`${this.apiUrl}`, dto);
+  }
+}
+```
+
+---
+
+## 2. Add missing methods to UserService
+
+Replace `src/app/services/user.service.ts` with:
+
+```typescript
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface UserProfile {
+  id: string;
+  fullName: string;
+  school: string;
+  email: string;
+  dailyReminders: boolean;
+  streakAlerts: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpdateProfileDto {
+  fullName?: string;
+  school?: string;
+}
+
+export interface ChangePasswordDto {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface NotificationPreferencesDto {
+  dailyReminders?: boolean;
+  streakAlerts?: boolean;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/users';
+
+  getProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.apiUrl}/profile`);
+  }
+
+  updateProfile(payload: UpdateProfileDto): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/profile`, payload);
+  }
+
+  changePassword(payload: ChangePasswordDto): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`${this.apiUrl}/change-password`, payload);
+  }
+
+  updateNotificationPreferences(payload: NotificationPreferencesDto): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/notifications`, payload);
+  }
+}
+```
+
+---
+
+## 3. Create NotificationsService
+
+Create `src/app/services/notifications.service.ts`:
+
+```typescript
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class NotificationsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/notifications';
+
+  getAll(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.apiUrl}`);
+  }
+
+  getUnreadCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/unread/count`);
+  }
+
+  markAsRead(id: string): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/read`, {});
+  }
+
+  markAllAsRead(): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/read-all`, {});
+  }
+}
+```
+
+---
+
+## 4. Wire notification preferences toggles in Settings
+
+In `src/app/pages/settings/settings.ts`, inject `UserService` and wire the
+toggles to actually save to the backend:
+
+```typescript
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+
+const ALL_INTERESTS = [
+  'Health',
+  'Productivity',
+  'Reading',
+  'Coding',
+  'Running',
+  'Fitness',
+  'Mindfulness',
+  'Study',
+];
+
+@Component({
+  selector: 'app-settings',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './settings.html',
+  styleUrl: './settings.css',
+})
+export class Settings implements OnInit {
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+  private router = inject(Router);
+
+  user = signal<any>(null);
+  isLoading = signal(true);
+  dailyReminders = signal(true);
+  streakAlerts = signal(false);
+
+  allInterests = ALL_INTERESTS;
+  selectedInterests = signal<Set<string>>(new Set(['Health', 'Productivity', 'Reading']));
+
+  ngOnInit() {
+    const saved = localStorage.getItem('interests');
+    if (saved) {
+      this.selectedInterests.set(new Set(JSON.parse(saved) as string[]));
+    }
+
+    this.userService.getProfile().subscribe({
+      next: (data) => {
+        this.user.set(data);
+        this.dailyReminders.set(data.dailyReminders);
+        this.streakAlerts.set(data.streakAlerts);
+        this.isLoading.set(false);
+      },
+      error: () => this.isLoading.set(false),
+    });
+  }
+
+  toggleDailyReminders() {
+    const newValue = !this.dailyReminders();
+    this.dailyReminders.set(newValue);
+    this.userService.updateNotificationPreferences({ dailyReminders: newValue }).subscribe();
+  }
+
+  toggleStreakAlerts() {
+    const newValue = !this.streakAlerts();
+    this.streakAlerts.set(newValue);
+    this.userService.updateNotificationPreferences({ streakAlerts: newValue }).subscribe();
+  }
+
+  toggleInterest(interest: string) {
+    this.selectedInterests.update((set) => {
+      const newSet = new Set(set);
+      if (newSet.has(interest)) {
+        newSet.delete(interest);
+      } else {
+        newSet.add(interest);
+      }
+      localStorage.setItem('interests', JSON.stringify([...newSet]));
+      return newSet;
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+}
+```
+
+Update `settings.html` toggles to use the new methods:
+
+```html
+<!-- Daily Reminders toggle row -->
+<div class="toggle-row">
+  <div class="toggle-info">
+    <p class="toggle-title">Daily Reminders</p>
+    <p class="toggle-desc">Get nudged to complete your habits</p>
+  </div>
+  <div class="toggle" [class.on]="dailyReminders()" (click)="toggleDailyReminders()">
+    <div class="toggle-thumb"></div>
+  </div>
+</div>
+
+<!-- Streak Alerts toggle row -->
+<div class="toggle-row">
+  <div class="toggle-info">
+    <p class="toggle-title">Streak Alerts</p>
+    <p class="toggle-desc">Don't lose your progress</p>
+  </div>
+  <div class="toggle" [class.on]="streakAlerts()" (click)="toggleStreakAlerts()">
+    <div class="toggle-thumb"></div>
+  </div>
+</div>
+```
+
+---
+
+## 5. Add notification bell to dashboard header
+
+In `src/app/pages/dashboard/dashboard.ts` add:
+
+```typescript
+import { NotificationsService } from '../../services/notifications.service';
+
+// inside the class
+private notificationsService = inject(NotificationsService);
+unreadCount = signal(0);
+
+// inside ngOnInit or loadDashboard
+this.notificationsService.getUnreadCount().subscribe({
+  next: (data) => this.unreadCount.set(data.count),
+  error: () => {},
+});
+```
+
+In `dashboard.html` header add a bell icon:
+
+```html
+<div class="header-actions">
+  <button class="bell-btn" routerLink="/notifications">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      width="24"
+      height="24"
+    >
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+    </svg>
+    @if (unreadCount() > 0) {
+    <span class="bell-badge">{{ unreadCount() }}</span>
+    }
+  </button>
+</div>
+```
+
+Add to `dashboard.css`:
+
+```css
+.header-actions {
+  position: relative;
+}
+
+.bell-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 4px;
+}
+
+.bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #000;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+```
+
+---
+
+## 6. Create Notifications page
+
+Create `src/app/pages/notifications/notifications.ts`:
+
+```typescript
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { NotificationsService, Notification } from '../../services/notifications.service';
+
+@Component({
+  selector: 'app-notifications',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './notifications.html',
+  styleUrl: './notifications.css',
+})
+export class NotificationsComponent implements OnInit {
+  private notificationsService = inject(NotificationsService);
+
+  notifications = signal<Notification[]>([]);
+  isLoading = signal(true);
+
+  ngOnInit() {
+    this.notificationsService.getAll().subscribe({
+      next: (data) => {
+        this.notifications.set(data);
+        this.isLoading.set(false);
+        // Mark all as read when page is opened
+        this.notificationsService.markAllAsRead().subscribe();
+      },
+      error: () => this.isLoading.set(false),
+    });
+  }
+}
+```
+
+Create `src/app/pages/notifications/notifications.html`:
+
+```html
+<div class="page-wrapper">
+  <div class="mobile-container">
+    <header class="header">
+      <button class="icon-btn" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h1>Notifications</h1>
+      <div style="width: 24px;"></div>
+    </header>
+
+    @if (isLoading()) {
+    <p style="padding: 2rem; text-align: center;">Loading...</p>
+    } @else if (notifications().length === 0) {
+    <p style="padding: 2rem; text-align: center; color: #666;">
+      No notifications yet. Keep building those habits!
+    </p>
+    } @else {
+    <div class="notifications-list">
+      @for (n of notifications(); track n.id) {
+      <div class="notification-card" [class.unread]="!n.isRead">
+        <div class="notif-icon">
+          @if (n.type === 'daily_reminder') { 🌅 } @else if (n.type === 'streak_alert') { 🔥 } @else
+          { 🏆 }
+        </div>
+        <div class="notif-body">
+          <p class="notif-title">{{ n.title }}</p>
+          <p class="notif-message">{{ n.message }}</p>
+          <p class="notif-time">{{ n.createdAt | date: 'MMM d, h:mm a' }}</p>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+```
+
+Create `src/app/pages/notifications/notifications.css`:
+
+```css
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #000;
+  background-color: #fff;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000;
+  width: 24px;
+  height: 24px;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+
+.notification-card.unread {
+  background-color: #f0f0f0;
+  border-left: 3px solid #000;
+}
+
+.notif-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notif-body {
+  flex: 1;
+}
+
+.notif-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 0.25rem;
+}
+
+.notif-message {
+  font-size: 0.75rem;
+  color: #444;
+  margin: 0 0 0.25rem;
+  line-height: 1.4;
+}
+
+.notif-time {
+  font-size: 0.65rem;
+  color: #888;
+  margin: 0;
+}
+```
+
+---
+
+## 7. Add notifications route to app.routes.ts
+
+```typescript
+{
+  path: 'notifications',
+  loadComponent: () =>
+    import('./pages/notifications/notifications').then(
+      (m) => m.NotificationsComponent,
+    ),
+  canActivate: [authGuard],
+},
+```
+
+---
+
+## 8. Verify these routes exist in app.routes.ts
+
+Make sure these are all present:
+
+```typescript
+{ path: 'edit-profile', loadComponent: () => import('./pages/edit-profile/edit-profile').then(m => m.EditProfileComponent), canActivate: [authGuard] },
+{ path: 'change-password', loadComponent: () => import('./pages/change-password/change-password').then(m => m.ChangePasswordComponent), canActivate: [authGuard] },
+{ path: 'notifications', loadComponent: () => import('./pages/notifications/notifications').then(m => m.NotificationsComponent), canActivate: [authGuard] },
+```
+
+---
+
+---
+
+# PART 2 — DB Seeding Script (Rich Demo Data)
+
+This script creates 10 users with habits, logs spanning 60 days, streaks,
+and varied consistency so the heatmap, progress, and stats screens
+all look rich during the demo.
+
+## Step 1 — Install axios for the script
+
+```bash
+npm install axios
+```
+
+---
+
+## Step 2 — Create the seed script
+
+Create `scripts/seed-demo-data.js` in your backend project root:
+
+```javascript
+const axios = require('axios');
+
+const BASE_URL = 'http://localhost:3000';
+
+// 10 demo users
+const USERS = [
+  {
+    fullName: 'Alex Johnson',
+    school: 'University of Life',
+    email: 'alex@demo.com',
+    password: 'password123',
+  },
+  { fullName: 'Sam Smith', school: 'MIT', email: 'sam@demo.com', password: 'password123' },
+  { fullName: 'Jordan Lee', school: 'Stanford', email: 'jordan@demo.com', password: 'password123' },
+  {
+    fullName: 'Taylor Brown',
+    school: 'Harvard',
+    email: 'taylor@demo.com',
+    password: 'password123',
+  },
+  { fullName: 'Morgan Davis', school: 'Oxford', email: 'morgan@demo.com', password: 'password123' },
+  {
+    fullName: 'Casey Wilson',
+    school: 'Cambridge',
+    email: 'casey@demo.com',
+    password: 'password123',
+  },
+  { fullName: 'Riley Martinez', school: 'Yale', email: 'riley@demo.com', password: 'password123' },
+  {
+    fullName: 'Drew Anderson',
+    school: 'Columbia',
+    email: 'drew@demo.com',
+    password: 'password123',
+  },
+  {
+    fullName: 'Quinn Thomas',
+    school: 'Princeton',
+    email: 'quinn@demo.com',
+    password: 'password123',
+  },
+  { fullName: 'Avery Jackson', school: 'Duke', email: 'avery@demo.com', password: 'password123' },
+];
+
+// Helper — get a date string N days ago
+function daysAgo(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().split('T')[0];
+}
+
+// Helper — sleep between requests to avoid overwhelming the server
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Helper — random int between min and max (inclusive)
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+async function registerUser(user) {
+  try {
+    const res = await axios.post(`${BASE_URL}/auth/register`, user);
+    console.log(`✅ Registered: ${user.fullName}`);
+    return res.data.access_token;
+  } catch (e) {
+    // User might already exist — try login instead
+    try {
+      const res = await axios.post(`${BASE_URL}/auth/login`, {
+        email: user.email,
+        password: user.password,
+      });
+      console.log(`🔄 Already exists, logged in: ${user.fullName}`);
+      return res.data.access_token;
+    } catch (err) {
+      console.error(`❌ Failed for ${user.fullName}:`, err.message);
+      return null;
+    }
+  }
+}
+
+async function getSystemHabits(token) {
+  const res = await axios.get(`${BASE_URL}/habits/system`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+async function selectHabits(token, habitIds) {
+  try {
+    await axios.post(
+      `${BASE_URL}/habits/select`,
+      { habitIds },
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+  } catch (e) {
+    // Already selected — ignore
+  }
+}
+
+async function getDashboard(token) {
+  const res = await axios.get(`${BASE_URL}/habits/dashboard`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+async function completeHabitOnDate(token, habitId, date) {
+  // We use the log endpoint with a backdated date via direct DB approach
+  // Since the API only supports today, we'll complete today and the
+  // seeding script will handle the rest via the log endpoint pattern
+  try {
+    await axios.post(
+      `${BASE_URL}/habits/${habitId}/complete`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+  } catch (e) {
+    // Already completed — ignore
+  }
+}
+
+async function seedUser(user) {
+  console.log(`\n🌱 Seeding user: ${user.fullName}`);
+
+  // 1. Register or login
+  const token = await registerUser(user);
+  if (!token) return;
+
+  await sleep(300);
+
+  // 2. Get system habits
+  const systemHabits = await getSystemHabits(token);
+
+  // 3. Each user selects a different combination of habits
+  // to create variety in the data
+  const allIds = systemHabits.map((h) => h.id);
+  const numToSelect = randInt(3, 6);
+  const shuffled = allIds.sort(() => Math.random() - 0.5);
+  const selectedIds = shuffled.slice(0, numToSelect);
+
+  await selectHabits(token, selectedIds);
+  await sleep(300);
+
+  // 4. Get their dashboard to get user-specific habit IDs
+  const dashboard = await getDashboard(token);
+  const userHabits = dashboard.habits;
+
+  console.log(`   Selected ${userHabits.length} habits`);
+
+  // 5. Complete habits for today to populate heatmap and streak
+  // Each habit gets completed with different frequency to create
+  // varied consistency scores
+  for (const habit of userHabits) {
+    // Randomly decide consistency level for this habit per user
+    // High consistency (80-100% days) | Medium (40-70%) | Low (0-30%)
+    const consistencyType = randInt(1, 3);
+    const completionChance = consistencyType === 1 ? 0.9 : consistencyType === 2 ? 0.55 : 0.2;
+
+    let completedCount = 0;
+
+    // Go back 60 days and complete habit based on chance
+    for (let i = 0; i < 60; i++) {
+      if (Math.random() < completionChance) {
+        completedCount++;
+        // For today specifically, call the API
+        if (i === 0) {
+          await completeHabitOnDate(token, habit.id, daysAgo(i));
+          await sleep(100);
+        }
+      }
+    }
+
+    console.log(
+      `   ${habit.name}: ~${Math.round(completionChance * 100)}% consistency (${completedCount}/60 days simulated)`,
+    );
+  }
+}
+
+async function main() {
+  console.log('🚀 Starting demo data seed...\n');
+
+  for (const user of USERS) {
+    await seedUser(user);
+    await sleep(500);
+  }
+
+  console.log('\n✅ Demo seed complete!');
+  console.log('\nLogin credentials for all demo users:');
+  console.log('Password: password123');
+  USERS.forEach((u) => console.log(`  ${u.email}`));
+}
+
+main().catch(console.error);
+```
+
+---
+
+## Step 3 — Run the script
+
+Make sure your backend is running first, then:
+
+```bash
+node scripts/seed-demo-data.js
+```
+
+---
+
+## Step 4 — Manually backdate logs for rich heatmap data
+
+The script above completes habits for today via the API. To get rich historical
+data (past 60 days) in the heatmap, run this SQL directly in your PostgreSQL
+database after running the seed script.
+
+Open your DB client (pgAdmin, TablePlus, DBeaver, or psql) and run:
+
+```sql
+-- This inserts backdated habit logs for all users
+-- for the past 60 days with varied completion patterns
+
+DO $$
+DECLARE
+  habit_record RECORD;
+  day_offset INT;
+  log_date DATE;
+  completion_chance FLOAT;
+  random_val FLOAT;
+BEGIN
+  -- Loop through every user habit
+  FOR habit_record IN
+    SELECT h.id as habit_id, h."userId"
+    FROM habits h
+    WHERE h."isSystem" = false
+  LOOP
+    -- Assign a random consistency level per habit
+    completion_chance := 0.3 + random() * 0.65; -- between 30% and 95%
+
+    -- Loop through past 60 days
+    FOR day_offset IN 1..60 LOOP
+      log_date := CURRENT_DATE - day_offset;
+      random_val := random();
+
+      -- Only insert if random chance hit AND log doesn't already exist
+      IF random_val < completion_chance THEN
+        INSERT INTO habit_logs ("userId", "habitId", date, value, "completedAt")
+        VALUES (
+          habit_record."userId",
+          habit_record.habit_id,
+          log_date,
+          NULL,
+          log_date + INTERVAL '8 hours'
+        )
+        ON CONFLICT ("userId", "habitId", date) DO NOTHING;
+      END IF;
+    END LOOP;
+  END LOOP;
+
+  RAISE NOTICE 'Backdated logs inserted successfully';
+END $$;
+```
+
+---
+
+## Step 5 — Verify the data
+
+Run these queries to confirm data looks good:
+
+```sql
+-- Count logs per user
+SELECT u."fullName", COUNT(hl.id) as total_logs
+FROM users u
+LEFT JOIN habit_logs hl ON hl."userId" = u.id
+GROUP BY u.id, u."fullName"
+ORDER BY total_logs DESC;
+
+-- Check heatmap spread (logs per day)
+SELECT date, COUNT(*) as completions
+FROM habit_logs
+WHERE date >= CURRENT_DATE - 60
+GROUP BY date
+ORDER BY date DESC
+LIMIT 20;
+
+-- Check habit count per user
+SELECT u."fullName", COUNT(h.id) as habit_count
+FROM users u
+LEFT JOIN habits h ON h."userId" = u.id AND h."isSystem" = false
+GROUP BY u.id, u."fullName";
+```
+
+---
+
+## Demo Login Credentials
+
+| Name           | Email           | Password    |
+| -------------- | --------------- | ----------- |
+| Alex Johnson   | alex@demo.com   | password123 |
+| Sam Smith      | sam@demo.com    | password123 |
+| Jordan Lee     | jordan@demo.com | password123 |
+| Taylor Brown   | taylor@demo.com | password123 |
+| Morgan Davis   | morgan@demo.com | password123 |
+| Casey Wilson   | casey@demo.com  | password123 |
+| Riley Martinez | riley@demo.com  | password123 |
+| Drew Anderson  | drew@demo.com   | password123 |
+| Quinn Thomas   | quinn@demo.com  | password123 |
+| Avery Jackson  | avery@demo.com  | password123 |
+
+---
+
+## Quick Demo Flow for Presentation
+
+1. Login as **Alex Johnson** — show dashboard with habits and progress ring
+2. Complete a habit — show progress update live
+3. Navigate to habit detail — show streak and weekly activity
+4. Go to progress — show domain mastery and strong/weak habits
+5. Go to heatmap — show 60 days of rich activity data
+6. Go to settings — toggle notifications, show interests
+7. Logout — login as **Sam Smith** — show different data for different user
+8. Show notifications bell if any unread count exists
 </file>
 
 <file path="package.json">
@@ -485,6 +1495,15 @@ export const routes: Routes = [
   },
 
   {
+    path: 'notifications',
+    loadComponent: () =>
+      import('./pages/notifications/notifications').then(
+        (m) => m.NotificationsComponent,
+      ),
+    canActivate: [authGuard],
+  },
+
+  {
     // Catch-all route for 404s
     path: '**',
     redirectTo: '',
@@ -628,6 +1647,535 @@ import { Component } from '@angular/core';
 export class ProgressBar {
 
 }
+</file>
+
+<file path="src/app/components/quick-add-habit/quick-add-habit.css">
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, .55);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  z-index: 999;
+}
+
+.modal {
+  width: 100%;
+  max-width: 380px;
+
+  background: var(--surface);
+
+  border: 2px solid var(--border);
+  border-radius: 18px;
+
+  padding: 24px;
+
+  box-sizing: border-box;
+
+  animation: pop .18s ease;
+}
+
+@keyframes pop {
+
+  from {
+    opacity: 0;
+    transform: scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+}
+
+.modal-header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 22px;
+
+}
+
+.modal-header h2 {
+
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 800;
+
+  color: var(--text);
+
+}
+
+.close-btn {
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+
+  border: none;
+
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+}
+
+.close-btn:hover {
+
+  color: var(--primary);
+
+}
+
+.close-btn svg {
+
+  width: 22px;
+  height: 22px;
+
+}
+
+.form-group {
+
+  margin-bottom: 22px;
+
+}
+
+.form-group label {
+
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: .08em;
+
+  color: var(--text-muted);
+
+}
+
+.form-group input {
+
+  width: 100%;
+
+  padding: 14px;
+
+  box-sizing: border-box;
+
+  border: 2px solid var(--border);
+
+  background: var(--background);
+
+  color: var(--text);
+
+  font-size: 15px;
+
+}
+
+.button-grid {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+}
+
+.tracking-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+}
+
+.option-btn {
+
+  padding: 12px 16px;
+
+  border: 2px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .2s;
+
+}
+
+.option-btn.active {
+
+  background: var(--primary);
+
+  color: var(--primary-text);
+
+  border-color: var(--primary);
+
+}
+
+.option-btn:hover {
+
+  transform: translateY(-2px);
+
+}
+
+.create-btn {
+
+  width: 100%;
+
+  padding: 16px;
+
+  margin-top: 5px;
+
+  border: none;
+
+  background: var(--primary);
+
+  color: var(--primary-text);
+
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+}
+
+.create-btn:disabled {
+
+  opacity: .7;
+  cursor: not-allowed;
+
+}
+
+.error-message {
+
+  margin-bottom: 18px;
+
+  padding: 12px;
+
+  border: 1px solid #ef4444;
+
+  background: rgba(239, 68, 68, .08);
+
+  color: #ef4444;
+
+  font-size: 14px;
+  font-weight: 600;
+
+}
+</file>
+
+<file path="src/app/components/quick-add-habit/quick-add-habit.html">
+<div class="modal-backdrop" (click)="closeModal()">
+
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+
+      <h2>Quick Add Habit</h2>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="closeModal()">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+
+        </svg>
+
+      </button>
+
+    </div>
+
+    @if (errorMessage()) {
+      <div class="error-message">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <!-- Habit Name -->
+
+    <div class="form-group">
+
+      <label>HABIT NAME</label>
+
+      <input
+        type="text"
+        placeholder="e.g. Morning Meditation"
+        [value]="name()"
+        (input)="name.set($any($event.target).value)">
+
+    </div>
+
+    <!-- Domain -->
+
+    <div class="form-group">
+
+      <label>SELECT DOMAIN</label>
+
+      <div class="button-grid">
+
+        @for (domain of domains; track domain) {
+
+          <button
+            type="button"
+            class="option-btn"
+            [class.active]="selectedDomain() === domain"
+            (click)="setDomain(domain)">
+
+            {{ domain }}
+
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Tracking Type -->
+
+    <div class="form-group">
+
+      <label>TRACKING TYPE</label>
+
+      <div class="button-grid tracking-grid">
+
+        @for (type of trackingTypes; track type) {
+
+          <button
+            type="button"
+            class="option-btn"
+            [class.active]="selectedTrackingType() === type"
+            (click)="setTrackingType(type)">
+
+            {{ type | titlecase }}
+
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+
+    <!-- Daily Target -->
+
+    <div class="form-group">
+
+      <label>DAILY TARGET</label>
+
+      <input
+        type="number"
+        min="1"
+        [value]="dailyTarget()"
+        (input)="dailyTarget.set(+$any($event.target).value)">
+
+    </div>
+
+    <!-- Target Unit -->
+
+    <div class="form-group">
+
+      <label>UNIT</label>
+
+      <input
+        type="text"
+        [value]="targetUnit()"
+        readonly>
+
+    </div>
+
+    <button
+      class="create-btn"
+      [disabled]="isSaving()"
+      (click)="createHabit()">
+
+      @if (isSaving()) {
+
+        Creating...
+
+      } @else {
+
+        Initialize Habit 🚀
+
+      }
+
+    </button>
+
+  </div>
+
+</div>
+</file>
+
+<file path="src/app/components/quick-add-habit/quick-add-habit.ts">
+import {
+  Component,
+  EventEmitter,
+  Output,
+  inject,
+  signal,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { DOMAINS } from '../../constants/domainS';
+
+import {
+  HabitsService,
+  CreateHabitDto,
+} from '../../services/habits.service';
+
+@Component({
+  selector: 'app-quick-add-habit',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './quick-add-habit.html',
+  styleUrl: './quick-add-habit.css',
+})
+export class QuickAddHabitComponent {
+  private habitsService = inject(HabitsService);
+
+  @Output() close = new EventEmitter<void>();
+  @Output() habitCreated = new EventEmitter<void>();
+
+  readonly domains = DOMAINS;
+
+  readonly trackingTypes = [
+    'duration',
+    'count',
+    'toggle',
+    'timer',
+  ];
+
+  // Form State
+  name = signal('');
+
+  selectedDomain = signal('Health');
+
+  selectedTrackingType = signal('duration');
+
+  dailyTarget = signal(30);
+
+  targetUnit = signal('minutes');
+
+  isSaving = signal(false);
+
+  errorMessage = signal('');
+
+  // Domain Selection
+  setDomain(domain: string) {
+    this.selectedDomain.set(domain);
+  }
+
+  // Tracking Type Selection
+  setTrackingType(type: string) {
+    this.selectedTrackingType.set(type);
+
+    switch (type) {
+      case 'duration':
+        this.targetUnit.set('minutes');
+        this.dailyTarget.set(30);
+        break;
+
+      case 'count':
+        this.targetUnit.set('times');
+        this.dailyTarget.set(10);
+        break;
+
+      case 'toggle':
+        this.targetUnit.set('completion');
+        this.dailyTarget.set(1);
+        break;
+
+      case 'timer':
+        this.targetUnit.set('minutes');
+        this.dailyTarget.set(25);
+        break;
+    }
+  }
+
+  createHabit() {
+    this.errorMessage.set('');
+
+    if (!this.name().trim()) {
+      this.errorMessage.set('Habit name is required.');
+      return;
+    }
+
+    const payload: CreateHabitDto = {
+      name: this.name().trim(),
+      description: '',
+      category: this.selectedDomain(),
+      trackingType: this.selectedTrackingType(),
+      dailyTarget: this.dailyTarget(),
+      targetUnit: this.targetUnit(),
+    };
+
+    this.isSaving.set(true);
+
+    this.habitsService.createHabit(payload).subscribe({
+      next: () => {
+        this.isSaving.set(false);
+
+        this.habitCreated.emit();
+
+        this.close.emit();
+      },
+
+      error: (err) => {
+        this.errorMessage.set(
+          err.error?.message ?? 'Unable to create habit.'
+        );
+
+        this.isSaving.set(false);
+      },
+    });
+  }
+
+  closeModal() {
+    this.close.emit();
+  }
+}
+</file>
+
+<file path="src/app/constants/domainS.ts">
+export const DOMAINS = [
+  'Health',
+  'Productivity',
+  'Reading',
+  'Coding',
+  'Running',
+  'Fitness',
+  'Mindfulness',
+  'Study',
+];
 </file>
 
 <file path="src/app/core/guards/auth.guard.ts">
@@ -1607,11 +3155,424 @@ export class SignupComponent {
 </file>
 
 <file path="src/app/pages/change-password/change-password.css">
+.page-wrapper {
+  min-height: 100vh;
+  background: #181818;
+  display: flex;
+  justify-content: center;
+}
 
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:28px 20px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+}
+
+.back-btn{
+    background:none;
+    border:none;
+    color:var(--text);
+    font-size:24px;
+    cursor:pointer;
+}
+
+.form-card{
+    margin:0 20px;
+    padding:20px;
+    background:var(--surface);
+    border:2px solid var(--border);
+}
+
+.section-title{
+    margin-bottom:24px;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.form-group input{
+    padding:14px;
+    background:var(--background);
+    border:2px solid var(--border);
+    color:var(--text);
+    font-size:15px;
+}
+
+
+.form-group input:focus,
+.password-input input:focus {
+  border-color: var(--primary);
+}
+
+.save-btn{
+    width:100%;
+    margin-top:12px;
+    padding:16px;
+
+    border:none;
+
+    background:var(--primary);
+    color:var(--primary-text);
+
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+}
+
+.empty-state{
+    text-align:center;
+    margin-top:60px;
+    color:var(--text-muted);
+}
+
+.error-message {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.success-message {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #22c55e;
+  background: rgba(34, 197, 94, 0.08);
+  color: #22c55e;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error-message,
+.success-message {
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  width: 100%;
+  padding: 14px 50px 14px 14px;
+
+  background: var(--background);
+  border: 2px solid var(--border);
+
+  color: var(--text);
+  font-size: 15px;
+
+  outline: none;
+  box-sizing: border-box;
+}
+
+.toggle-password {
+  position: absolute;
+
+  right: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+  background: transparent;
+
+  padding: 4px;
+
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password:hover {
+  color: var(--primary);
+}
+
+.toggle-password svg {
+  width: 22px;
+  height: 22px;
+}
 </file>
 
 <file path="src/app/pages/change-password/change-password.html">
-<p>change-password works!</p>
+<div class="page-wrapper">
+  <div class="mobile-container">
+
+    <header class="header">
+      <button
+        class="back-btn"
+        routerLink="/settings">
+        ←
+      </button>
+
+      <h1>Change Password</h1>
+    </header>
+
+    <section class="form-card">
+
+      <h3 class="section-title">
+        PASSWORD
+      </h3>
+
+      <!-- Current Password -->
+
+      <div class="form-group">
+
+        <label>Current Password</label>
+
+        <div class="password-input">
+
+          <input
+            [type]="showCurrentPassword() ? 'text' : 'password'"
+            [ngModel]="currentPassword()"
+            (ngModelChange)="currentPassword.set($event)">
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showCurrentPassword.update(v => !v)">
+
+            @if (showCurrentPassword()) {
+
+              <!-- Eye Off -->
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C7 20 2.73 16.89 1 12c.73-2.06 2.01-3.84 3.66-5.19"></path>
+
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c5 0 9.27 3.11 11 8a11.82 11.82 0 0 1-2.16 3.19"></path>
+
+                <path d="M1 1l22 22"></path>
+
+                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+
+              </svg>
+
+            } @else {
+
+              <!-- Eye -->
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3">
+                </circle>
+
+              </svg>
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- New Password -->
+
+      <div class="form-group">
+
+        <label>New Password</label>
+
+        <div class="password-input">
+
+          <input
+            [type]="showNewPassword() ? 'text' : 'password'"
+            [ngModel]="newPassword()"
+            (ngModelChange)="newPassword.set($event)">
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showNewPassword.update(v => !v)">
+
+            @if (showNewPassword()) {
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C7 20 2.73 16.89 1 12c.73-2.06 2.01-3.84 3.66-5.19"></path>
+
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c5 0 9.27 3.11 11 8a11.82 11.82 0 0 1-2.16 3.19"></path>
+
+                <path d="M1 1l22 22"></path>
+
+                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+
+              </svg>
+
+            } @else {
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3">
+                </circle>
+
+              </svg>
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Confirm Password -->
+
+      <div class="form-group">
+
+        <label>Confirm Password</label>
+
+        <div class="password-input">
+
+          <input
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+            [ngModel]="confirmPassword()"
+            (ngModelChange)="confirmPassword.set($event)">
+
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showConfirmPassword.update(v => !v)">
+
+            @if (showConfirmPassword()) {
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C7 20 2.73 16.89 1 12c.73-2.06 2.01-3.84 3.66-5.19"></path>
+
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c5 0 9.27 3.11 11 8a11.82 11.82 0 0 1-2.16 3.19"></path>
+
+                <path d="M1 1l22 22"></path>
+
+                <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+
+              </svg>
+
+            } @else {
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3">
+                </circle>
+
+              </svg>
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+      @if (errorMessage()) {
+        <p class="error-message">
+          {{ errorMessage() }}
+        </p>
+      }
+
+      @if (successMessage()) {
+        <p class="success-message">
+          {{ successMessage() }}
+        </p>
+      }
+
+      <button
+        class="save-btn"
+        [disabled]="
+          isSaving()
+          || !currentPassword().trim()
+          || !newPassword().trim()
+          || !confirmPassword().trim()
+        "
+        (click)="changePassword()">
+
+        @if (isSaving()) {
+          Updating...
+        } @else {
+          Update Password
+        }
+
+      </button>
+
+    </section>
+
+  </div>
+</div>
 </file>
 
 <file path="src/app/pages/change-password/change-password.spec.ts">
@@ -1641,16 +3602,99 @@ describe('ChangePassword', () => {
 </file>
 
 <file path="src/app/pages/change-password/change-password.ts">
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-change-password',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './change-password.html',
-  styleUrl: './change-password.css',
+  styleUrls: ['./change-password.css'],
 })
 export class ChangePassword {
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
+  currentPassword = signal('');
+  newPassword = signal('');
+  confirmPassword = signal('');
+
+  showCurrentPassword = signal(false);
+  showNewPassword = signal(false);
+  showConfirmPassword = signal(false);
+
+  isSaving = signal(false);
+
+  errorMessage = signal<string | null>(null);
+  successMessage = signal<string | null>(null);
+
+  changePassword() {
+    this.errorMessage.set(null);
+    this.successMessage.set(null);
+
+    if (!this.currentPassword().trim()) {
+      this.errorMessage.set('Current password is required.');
+      return;
+    }
+
+    if (!this.newPassword().trim()) {
+      this.errorMessage.set('New password is required.');
+      return;
+    }
+
+    if (this.newPassword().length < 8) {
+      this.errorMessage.set(
+        'Password must be at least 8 characters long.',
+      );
+      return;
+    }
+
+    if (!this.confirmPassword().trim()) {
+      this.errorMessage.set('Please confirm your new password.');
+      return;
+    }
+
+    if (this.newPassword() !== this.confirmPassword()) {
+      this.errorMessage.set('Passwords do not match.');
+      return;
+    }
+
+    this.isSaving.set(true);
+
+    this.userService
+      .changePassword({
+        currentPassword: this.currentPassword(),
+        newPassword: this.newPassword(),
+      })
+      .subscribe({
+        next: (response) => {
+          this.isSaving.set(false);
+
+          this.successMessage.set(response.message);
+
+          setTimeout(() => {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          }, 1500);
+        },
+
+        error: (error) => {
+          this.isSaving.set(false);
+
+          this.errorMessage.set(
+            error.error?.message ??
+              'Unable to change password.',
+          );
+        },
+      });
+  }
 }
 </file>
 
@@ -2150,95 +4194,123 @@ export class ChangePassword {
   font-size: 12px;
   color: var(--text-muted);
 }
+
+.header-actions {
+  position: relative;
+}
+
+.bell-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 4px;
+}
+
+.bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #000;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </file>
 
 <file path="src/app/pages/dashboard/dashboard.html">
 <div class="page-wrapper">
-<div class="mobile-container">
+    <div class="mobile-container">
 
-    @if (isLoading()) {
-    <p class="empty-state">Loading...</p>
-    } @else if (errorMessage()) {
-    <p class="empty-state">{{ errorMessage() }}</p>
-    } @else if (dashboard()) {
+        @if (isLoading()) {
+        <p class="empty-state">Loading...</p>
+        } @else if (errorMessage()) {
+        <p class="empty-state">{{ errorMessage() }}</p>
+        } @else if (dashboard()) {
 
-    <header class="header">
-        <h1>{{ greeting() }},<br>{{ firstName() }}</h1>
-        <p class="date">{{ today }}</p>
-    </header>
-
-    <section class="progress-section">
-        <div class="progress-header">
-            <div class="progress-text">
-                <span class="label">TODAY'S PROGRESS</span>
-                <span class="value">
-                    {{ dashboard()!.completedCount }} / {{ dashboard()!.totalCount }} Habits
-                </span>
-            </div>
-            <!-- <a routerLink="/heatmap" class="link-stats">
-                View heatmap
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
+        <div class="header-actions">
+            <button class="bell-btn" routerLink="/notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                 </svg>
-            </a> -->
+                @if (unreadCount() > 0) {
+                <span class="bell-badge">{{ unreadCount() }}</span>
+                }
+            </button>
         </div>
-        <!-- <div class="progress-bar-bg">
+
+        <header class="header">
+            <h1>{{ greeting() }},<br>{{ firstName() }}</h1>
+            <p class="date">{{ today }}</p>
+        </header>
+
+        <section class="progress-section">
+            <div class="progress-header">
+                <div class="progress-text">
+                    <span class="label">TODAY'S PROGRESS</span>
+                    <span class="value">
+                        {{ dashboard()!.completedCount }} / {{ dashboard()!.totalCount }} Habits
+                    </span>
+                </div>
+                <a routerLink="/heatmap" class="link-stats">
+                    View heatmap
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+            <!-- <div class="progress-bar-bg">
             <div class="progress-bar-fill" [style.width.%]="dashboard()!.progressPercentage"></div>
         </div> -->
-    </section>
+        </section>
 
-    <section class="quote-card">
-        <div class="quote-label">
-            DAILY GOAL
-        </div>
-        <div class="progress-ring-card">
-            <svg
-                class="progress-ring"
-                width="150"
-                height="150"
-                viewBox="0 0 150 150">
-                <circle
-                    class="ring-bg"
-                    cx="75"
-                    cy="75"
-                    [attr.r]="radius">
-                </circle>
+        <section class="quote-card">
+            <div class="quote-label">
+                DAILY GOAL
+            </div>
+            <div class="progress-ring-card">
+                <svg class="progress-ring" width="150" height="150" viewBox="0 0 150 150">
+                    <circle class="ring-bg" cx="75" cy="75" [attr.r]="radius">
+                    </circle>
 
-                <circle
-                    class="ring-progress"
-                    cx="75"
-                    cy="75"
-                    [attr.r]="radius"
-                    [attr.stroke-dasharray]="circumference"
-                    [attr.stroke-dashoffset]="getProgressOffset(dashboard()!.progressPercentage)">
-                </circle>
-            </svg>
+                    <circle class="ring-progress" cx="75" cy="75" [attr.r]="radius"
+                        [attr.stroke-dasharray]="circumference"
+                        [attr.stroke-dashoffset]="getProgressOffset(dashboard()!.progressPercentage)">
+                    </circle>
+                </svg>
 
-            <div class="progress-center">
-                <h2>{{ dashboard()!.progressPercentage }}%</h2>
-                <span>COMPLETE</span>
+                <div class="progress-center">
+                    <h2>{{ dashboard()!.progressPercentage }}%</h2>
+                    <span>COMPLETE</span>
+                </div>
+
             </div>
 
-        </div>
+            <p class="quote-text">
+                "{{ quoteOfTheDay().quote }}"
+            </p>
 
-        <p class="quote-text">
-            "{{ quoteOfTheDay().quote }}"
-        </p>
+            <p class="quote-author">
+                — {{ quoteOfTheDay().author }}
+            </p>
+        </section>
 
-        <p class="quote-author">
-            — {{ quoteOfTheDay().author }}
-        </p>
-    </section>
+        <section class="domains-section">
+            <div class="domains-header">
+                <h3 class="section-title">YOUR DOMAINS</h3>
+                <a class="edit-link">Edit</a>
+            </div>
 
-    <section class="domains-section">
-        <div class="domains-header">
-            <h3 class="section-title">YOUR DOMAINS</h3>
-            <a class="edit-link">Edit</a>
-        </div>
-
-        <div class="domains-grid">
-            @for(domain of domains(); track domain.category){
+            <div class="domains-grid">
+                @for(domain of domains(); track domain.category){
                 <div class="domain-card">
                     <div class="domain-icon">
                         📚
@@ -2250,63 +4322,68 @@ export class ChangePassword {
                         {{ domain.activeCount }} Active
                     </p>
                 </div>
-            } @empty {
+                } @empty {
                 <p class="empty-state">
                     No habits yet.
                 </p>
-            }
-        </div>
-    </section>
-
-    <section class="habits-list">
-        <h3 class="section-title">HABIT LIST</h3>
-
-        @for (habit of dashboard()!.habits; track habit.id) {
-        <div class="habit-card">
-            <div class="checkbox" [class.checked]="habit.completedToday"
-                (click)="toggleHabit(habit.id, habit.completedToday!); $event.stopPropagation()">
-                @if (habit.completedToday) {
-                <span>✓</span>
                 }
             </div>
-            <div class="habit-details" [routerLink]="['/habit', habit.id]" style="cursor: pointer; flex-grow: 1;">
-                <h4>{{ habit.name }}</h4>
-                <p>{{ habit.description }}</p>
+        </section>
+
+        <section class="habits-list">
+            <h3 class="section-title">HABIT LIST</h3>
+
+            @for (habit of dashboard()!.habits; track habit.id) {
+            <div class="habit-card">
+                <div class="checkbox" [class.checked]="habit.completedToday"
+                    (click)="toggleHabit(habit.id, habit.completedToday!); $event.stopPropagation()">
+                    @if (habit.completedToday) {
+                    <span>✓</span>
+                    }
+                </div>
+                <div class="habit-details" [routerLink]="['/habit', habit.id]" style="cursor: pointer; flex-grow: 1;">
+                    <h4>{{ habit.name }}</h4>
+                    <p>{{ habit.description }}</p>
+                </div>
+                <div class="habit-icon" [routerLink]="['/habit', habit.id]" style="cursor: pointer;">⚬</div>
             </div>
-            <div class="habit-icon" [routerLink]="['/habit', habit.id]" style="cursor: pointer;">⚬</div>
+            } @empty {
+            <p class="empty-state">No habits yet. Let's add some!</p>
+            }
+        </section>
+
+        <div class="focus-card">
+            <div class="focus-badge">FOCUS ON THE PROCESS</div>
+            <button class="fab-button" (click)="openQuickAdd()">+</button>
         </div>
-        } @empty {
-        <p class="empty-state">No habits yet. Let's add some!</p>
+
         }
-    </section>
 
-    <div class="focus-card">
-        <div class="focus-badge">FOCUS ON THE PROCESS</div>
-        <button class="fab-button" routerLink="/habit-selection">+</button>
+        @if (showQuickAdd()) {
+        <app-quick-add-habit (close)="closeQuickAdd()" (habitCreated)="onHabitCreated()">
+        </app-quick-add-habit>
+        }
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" routerLink="/dashboard">
+                <div class="nav-icon">📅</div>
+                <span>Today</span>
+            </div>
+            <div class="nav-item" routerLink="/progress">
+                <div class="nav-icon">📊</div>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item" routerLink="/heatmap">
+                <div class="nav-icon">✓</div>
+                <span>Habits</span>
+            </div>
+            <div class="nav-item" routerLink="/settings">
+                <div class="nav-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+        </nav>
+
     </div>
-
-    }
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" routerLink="/dashboard">
-            <div class="nav-icon">📅</div>
-            <span>Today</span>
-        </div>
-        <div class="nav-item" routerLink="/progress">
-            <div class="nav-icon">📊</div>
-            <span>Progress</span>
-        </div>
-        <div class="nav-item" routerLink="/heatmap">
-            <div class="nav-icon">✓</div>
-            <span>Habits</span>
-        </div>
-        <div class="nav-item" routerLink="/settings">
-            <div class="nav-icon">⚙️</div>
-            <span>Settings</span>
-        </div>
-    </nav>
-
-</div>
 </div>
 </file>
 
@@ -2343,16 +4420,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HabitsService, DashboardResponse, Habit } from '../../services/habits.service';
 import { AuthService } from '../../services/auth.service';
+import { NotificationsService } from '../../services/notifications.service';
+import { QuickAddHabitComponent } from '../../components/quick-add-habit/quick-add-habit';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, QuickAddHabitComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
   private habitsService = inject(HabitsService);
   private authService = inject(AuthService);
+  private notificationsService = inject(NotificationsService);
   readonly radius = 54;
   readonly circumference = 2 * Math.PI * this.radius;
   readonly quotes = [
@@ -2377,6 +4457,8 @@ export class DashboardComponent implements OnInit {
   dashboard = signal<DashboardResponse | null>(null);
   isLoading = signal(true);
   errorMessage = signal<string | null>(null);
+  unreadCount = signal(0)
+  showQuickAdd = signal(false);
 
   // Pull first name from localStorage
   firstName = computed(() => {
@@ -2440,6 +4522,11 @@ export class DashboardComponent implements OnInit {
         this.isLoading.set(false);
       },
     });
+
+    this.notificationsService.getUnreadCount().subscribe({
+      next: (data) => this.unreadCount.set(data.count),
+      error: () => {},
+    });
   }
 
   toggleHabit(habitId: string, completedToday: boolean) {
@@ -2455,6 +4542,19 @@ export class DashboardComponent implements OnInit {
 
   getProgressOffset(progress: number): number {
     return this.circumference - (progress / 100) * this.circumference;
+  }
+
+  openQuickAdd() {
+    this.showQuickAdd.set(true);
+  }
+
+  closeQuickAdd() {
+    this.showQuickAdd.set(false);
+  }
+
+  onHabitCreated() {
+    this.closeQuickAdd();
+    this.loadDashboard();
   }
 }
 </file>
@@ -3965,6 +6065,196 @@ import { RouterLink } from '@angular/router';
 })
 export class LandingComponent {
   // No complex state needed here, purely presentational and routing.
+}
+</file>
+
+<file path="src/app/pages/notifications/notifications.css">
+.page-wrapper {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 400px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #000;
+  background-color: #fff;
+}
+
+.header h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #000;
+  width: 24px;
+  height: 24px;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+
+.notification-card.unread {
+  background-color: #f0f0f0;
+  border-left: 3px solid #000;
+}
+
+.notif-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notif-body {
+  flex: 1;
+}
+
+.notif-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0 0 0.25rem;
+}
+
+.notif-message {
+  font-size: 0.75rem;
+  color: #444;
+  margin: 0 0 0.25rem;
+  line-height: 1.4;
+}
+
+.notif-time {
+  font-size: 0.65rem;
+  color: #888;
+  margin: 0;
+}
+</file>
+
+<file path="src/app/pages/notifications/notifications.html">
+<div class="page-wrapper">
+  <div class="mobile-container">
+    <header class="header">
+      <button class="icon-btn" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <h1>Notifications</h1>
+      <div style="width: 24px;"></div>
+    </header>
+
+    @if (isLoading()) {
+    <p style="padding: 2rem; text-align: center;">Loading...</p>
+    } @else if (notifications().length === 0) {
+    <p style="padding: 2rem; text-align: center; color: #666;">
+      No notifications yet. Keep building those habits!
+    </p>
+    } @else {
+    <div class="notifications-list">
+      @for (n of notifications(); track n.id) {
+      <div class="notification-card" [class.unread]="!n.isRead">
+        <div class="notif-icon">
+          @if (n.type === 'daily_reminder') { 🌅 } @else if (n.type === 'streak_alert') { 🔥 } @else
+          { 🏆 }
+        </div>
+        <div class="notif-body">
+          <p class="notif-title">{{ n.title }}</p>
+          <p class="notif-message">{{ n.message }}</p>
+          <p class="notif-time">{{ n.createdAt | date: 'MMM d, h:mm a' }}</p>
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+</file>
+
+<file path="src/app/pages/notifications/notifications.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { Notifications } from './notifications';
+
+describe('Notifications', () => {
+  let component: Notifications;
+  let fixture: ComponentFixture<Notifications>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Notifications]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(Notifications);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/pages/notifications/notifications.ts">
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { NotificationsService, Notification } from '../../services/notifications.service';
+
+@Component({
+  selector: 'app-notifications',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './notifications.html',
+  styleUrl: './notifications.css',
+})
+export class NotificationsComponent implements OnInit {
+  private notificationsService = inject(NotificationsService);
+
+  notifications = signal<Notification[]>([]);
+  isLoading = signal(true);
+
+  ngOnInit() {
+    this.notificationsService.getAll().subscribe({
+      next: (data) => {
+        this.notifications.set(data);
+        this.isLoading.set(false);
+        // Mark all as read when page is opened
+        this.notificationsService.markAllAsRead().subscribe();
+      },
+      error: () => this.isLoading.set(false),
+    });
+  }
 }
 </file>
 
@@ -6155,7 +8445,7 @@ export class ProgressComponent implements OnInit {
                         <p class="toggle-title">Daily Reminders</p>
                         <p class="toggle-desc">Get nudged to complete your habits</p>
                     </div>
-                    <div class="toggle" [class.on]="dailyReminders()" (click)="dailyReminders.update(v => !v)">
+                    <div class="toggle" [class.on]="dailyReminders()" (click)="toggleDailyReminders()">
                         <div class="toggle-thumb"></div>
                     </div>
                 </div>
@@ -6165,7 +8455,7 @@ export class ProgressComponent implements OnInit {
                         <p class="toggle-title">Streak Alerts</p>
                         <p class="toggle-desc">Don't lose your progress</p>
                     </div>
-                    <div class="toggle" [class.on]="streakAlerts()" (click)="streakAlerts.update(v => !v)">
+                    <div class="toggle" [class.on]="streakAlerts()" (click)="toggleStreakAlerts()">
                         <div class="toggle-thumb"></div>
                     </div>
                 </div>
@@ -6253,6 +8543,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserProfile } from '../../services/user.service';
+import { UserService } from '../../services/user.service';
 
 const ALL_INTERESTS = [
   'Health',
@@ -6274,6 +8565,7 @@ const ALL_INTERESTS = [
 })
 export class Settings implements OnInit {
   private authService = inject(AuthService);
+  private userService = inject(UserService);
   private router = inject(Router);
 
   user = signal<UserProfile | null>(null);
@@ -6300,15 +8592,37 @@ export class Settings implements OnInit {
       this.selectedInterests.set(new Set(JSON.parse(saved)));
     }    
 
-    this.authService.getProfile().subscribe({
+    // this.authService.getProfile().subscribe({
+    //   next: (data) => {
+    //     this.user.set(data);
+    //     this.isLoading.set(false);
+    //   },
+    //   error: () => {
+    //     this.isLoading.set(false);
+    //   },
+    // });
+
+    this.userService.getProfile().subscribe({
       next: (data) => {
         this.user.set(data);
+        this.dailyReminders.set(data.dailyReminders);
+        this.streakAlerts.set(data.streakAlerts);
         this.isLoading.set(false);
       },
-      error: () => {
-        this.isLoading.set(false);
-      },
+      error: () => this.isLoading.set(false),
     });
+  }
+
+  toggleDailyReminders() {
+    const newValue = !this.dailyReminders();
+    this.dailyReminders.set(newValue);
+    this.userService.updateNotificationPreferences({ dailyReminders: newValue }).subscribe();
+  }
+
+  toggleStreakAlerts() {
+    const newValue = !this.streakAlerts();
+    this.streakAlerts.set(newValue);
+    this.userService.updateNotificationPreferences({ streakAlerts: newValue }).subscribe();
   }
 
   toggleInterest(interest: string) {
@@ -6443,7 +8757,11 @@ export interface Habit {
   description: string;
   category: string;
   icon: string;
+  trackingType: string; // 'toggle' | 'count' | 'duration' | 'timer'
+  dailyTarget: number | null;
+  targetUnit: string | null;
   completedToday?: boolean;
+  loggedValue?: number | null;
 }
 
 export interface DashboardResponse {
@@ -6460,8 +8778,11 @@ export interface HabitDetail {
   description: string;
   category: string;
   icon: string;
+  trackingType: string;
+  dailyTarget: number | null;
+  targetUnit: string | null;
   currentStreak: number;
-  weeklyActivity: { date: string; completed: boolean }[];
+  weeklyActivity: { date: string; completed: boolean; value: number | null }[];
 }
 
 export interface ProgressHabit {
@@ -6471,7 +8792,7 @@ export interface ProgressHabit {
   category: string;
   consistency: number;
   streak: number;
-  status: string;
+  status: string; // 'MISSED_3_DAYS' | 'STAGNANT' | 'LOW_CONSISTENCY'
   completedToday: boolean;
 }
 
@@ -6492,6 +8813,24 @@ export interface ProgressResponse {
   needsAttention: ProgressHabit[];
   monthlyTrend: MonthlyTrend[];
   domainMastery: DomainMastery[];
+}
+
+export interface CreateHabitDto {
+  name: string;
+  description?: string;
+  category: string;
+  icon?: string;
+  trackingType?: string;
+  dailyTarget?: number;
+  targetUnit?: string;
+}
+
+export interface LogHabitResponse {
+  message: string;
+  value: number;
+  target: number;
+  targetUnit: string;
+  completed: boolean;
 }
 
 @Injectable({
@@ -6526,6 +8865,11 @@ export class HabitsService {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${habitId}/complete`);
   }
 
+  // For count and duration habits — logs a numeric value
+  logHabit(habitId: string, value: number): Observable<LogHabitResponse> {
+    return this.http.post<LogHabitResponse>(`${this.apiUrl}/${habitId}/log`, { value });
+  }
+
   getHabitDetail(habitId: string): Observable<HabitDetail> {
     return this.http.get<HabitDetail>(`${this.apiUrl}/${habitId}`);
   }
@@ -6536,6 +8880,50 @@ export class HabitsService {
 
   getHeatmap(): Observable<any> {
     return this.http.get(`${this.apiUrl}/heatmap`);
+  }
+
+  // Create a custom habit from the Quick Add modal
+  createHabit(dto: CreateHabitDto): Observable<Habit> {
+    return this.http.post<Habit>(`${this.apiUrl}`, dto);
+  }
+}
+</file>
+
+<file path="src/app/services/notifications.service.ts">
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  isRead: boolean;
+  createdAt: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class NotificationsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/notifications';
+
+  getAll(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.apiUrl}`);
+  }
+
+  getUnreadCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/unread/count`);
+  }
+
+  markAsRead(id: string): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/read`, {});
+  }
+
+  markAllAsRead(): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/read-all`, {});
   }
 }
 </file>
@@ -6550,13 +8938,25 @@ export interface UserProfile {
   fullName: string;
   school: string;
   email: string;
+  dailyReminders: boolean;
+  streakAlerts: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface UpdateProfileDto {
-  fullName: string;
-  school: string;
+  fullName?: string;
+  school?: string;
+}
+
+export interface ChangePasswordDto {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface NotificationPreferencesDto {
+  dailyReminders?: boolean;
+  streakAlerts?: boolean;
 }
 
 @Injectable({
@@ -6575,6 +8975,17 @@ export class UserService {
       `${this.apiUrl}/profile`,
       payload,
     );
+  }
+
+  changePassword(payload: ChangePasswordDto) {
+    return this.http.patch<{ message: string }>(
+      `${this.apiUrl}/change-password`,
+      payload,
+    );
+  }
+
+  updateNotificationPreferences(payload: NotificationPreferencesDto): Observable<UserProfile> {
+    return this.http.patch<UserProfile>(`${this.apiUrl}/notifications`, payload);
   }
 }
 </file>

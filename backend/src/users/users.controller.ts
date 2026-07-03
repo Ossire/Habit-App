@@ -23,4 +23,12 @@ export class UsersController {
   changePassword(@Req() req: any, @Body() dto: ChangePasswordDto) {
     return this.usersService.changePassword(req.user.id, dto);
   }
+
+  @Patch('notifications')
+  updateNotifications(
+    @Req() req: any,
+    @Body() dto: { dailyReminders?: boolean; streakAlerts?: boolean },
+  ) {
+    return this.usersService.updateNotificationPreferences(req.user.id, dto);
+  }
 }
